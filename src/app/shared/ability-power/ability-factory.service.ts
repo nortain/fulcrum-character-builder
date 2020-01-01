@@ -51,6 +51,14 @@ export class AbilityFactoryService {
     return model;
   }
 
+  /**
+   * This method is how a character can select an ability
+   * @param abilityToBeSelected
+   * @param currentAbilities
+   * @param attributes
+   * @param level
+   * @param innerSelections
+   */
   selectAbility<K extends keyof AbilityType>(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>(), level = Level.One, innerSelections = new Array<AbilityName>()): Array<AbilityModel> {
     let newAbilities = [...currentAbilities];
     if (abilityToBeSelected.pickNumber > 0) {
@@ -78,7 +86,10 @@ export class AbilityFactoryService {
   }
 
   /**
-   * Give an ability to be selected, all current abilities and all attributes, determine if the ability is allowed to be selected.  This doesn't consider cost of the talent that a character might have, this is simply comparing data to see if the ability is eligible to be selected.  This also looks at level to ensure that level requirement is met is an ability requires such  If so, return true otherwise return false.
+   * Give an ability to be selected, all current abilities and all attributes, determine if the ability is allowed to be selected.
+   * This doesn't consider cost of the talent that a character might have, this is simply comparing data to see if the ability is eligible to be selected.
+   * This also looks at level to ensure that level requirement is met if an ability requires such
+   * If so, return true otherwise return false.
    * @param abilityToBeSelected
    * @param currentAbilities
    * @param attributes

@@ -58,7 +58,7 @@ export function getTalentObject(): TalentConstants {
         {
           briefDescription: "Gain a +$" + AbilityBonus.EmpoweredDamage + " to empowered attacks but you have a $" + AbilityBonus.CriticalStrike + " to critical strikes.",
           fullDescription:
-            "Gain a +2 to empowered attacks but you have a -1 to critical strikes.  At level 2 remove the critical strike penalty.  At level 6 your empowered bonus becomes +3."
+            "Gain a +2 to empowered attacks but you have a -1 to critical strikes. At level 2 remove the critical strike penalty. At level 6 your empowered bonus becomes +3."
         },
       mechanicalBonus: [
         {abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 3}},
@@ -75,7 +75,7 @@ export function getTalentObject(): TalentConstants {
         {
           briefDescription: "Increase the amount of Healing granted by actions with the healing keyword by $Healing.",
           fullDescription:
-            "Increase the amount of Healing granted by actions with the healing keyword by 1.  Increase by 1 at level 6."
+            "Increase the amount of Healing granted by actions with the healing keyword by 1. Increase by 1 at level 6."
         },
       mechanicalBonus: [
         {abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}
@@ -87,9 +87,9 @@ export function getTalentObject(): TalentConstants {
       abilityAction: ActionType.Passive,
       abilityCost: [{requirementAbilityName: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
-        briefDescription: "Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1.  Gain a +1 bonus to critical strikes.",
+        briefDescription: "Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1. Gain a +1 bonus to critical strikes.",
         fullDescription:
-          "Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1.  Gain a +1 bonus to critical strikes."
+          "Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1. Gain a +1 bonus to critical strikes."
       }
       ,
       mechanicalBonus: [
@@ -122,7 +122,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription: "Gain the following:\n" +
           "Your Missile Defense becomes your Active Defense. Increase your critical resistance by $CriticalResist. Gain the ability Deflection",
         fullDescription:
-          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Increase this bonus to 2 at level 6. Gain the ability Deflection."
+          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1. Increase this bonus to 2 at level 6. Gain the ability Deflection."
       },
       mechanicalBonus: [
         {abilityBonus: AbilityBonus.MissileDefense, abilityType: AbilityType.Passive, value: AbilityBonus.ActiveDefense},
@@ -165,7 +165,7 @@ export function getTalentObject(): TalentConstants {
           "Increase Range attack damage by $AttackDamage",
 
         fullDescription:
-          "Increase Range attack damage by +1.  Increase this amount by 1 at level 6."
+          "Increase Range attack damage by +1. Increase this amount by 1 at level 6."
       },
       mechanicalBonus: [
         {abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}
@@ -196,7 +196,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Increase your damage bonus for dual wielding attacks by $AttackDamage.",
         fullDescription:
-          "Increase your damage bonus for dual wielding attacks by +2.  Increase this bonus by 1 at levels 4 and 8."
+          "Increase your damage bonus for dual wielding attacks by +2. Increase this bonus by 1 at levels 4 and 8."
       },
       mechanicalBonus: [
         {abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}
@@ -316,7 +316,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Gain a $Charging attack damage bonus when charging.",
         fullDescription:
-          "Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8."
+          "Gain a +2 attack damage bonus when charging. Increase this damage by 1 and levels 4 and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Charging, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}]
     } as AbilityModel,
@@ -330,7 +330,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Gain a $AttackDamage to attack damage.",
         fullDescription:
-          "Gain a +1 to attack damage.  At level 6 this bonus becomes +2."
+          "Gain a +1 to attack damage. At level 6 this bonus becomes +2."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
     } as AbilityModel,
@@ -344,7 +344,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Gain a $" + AbilityBonus.CriticalStrike + " to critical strikes.",
         fullDescription:
-          "Gain a +3 to critical strikes.  Increase this bonus by 1 at levels 4, 6, and 8."
+          "Gain a +3 to critical strikes. Increase this bonus by 1 at levels 4, 6, and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.CriticalStrike, abilityType: AbilityType.Passive, value: {minBonus: 3, maxBonus: 6}}]
     } as AbilityModel,
@@ -356,9 +356,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Any spell or ability with the Friendly Movement keyword has its tactical move, shift, slide or teleport distance increased by 1 additional square. Increase your starting THP by 1.",
+          "Any spell or ability with the Friendly Movement keyword has its tactical move, advance, slide or teleport distance increased by 1 additional square. Increase your starting THP by 1.",
         fullDescription:
-          "Any spell or ability with the Friendly Movement keyword has its tactical move, shift, slide or teleport distance increased by 1 additional square. Increase your starting THP by 1."
+          "Any spell or ability with the Friendly Movement keyword has its tactical move, advance, slide or teleport distance increased by 1 additional square. Increase your starting THP by 1."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.FriendlyMovement, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}},
         {abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
@@ -402,9 +402,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Universal, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss.  Gain a +$" + AbilityBonus.EmpoweredDamage + " bonus to empowered attacks",
+          "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss. Gain a +$" + AbilityBonus.EmpoweredDamage + " bonus to empowered attacks",
         fullDescription:
-          "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss.  Gain a +1 bonus to empowered attacks.  This bonus increases by 1 at level  6."
+          "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss. Gain a +1 bonus to empowered attacks. This bonus increases by 1 at level  6."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
     } as AbilityModel,
@@ -459,9 +459,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Tactically move speed - 3 squares.  You may drag up to three adjacent equal size creatures with you.  You may also choose to spend a recovery.",
+          "Tactically move speed - 3 squares. You may drag up to three adjacent equal size creatures with you. You may also choose to spend a recovery.",
         fullDescription:
-          "Tactically move speed - 3 squares.  You may drag up to three adjacent equal size creatures with you.  You may also choose to spend a recovery."
+          "Tactically move speed - 3 squares. You may drag up to three adjacent equal size creatures with you. You may also choose to spend a recovery."
       },
       abilityRequirement: [{requirementAbilityName: AttributeName.Brawn, requirementValue: AttributeStrength.Heroic}],
 
@@ -591,7 +591,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "You gain $" + AbilityBonus.Fortify + " THP.",
         fullDescription:
-          "You gain 3 THP.  Increase the THP amount by 1 at levels 4, 6, and 8."
+          "You gain 3 THP. Increase the THP amount by 1 at levels 4, 6, and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}],
     } as AbilityModel,
@@ -678,7 +678,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Increase attack damage by $" + AbilityBonus.AttackDamage + ".",
         fullDescription:
-          " Increase attack damage by +1.  Increase this amount by 1 at level 6."
+          " Increase attack damage by +1. Increase this amount by 1 at level 6."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
     } as AbilityModel,
@@ -739,7 +739,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Increase your attack damage by $" + AbilityBonus.AttackDamage,
         fullDescription:
-          "Increase your attack damage by 2.  Increase this bonus by 1 at levels 4 and 8."
+          "Increase your attack damage by 2. Increase this bonus by 1 at levels 4 and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}]
     } as AbilityModel,
@@ -790,7 +790,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Gain  $" + AbilityBonus.EmpoweredDamage + " to your empowered damage bonus.",
         fullDescription:
-          "Gain 3 to your empowered damage bonus.  Increase this bonus by 1 at levels 4 and 8."
+          "Gain 3 to your empowered damage bonus. Increase this bonus by 1 at levels 4 and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 3, maxBonus: 5}}]
     } as AbilityModel,
@@ -805,7 +805,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "You gain a +$" + AbilityBonus.ActiveDefense + " bonus to AD when wearing light armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, intuition).",
         fullDescription:
-          "You gain a +1 bonus to AD when wearing light armor or less.  This bonus does not stack with any other AD bonuses (shield, evasion, intuition)."
+          "You gain a +1 bonus to AD when wearing light armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, intuition)."
       },
       mechanicalBonus: [{
         abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
@@ -824,7 +824,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "You gain a +$" + AbilityBonus.ActiveDefense + " bonus to AD when wearing medium armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, intuition).",
         fullDescription:
-          "You gain a +1 bonus to AD when wearing medium armor or less.  This bonus does not stack with any other AD bonuses (shield, evasion, intuition)."
+          "You gain a +1 bonus to AD when wearing medium armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, intuition)."
       },
       mechanicalBonus: [{
         abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
@@ -872,9 +872,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "When attacking creatures in vision restricted squares you can reduce any vision penalty you may receive by 2.  You are never forced to use your passive defense due to lighting conditions.",
+          "When attacking creatures in vision restricted squares you can reduce any vision penalty you may receive by 2. You are never forced to use your passive defense due to lighting conditions.",
         fullDescription:
-          "When attacking creatures in vision restricted squares you can reduce any vision penalty you may receive by 2.  You are never forced to use your passive defense due to lighting conditions."
+          "When attacking creatures in vision restricted squares you can reduce any vision penalty you may receive by 2. You are never forced to use your passive defense due to lighting conditions."
       },
     } as AbilityModel,
 
@@ -885,9 +885,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Spend a recovery to ignore a killing blow.  Set your hit points to recovery value + $" + AbilityBonus.RecoveryValue,
+          "Spend a recovery to ignore a killing blow. Set your hit points to recovery value + $" + AbilityBonus.RecoveryValue,
         fullDescription:
-          "Spend a recovery to ignore a killing blow.  Set your hit points to recovery value + 5 + level / 2."
+          "Spend a recovery to ignore a killing blow. Set your hit points to recovery value + 5 + level / 2."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.RecoveryValue, abilityType: AbilityType.Power, value: {minBonus: 5, maxBonus: 10}}]
     } as AbilityModel,
@@ -899,9 +899,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Increase your empowered damage by $" + AbilityBonus.EmpoweredDamage + ".  Once per turn when you hit an enemy with a weapon or implement attack on your turn you may slide them up to two squares.  The enemy must end the slide in an adjacent square. This slide can take place before you displace the enemy.",
+          "Increase your empowered damage by $" + AbilityBonus.EmpoweredDamage + ". Once per turn when you hit an enemy with a weapon or implement attack on your turn you may slide them up to two squares. The enemy must end the slide in an adjacent square. This slide can take place before you displace the enemy.",
         fullDescription:
-          "Increase your empowered damage by +1.  Once per turn when you hit an enemy with a weapon or implement attack on your turn you may slide them up to two squares.  The enemy must end the slide in an adjacent square. This slide can take place before you displace the enemy."
+          "Increase your empowered damage by +1. Once per turn when you hit an enemy with a weapon or implement attack on your turn you may slide them up to two squares. The enemy must end the slide in an adjacent square. This slide can take place before you displace the enemy."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
     } as AbilityModel,
@@ -959,9 +959,9 @@ export function getTalentObject(): TalentConstants {
       fullDescriptionAbilityType: AbilityType.Feature,
       abilityDescription: {
         briefDescription:
-          "You may pull an enemy within 2 squares of you 1 square.  Increase the damage of your Protector Aura by $" + AbilityBonus.Protector + " until SoNT.",
+          "You may pull an enemy within 2 squares of you 1 square. Increase the damage of your Protector Aura by $" + AbilityBonus.Protector + " until SoNT.",
         fullDescription:
-          "You may pull an enemy within 2 squares of you 1 square.  Increase the damage of your Protector Aura by 6 until SoNT.  Increase by 2 at levels 2, 4, 6 and by 3 at level 8"
+          "You may pull an enemy within 2 squares of you 1 square. Increase the damage of your Protector Aura by 6 until SoNT. Increase by 2 at levels 2, 4, 6 and by 3 at level 8"
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Feature, value: {minBonus: 6, maxBonus: 15}}],
     } as AbilityModel,
@@ -973,9 +973,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Gain $" + AbilityBonus.EmpoweredDamage + " to your empowered damage bonus.  Increase the bonus damage provided by your Rage Feature by $" + AbilityBonus.Rage + ".",
+          "Gain $" + AbilityBonus.EmpoweredDamage + " to your empowered damage bonus. Increase the bonus damage provided by your Rage Feature by $" + AbilityBonus.Rage + ".",
         fullDescription:
-          "Gain 1 to your empowered damage bonus.  Increase the bonus damage provided by your Rage Feature by 1.  Increase your Rage bonus damage by 1 at levels 4, 6, and 8."
+          "Gain 1 to your empowered damage bonus. Increase the bonus damage provided by your Rage Feature by 1. Increase your Rage bonus damage by 1 at levels 4, 6, and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Rage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 4}}, {
         abilityBonus: AbilityBonus.EmpoweredDamage,
@@ -994,7 +994,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Increase your protector aura damage by $" + AbilityBonus.Protector + ". Increase your rebuke bonus by $" + AbilityBonus.Rebuke + ".",
         fullDescription:
-          "Increase your protector aura damage by 2. Increase your rebuke bonus by 4.  Increase your rebuke bonus by 2 at levels 2, 4, 6 and increase by 3 at level 8."
+          "Increase your protector aura damage by 2. Increase your rebuke bonus by 4. Increase your rebuke bonus by 2 at levels 2, 4, 6 and increase by 3 at level 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}, {
         abilityBonus: AbilityBonus.Rebuke,
@@ -1013,7 +1013,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Increase your starting temporary hit points by $" + AbilityBonus.StartingTemporaryHitPoints + ". Increase the amount of temporary hit points gained from ignore pain by $" + AbilityBonus.IgnorePainTHP + ".",
         fullDescription:
-          "Increase your starting temporary hit points by 2. Increase the amount of temporary hit points gained from ignore pain by 1.  Increase the Ignore Pain temporary hit point gain by 1 at levels 4, 6, 8."
+          "Increase your starting temporary hit points by 2. Increase the amount of temporary hit points gained from ignore pain by 1. Increase the Ignore Pain temporary hit point gain by 1 at levels 4, 6, 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}, {
         abilityBonus: AbilityBonus.IgnorePainTHP,
@@ -1032,7 +1032,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Increase the damage bonus provided by Weapon Specialization by $" + AbilityBonus.WeaponSpecialization + ".",
         fullDescription:
-          "Increase the damage bonus provided by Weapon Specialization by 1.  Increase by 1 at level 6."
+          "Increase the damage bonus provided by Weapon Specialization by 1. Increase by 1 at level 6."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.WeaponSpecialization, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}],
       abilityRequirement: [{requirementAbilityName: SubthemeType.WeaponSpecialization, requirementType: AbilityType.Subtheme, requirementValue: 1}]
@@ -1066,7 +1066,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Increase your protector aura by $" + AbilityBonus.Protector + ".",
         fullDescription:
-          "Increase your protector aura by 4.  Increase this by 1 at levels 2, 4, 6 and 8."
+          "Increase your protector aura by 4. Increase this by 1 at levels 2, 4, 6 and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Passive, value: {minBonus: 4, maxBonus: 8}}],
       abilityRequirement: [{requirementAbilityName: SubthemeType.Protector, requirementType: AbilityType.Subtheme, requirementValue: 1}]
@@ -1098,9 +1098,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "When an adjacent attacker hits an ally or an adjacent ally is hit with an attack.  The attack instead hits you and the original target gains $" + AbilityBonus.Fortify + " Temporary hit points.",
+          "When an adjacent attacker hits an ally or an adjacent ally is hit with an attack. The attack instead hits you and the original target gains $" + AbilityBonus.Fortify + " Temporary hit points.",
         fullDescription:
-          "When an adjacent attacker hits an ally or an adjacent ally is hit with an attack.  The attack instead hits you and the original target gains 5 + level / 2 Temporary hit points."
+          "When an adjacent attacker hits an ally or an adjacent ally is hit with an attack. The attack instead hits you and the original target gains 5 + level / 2 Temporary hit points."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Power, value: {minBonus: 5, maxBonus: 10}}],
       abilityRequirement: [{requirementAbilityName: SubthemeType.Protector, requirementType: AbilityType.Subtheme, requirementValue: 1}]
@@ -1127,9 +1127,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Spend up to two recoveries.  Each recovery heals for an additional $" + AbilityBonus.Healing + ".",
+          "Spend up to two recoveries. Each recovery heals for an additional $" + AbilityBonus.Healing + ".",
         fullDescription:
-          "Spend up to two recoveries.  Each recovery heals for an additional 3. Increase this amount by 1 at levels 4, 6, and 8."
+          "Spend up to two recoveries. Each recovery heals for an additional 3. Increase this amount by 1 at levels 4, 6, and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Power, value: {minBonus: 3, maxBonus: 6}}]
     } as AbilityModel,
@@ -1143,7 +1143,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Gain Forced movement Resist $" + AbilityBonus.ForcedMovementResistance + ". Your character counts as a large creature vs enemy displacement attempts.",
         fullDescription:
-          "Gain Forced movement Resist 1. Your character counts as a large creature vs enemy displacement attempts.  At level 6 increase the FMR to 2."
+          "Gain Forced movement Resist 1. Your character counts as a large creature vs enemy displacement attempts. At level 6 increase the FMR to 2."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.ForcedMovementResistance, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
     } as AbilityModel,
@@ -1156,9 +1156,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Gain $" + AbilityBonus.StartingTemporaryHitPoints + " Starting Temporary Hit Point.  Flanking enemies have a -1 to hit you.",
+          "Gain $" + AbilityBonus.StartingTemporaryHitPoints + " Starting Temporary Hit Point. Flanking enemies have a -1 to hit you.",
         fullDescription:
-          "Gain 1 Starting Temporary Hit Point.  Flanking enemies have a -1 to hit you. (They only get a +1 instead of +2)"
+          "Gain 1 Starting Temporary Hit Point. Flanking enemies have a -1 to hit you. (They only get a +1 instead of +2)"
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
     } as AbilityModel,
@@ -1171,9 +1171,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Increase your starting temporary hit points by $" + AbilityBonus.StartingTemporaryHitPoints + ".  Once per turn when you hit an enemy with a Natural Even Hit you may reduce the amount of ongoing damage you are taking by $" + AbilityBonus.ReduceOngoing + ".",
+          "Increase your starting temporary hit points by $" + AbilityBonus.StartingTemporaryHitPoints + ". Once per turn when you hit an enemy with a Natural Even Hit you may reduce the amount of ongoing damage you are taking by $" + AbilityBonus.ReduceOngoing + ".",
         fullDescription:
-          "Increase your starting temporary hit points by 1.  Once per turn when you hit an enemy with a Natural Even Hit you may reduce the amount of ongoing damage you are taking by 1.  At level 6 increase this ongoing reduction to 2."
+          "Increase your starting temporary hit points by 1. Once per turn when you hit an enemy with a Natural Even Hit you may reduce the amount of ongoing damage you are taking by 1. At level 6 increase this ongoing reduction to 2."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}, {
         abilityBonus: AbilityBonus.ReduceOngoing,
@@ -1209,9 +1209,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "If you hit the target of a charge attack that is your size or smaller you may displace them and continue moving any distance unused by the charge. The displaced target does not get an opportunity attack, but other enemies may if you move through threatened squares. These extra squares of movement must be in a straight path.  You also gain a $" + AbilityBonus.Charging + " attack damage bonus to charge attacks.",
+          "If you hit the target of a charge attack that is your size or smaller you may displace them and continue moving any distance unused by the charge. The displaced target does not get an opportunity attack, but other enemies may if you move through threatened squares. These extra squares of movement must be in a straight path. You also gain a $" + AbilityBonus.Charging + " attack damage bonus to charge attacks.",
         fullDescription:
-          "If you hit the target of a charge attack that is your size or smaller you may displace them and continue moving any distance unused by the charge. The displaced target does not get an opportunity attack, but other enemies may if you move through threatened squares. These extra squares of movement must be in a straight path.  You also gain a 1 attack damage bonus to charge attacks."
+          "If you hit the target of a charge attack that is your size or smaller you may displace them and continue moving any distance unused by the charge. The displaced target does not get an opportunity attack, but other enemies may if you move through threatened squares. These extra squares of movement must be in a straight path. You also gain a 1 attack damage bonus to charge attacks."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Charging, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
     } as AbilityModel,
@@ -1333,7 +1333,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Increase your Duelist Damage by $" + AbilityBonus.Duelist + ".",
         fullDescription:
-          "Increase your Duelist Damage by 1.  This becomes a +2 bonus at level 6."
+          "Increase your Duelist Damage by 1. This becomes a +2 bonus at level 6."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Duelist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}],
       abilityRequirement: [{requirementAbilityName: SubthemeType.Duelist, requirementType: AbilityType.Subtheme, requirementValue: 1}]
@@ -1366,9 +1366,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Increase the shift, TM or ongoing reduction of the first action of Evasive Roll by $" + AbilityBonus.EvasiveRoll + ".  At Level 6 increase both actions by " + AbilityBonus.EvasiveRoll + ".",
+          "Increase the advance, tactical move or ongoing reduction of the first action of Evasive Roll by $" + AbilityBonus.EvasiveRoll + ". At Level 6 increase both actions by " + AbilityBonus.EvasiveRoll + ".",
         fullDescription:
-          "Increase the shift, TM or ongoing reduction of the first action of Evasive Roll by 1. At level 6 increase both actions done by 1."
+          "Increase the advance, tactical move or ongoing reduction of the first action of Evasive Roll by 1. At level 6 increase both actions done by 1."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.EvasiveRoll, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}, {
         abilityBonus: AbilityBonus.EvasiveRoll,
@@ -1428,9 +1428,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Gain $" + AbilityBonus.CriticalResist + " critical resistance.  If you start your turn threatened by one or more enemies your careful step action becomes tactical.",
+          "Gain $" + AbilityBonus.CriticalResist + " critical resistance. If you start your turn threatened by one or more enemies your careful step action becomes tactical.",
         fullDescription:
-          "Gain 1 critical resistance.  If you start your turn threatened by one or more enemies your careful step action becomes tactical."
+          "Gain 1 critical resistance. If you start your turn threatened by one or more enemies your careful step action becomes tactical."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.CriticalResist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
     } as AbilityModel,
@@ -1443,9 +1443,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Increase your starting THP by $" + AbilityBonus.StartingTemporaryHitPoints + ".  Your tactical movement and advancing can move through squares occupied by enemies.",
+          "Increase your starting THP by $" + AbilityBonus.StartingTemporaryHitPoints + ". Your tactical movement and advancing can move through squares occupied by enemies.",
         fullDescription:
-          "Increase your starting THP by 1.  Your tactical movement and advancing can move through squares occupied by enemies."
+          "Increase your starting THP by 1. Your tactical movement and advancing can move through squares occupied by enemies."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
     } as AbilityModel,
@@ -1507,9 +1507,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Get a +2 hit bonus to and an attack damage bonus of $" + AbilityBonus.AttackDamage + " to the next attack you make against this turn against a creature that is isolated or granting you combat superiority.  If this attack misses this power is refreshed.",
+          "Get a +2 hit bonus to and an attack damage bonus of $" + AbilityBonus.AttackDamage + " to the next attack you make against this turn against a creature that is isolated or granting you combat superiority. If this attack misses this power is refreshed.",
         fullDescription:
-          "Get a +2 hit bonus to and an attack damage bonus of (17 + level * 3) to the next attack you make against this turn against a creature that is isolated or granting you combat superiority.  If this attack misses this power is refreshed."
+          "Get a +2 hit bonus to and an attack damage bonus of (17 + level * 3) to the next attack you make against this turn against a creature that is isolated or granting you combat superiority. If this attack misses this power is refreshed."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Power, value: {minBonus: 17, maxBonus: 47}}],
     } as AbilityModel,
@@ -1524,9 +1524,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Mark a target as a swift action until the end of your turn.  The marked target grants you combat superiority 3 and can only use passive defense against your attacks.",
+          "Mark a target as a swift action until the end of your turn. The marked target grants you combat superiority 3 and can only use passive defense against your attacks.",
         fullDescription:
-          "Mark a target as a swift action until the end of your turn.  The marked target grants you combat superiority 3 and can only use passive defense against your attacks."
+          "Mark a target as a swift action until the end of your turn. The marked target grants you combat superiority 3 and can only use passive defense against your attacks."
       }
     } as AbilityModel,
 
@@ -1538,9 +1538,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Inflict $" + AbilityBonus.CounterStrike + " damage to an enemy that you threaten that misses you with an attack.  This damage stacks with any damage done from the Dualist feature.",
+          "Inflict $" + AbilityBonus.CounterStrike + " damage to an enemy that you threaten that misses you with an attack. This damage stacks with any damage done from the Dualist feature.",
         fullDescription:
-          "Inflict 5 damage to an enemy that you threaten that misses you with an attack.  This damage stacks with any damage done from the Dualist feature.  Increase this damage by 1 at levels 2, 4, 6, 8, and 10."
+          "Inflict 5 damage to an enemy that you threaten that misses you with an attack. This damage stacks with any damage done from the Dualist feature. Increase this damage by 1 at levels 2, 4, 6, 8, and 10."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.CounterStrike, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 10}}],
     } as AbilityModel,
@@ -1554,11 +1554,146 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
         "Increase the damage of your Find Weakness ability by $" + AbilityBonus.FindWeakness + " and gain the Weakness Exposed feature.",
         fullDescription:
-          "Gain 1 to your attack damage bonus and gain the Masterful Strikes Feature."
+          "Increase the damage of your Find Weakness ability by 2 and gain the Weakness Exposed feature."
       },
-      associatedAbilities: [TalentName.MasterfulStrikes],
-      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
-      abilityRequirement: [{requirementAbilityName: SubthemeType.WeaponSpecialization, requirementType: AbilityType.Subtheme, requirementValue: ThemeStrength.Lesser}]
+      associatedAbilities: [TalentName.WeaknessExposed],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FindWeakness, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.FindWeakness, requirementType: AbilityType.Subtheme, requirementValue: ThemeStrength.Lesser}]
+    } as AbilityModel,
+
+    WeaknessExposed: {
+      abilityName: TalentName.WeaknessExposed,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      fullDescriptionAbilityType: AbilityType.Feature,
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage of your next Find Weakness ability this turn by $" + AbilityBonus.FindWeakness + ".",
+        fullDescription:
+          "Increase the damage of your next Find Weakness ability this turn by 5 + level / 2."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FindWeakness, abilityType: AbilityType.Feature, value: {minBonus: 5, maxBonus: 10}}],
+    } as AbilityModel,
+
+    MasterDuelist: {
+      abilityName: TalentName.MasterDuelist,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage of your Duelist ability by $" + AbilityBonus.Duelist + " and gain the Deadly Guard feature.",
+        fullDescription:
+          "Increase you Dualist damage by 1 and gain the Deadly Guard feature."
+      },
+      associatedAbilities: [TalentName.DeadlyGuard],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Duelist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.Duelist, requirementType: AbilityType.Subtheme, requirementValue: ThemeStrength.Lesser}]
+    } as AbilityModel,
+
+    DeadlyGuard: {
+      abilityName: TalentName.DeadlyGuard,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      fullDescriptionAbilityType: AbilityType.Feature,
+      abilityDescription: {
+        briefDescription:
+          "Increase your Duelist ability by $" + AbilityBonus.Duelist + ".",
+        fullDescription:
+          "Increase you Duelist damage by 3, increasing by 1 at levels 4, 6, and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Duelist, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}],
+    } as AbilityModel,
+
+    EvasionMastery: {
+      abilityName: TalentName.EvasionMastery,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Gain a $" + AbilityBonus.PassiveDefense + " and gain the Back Flip feature.",
+        fullDescription:
+          "Gain a +1 bonus to PD and gain the Back Flip feature."
+      },
+      associatedAbilities: [TalentName.BackFlip],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.PassiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.Evasion, requirementType: AbilityType.Subtheme, requirementValue: ThemeStrength.Minor}]
+    } as AbilityModel,
+
+    BackFlip: {
+      abilityName: TalentName.BackFlip,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      fullDescriptionAbilityType: AbilityType.Feature,
+      abilityDescription: {
+        briefDescription:
+          "You perform a back flip allowing you to advance $" + AbilityBonus.Advance + "square. The first opportunity attack made by a creature while back flipping automatically misses.",
+        fullDescription:
+          "You perform a back flip allowing you to advance 1 square. The first opportunity attack made by a creature while back flipping automatically misses."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Advance, abilityType: AbilityType.Feature, value: {minBonus: 1, maxBonus: 1}}],
+    } as AbilityModel,
+
+    DreadPirateTactics: {
+      abilityName: TalentName.DreadPirateTactics,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your Duelist damage by $" + AbilityBonus.Duelist + " but gain a $" + AbilityBonus.CriticalStrike  + " critical strikes. Increase the Duelist damage provided by To the Pain by $" + AbilityBonus.ToThePain + ".",
+        fullDescription:
+          "Increase your Duelist damage by 1 but gain a -1 to critical strikes. Increase the Duelist Damage bonus provided by To the Pain by 1, increasing by 1 at levels 4, 6, and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Duelist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}},
+        {abilityBonus: AbilityBonus.CriticalStrike, abilityType: AbilityType.Passive, value: {minBonus: -1, maxBonus: -1}},
+        {abilityBonus: AbilityBonus.ToThePain, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 4}}],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.ToThePain, requirementType: AbilityType.PowerPointFeature, requirementValue: true}]
+    } as AbilityModel,
+
+    TwistedDagger: {
+      abilityName: TalentName.TwistedDagger,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage of your find weakness feature by $" + AbilityBonus.FindWeakness + ". Increase the damage of your Backstab powerpoint feature by $" + AbilityBonus.Backstab  + ".",
+        fullDescription:
+          "Increase the damage of your find weakness feature by 1. Increase the damage of your Backstab powerpoint feature by 2. Increase your bonus damage to Backstab by 1 at levels 2, 4, 6, and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FindWeakness, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}},
+        {abilityBonus: AbilityBonus.Backstab, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 6}}],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.Backstab, requirementType: AbilityType.PowerPointFeature, requirementValue: true}]
+    } as AbilityModel,
+
+    UnboundReflex: {
+      abilityName: TalentName.UnboundReflex,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.ReflexDefense + " to Reflex defense. All attacks that primarily target your Reflex defense have a -2 DC.",
+        fullDescription:
+          "Gain 1 to Reflex defense. All attacks that primarily target your Reflex defense have a -2 DC."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ReflexDefense, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+    } as AbilityModel,
+
+    PerfectDefense: {
+      abilityName: TalentName.PerfectDefense,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.PassiveDefense + " to your passive defense (cannot exceed AD -1). Once per combat you can reduce the damage and ongoing applied by an attack by $" + AbilityBonus.TemporaryDamageResist + ".",
+        fullDescription:
+          "Gain 2 to your passive defense (cannot exceed AD -1). Once per combat you can reduce the damage and ongoing applied by an attack by 2. This increases by 1 at levels 4 and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.PassiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}, {abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Ability, value: {minBonus: 2, maxBonus: 4}}],
     } as AbilityModel,
 
 

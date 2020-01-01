@@ -14,7 +14,6 @@ import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {PowerPointName} from "./power-point/power-point-name.enum";
-import {TalentType} from "./talent/talent-type.enum";
 
 describe('AbilityFactoryService', () => {
   let service: AbilityFactoryService;
@@ -479,6 +478,17 @@ describe('AbilityFactoryService', () => {
     const talent = service.getNewAbility(TalentName.TurnTheTables, AbilityType.Talent);
     const text = service.printOutBriefDescription(talent);
     expect(text).toBe("Turn The Tables: (Feature) Move. All enemies flanking you grant you combat superiority 3 and count as isolated until the end of your turn.");
+  });
+
+  it('should print out perfect defense correctly', () => {
+    const talent = service.getNewAbility(TalentName.PerfectDefense, AbilityType.Talent);
+    const text = service.printOutBriefDescription(talent);
+    expect(text).toBe("Perfect Defense: Gain 2 to your passive defense (cannot exceed AD -1). Once per combat you can reduce the damage and ongoing applied by an attack by 4.");
+  });
+
+  it('should be able to see that perfect defense has an ability that can be used once per combat', () => {
+    const talent = service.getNewAbility(TalentName.PerfectDefense, AbilityType.Talent);
+    service.selectAbility()
   });
 
   /**Stupid Helper functions**/

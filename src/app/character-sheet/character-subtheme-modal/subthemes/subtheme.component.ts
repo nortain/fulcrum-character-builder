@@ -15,7 +15,7 @@ import {DropdownComponent} from "../../../shared/ui/dropdown/dropdown.component"
 })
 export class SubthemeComponent implements OnInit {
 
-  @ViewChild(DropdownComponent) dropdown: DropdownComponent;
+  @ViewChild(DropdownComponent, { static: true }) dropdown: DropdownComponent;
   @Input() subtheme: Subtheme;
   @Input() assignedSubthemePoints: number; // could be between 0 and 4
   @Input() subthemePointCap: number; // could be between 0 and 3 as this is the most number of possible theme points that could be assigned

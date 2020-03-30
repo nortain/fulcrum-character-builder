@@ -4,7 +4,7 @@ import {mockDropdownData} from "./shared/constants/testing-constants";
 
 
 @Component({
-  selector: 'corps-root',
+  selector: 'fulcrum-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

@@ -3,7 +3,6 @@ import {Character} from "../character/character";
 import {RaceType} from "../character/race/race-type.enum";
 import {ComponentFixture} from "@angular/core/testing";
 import {By} from "@angular/platform-browser";
-import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap/dropdown/dropdown";
 import {PhysicalDefense} from "../character/physical-defense/physical-defense";
 import {ThemePointsContainer} from "../theme-points/theme-points-container";
 import {ThemeStrength} from "../theme-points/theme-strength.enum";
@@ -23,6 +22,7 @@ import {SpellChart} from "../spells/spell-chart";
 import {AreaOfEffectTypes} from "../area-of-effect/area-of-effect-types.enum";
 import {LevelRange} from "../spells/enums/level-range.enum";
 import {AllDefenseType} from "../character/physical-defense/physical-defense-type.enum";
+import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap";
 
 export function mockDropdownData() {
   return [

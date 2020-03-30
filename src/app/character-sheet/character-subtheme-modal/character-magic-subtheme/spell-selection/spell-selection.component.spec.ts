@@ -3,14 +3,13 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SpellSelectionComponent} from './spell-selection.component';
 import {mockSpell, mockSubtheme} from "../../../../shared/constants/testing-constants";
 import {ThemeStrength} from "../../../../shared/theme-points/theme-strength.enum";
-import {MagicType, SpellSelectionType} from "../magic-type.enum";
+import {SpellSelectionType} from "../magic-type.enum";
 import {SharedModule} from "../../../../shared/shared.module";
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {NgbModalStack} from "@ng-bootstrap/ng-bootstrap/modal/modal-stack";
 import {SubthemeType} from "../../../../shared/theme-points/subthemes/subtheme-types.enum";
 import {By} from "@angular/platform-browser";
-import {AllDefenseType} from "../../../../shared/character/physical-defense/physical-defense-type.enum";
-import {Spell, SpellEffectType} from "../../../../shared/spells/spell";
+
+import {Spell} from "../../../../shared/spells/spell";
 
 fdescribe('SpellSelectionComponent', () => {
   let component: SpellSelectionComponent;
@@ -18,8 +17,8 @@ fdescribe('SpellSelectionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, NgbModule.forRoot()],
-      providers: [NgbModal, NgbModalStack],
+      imports: [SharedModule, NgbModule],
+      providers: [NgbModal],
       declarations: [SpellSelectionComponent],
     })
       .compileComponents();
@@ -135,7 +134,7 @@ fdescribe('SpellSelectionComponent', () => {
     });
 
     it('should be able to display spell effect texts', () => {
-      const labelResults = ["Spell Effect", "On Hit", "Bounce",  "On Miss"];
+      const labelResults = ["Spell Effect", "On Hit", "Bounce", "On Miss"];
       const textResults = [mockSpell().spellEffectText[0].text, mockSpell().spellEffectText[1].text, mockSpell().spellEffectText[2].text, mockSpell().spellEffectText[3].text];
       for (let i = 0; i < 4; i++) {
         const selector = ".spellEffect" + i;

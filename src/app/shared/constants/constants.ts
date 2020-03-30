@@ -630,7 +630,7 @@ export const STARTING_PLAYER_RACES = {
       ]
     } as BonusByLevel
   } as Race,
-  Gryx: {
+  HighOrc: {
     startingAttributes: [AttributeName.Brawn, AttributeName.Presence, AttributeName.Quickness],
     vision: VisionType.Low,
     availableLanguagePoints: 3,

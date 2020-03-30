@@ -16,7 +16,7 @@ import {DiceService} from "../../../../shared/character/dice/dice.service";
  * This component is used to select powers or spells for the character
  */
 @Component({
-  selector: 'corps-spell-selection',
+  selector: 'fulcrum-spell-selection',
   templateUrl: './spell-selection.component.html',
   styleUrls: ['./spell-selection.component.css']
 })
@@ -25,7 +25,7 @@ export class SpellSelectionComponent implements OnInit, OnChanges {
   /**
    * loads in the character subtheme
    */
-  @Input() subtheme: Subtheme;
+  @Input('subtheme') subtheme: Subtheme;
   /**
    * loads in if the character has a general theme point
    */
@@ -37,11 +37,11 @@ export class SpellSelectionComponent implements OnInit, OnChanges {
   /**
    * number of spells a character can select
    */
-  @Input() numberOfSpellsToSelect = 0;
+  @Input('numberOfSpellsToSelect') numberOfSpellsToSelect:number;
   /**
    * This tells the component where it is getting it's spell data from
    */
-  @Input() propertyType: SpellSelectionType;
+  @Input('propertyType') propertyType: SpellSelectionType;
   /**
    * This is the text value of how we are referring to this property, if no value is given then we default to Spell
    */

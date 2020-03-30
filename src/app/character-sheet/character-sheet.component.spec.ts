@@ -2,12 +2,12 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {CharacterSheetComponent} from './character-sheet.component';
 import {SharedModule} from "../shared/shared.module";
-import {NgbDropdown, NgbDropdownConfig, NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDropdown, NgbDropdownConfig, NgbDropdownMenu, NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {actionClickDropdownItemX, mockCharacter} from "../shared/constants/testing-constants";
 import {RaceType} from "../shared/character/race/race-type.enum";
 import {Level} from "../shared/character/level.enum";
 import {By} from "@angular/platform-browser";
-import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap/dropdown/dropdown";
+
 
 import {RacialSubType} from "../shared/character/race/racial-sub-type.enum";
 import {CharacterSheetModule} from "./character-sheet.module";
@@ -16,7 +16,7 @@ import {AttributeStrength} from "../shared/attribute/attribute-strength.enum";
 import {ArmorType} from "../shared/armor/armor-type.enum";
 import {Armor} from "../shared/armor/armor";
 import {ThemePointsContainer} from "../shared/theme-points/theme-points-container";
-import {NgbModalStack} from "@ng-bootstrap/ng-bootstrap/modal/modal-stack";
+
 
 describe('CharacterSheetComponent', () => {
   let component: CharacterSheetComponent;
@@ -26,7 +26,7 @@ describe('CharacterSheetComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule, NgbModule, CharacterSheetModule],
       declarations: [],
-      providers: [NgbDropdownConfig, NgbModal, NgbModalStack]
+      providers: [NgbDropdownConfig, NgbModal]
     })
       .compileComponents();
   }));

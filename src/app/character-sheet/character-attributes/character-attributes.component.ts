@@ -5,7 +5,7 @@ import {DropdownValueObject} from "../../shared/ui/dropdown/dropdown-value-objec
 import {AttributeService} from "../../shared/attribute/attribute.service";
 
 @Component({
-  selector: 'corps-character-attributes',
+  selector: 'fulcrum-character-attributes',
   templateUrl: './character-attributes.component.html',
   styleUrls: ['./character-attributes.component.css']
 })

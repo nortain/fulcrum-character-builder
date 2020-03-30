@@ -22,7 +22,7 @@ export class AttributeService {
         return !(parseInt(keys, 10) >= 0);
       });
     } else {
-      names = Object.values(enumeration).filter((values) => {
+      names = Object.values(enumeration).filter((values: string) => {
         return !(parseInt(values, 10) >= 0);
       });
     }

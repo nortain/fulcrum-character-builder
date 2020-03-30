@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnIn
 import {DropdownValueObject} from "./dropdown-value-object";
 
 @Component({
-  selector: 'corps-dropdown',
+  selector: 'fulcrum-dropdown',
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

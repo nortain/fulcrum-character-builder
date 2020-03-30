@@ -5,7 +5,7 @@ export enum RaceType {
   Feydra = "Feydra",
   Halfling = "Halfling",
   Human = "Human",
-  Gryx = "Gryx",
+  HighOrc = "HighOrc",
   Primental = "Primental"
 
 

@@ -14,7 +14,7 @@ import {SubthemeComponent} from "./character-subtheme-modal/subthemes/subtheme.c
 import {CharacterSubthemeModalComponent} from "./character-subtheme-modal/character-subthemes/character-subtheme-modal.component";
 
 @Component({
-  selector: 'corps-character-sheet',
+  selector: 'fulcrum-character-sheet',
   templateUrl: './character-sheet.component.html',
   styleUrls: ['./character-sheet.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

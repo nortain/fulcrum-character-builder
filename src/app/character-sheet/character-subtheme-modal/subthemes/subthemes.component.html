@@ -6,14 +6,14 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <corps-dropdown
+      <fulcrum-dropdown
         id="subthemeDropdown"
         [labelName]="'Subtheme Strength: '"
         [value]="loadSelectedDropdownValue()"
         [values]="getDropdownValues()"
         (valueChange)="reloadSubtheme($event)"
       >
-      </corps-dropdown>
+      </fulcrum-dropdown>
     </div><br>
     <div class="col-12">
       You can assign {{getRemainingSubthemePointsToAssign()}} of {{totalAssignableSubthemePointsForUI()}}

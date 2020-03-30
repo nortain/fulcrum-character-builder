@@ -7,7 +7,7 @@ import {Knack} from "../../../shared/constants/constants";
 
 
 @Component({
-  selector: 'corps-character-subtheme-container',
+  selector: 'fulcrum-character-subtheme-container',
   templateUrl: './character-subtheme-modal.component.html',
   styleUrls: ['./character-subtheme-modal.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

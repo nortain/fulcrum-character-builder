@@ -4,7 +4,7 @@ import {DropdownValueObject} from "../../shared/ui/dropdown/dropdown-value-objec
 import {ThemePointsContainer} from "../../shared/theme-points/theme-points-container";
 
 @Component({
-  selector: 'corps-character-theme-points',
+  selector: 'fulcrum-character-theme-points',
   templateUrl: './character-theme-points.component.html',
   styleUrls: ['./character-theme-points.component.css']
 })

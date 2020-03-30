@@ -13,7 +13,7 @@ import {CharacterSheetModule} from "./character-sheet/character-sheet.module";
   ],
   imports: [
     CoreModule,
-    NgbModule.forRoot(),
+    NgbModule,
     CharacterSheetModule,
     AppRoutingModule
   ],

@@ -9,7 +9,7 @@ import {DropdownComponent} from "../../../shared/ui/dropdown/dropdown.component"
 
 
 @Component({
-  selector: 'corps-subthemes',
+  selector: 'fulcrum-subthemes',
   templateUrl: './subthemes.component.html',
   styleUrls: ['./subthemes.component.css']
 })

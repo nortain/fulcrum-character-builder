@@ -3,8 +3,8 @@ import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/t
 import {CharacterSubthemeModalComponent} from './character-subtheme-modal.component';
 import {SharedModule} from "../../../shared/shared.module";
 import {SubthemeComponent} from "../subthemes/subtheme.component";
-import {NgbActiveModal, NgbDropdownConfig, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {NgbModalStack} from "@ng-bootstrap/ng-bootstrap/modal/modal-stack";
+import {NgbActiveModal, NgbDropdownConfig, NgbDropdownMenu, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+
 import {actionClickDropdownItemX, actionGetDropdownValue, mockSubtheme, mockThemePoints} from "../../../shared/constants/testing-constants";
 import {ThemeStrength} from "../../../shared/theme-points/theme-strength.enum";
 import {ThemePointsContainer} from "../../../shared/theme-points/theme-points-container";
@@ -13,7 +13,7 @@ import {SubthemeType} from "../../../shared/theme-points/subthemes/subtheme-type
 import {Subtheme} from "../../../shared/theme-points/subthemes/subtheme";
 import {By} from "@angular/platform-browser";
 import {DropdownComponent} from "../../../shared/ui/dropdown/dropdown.component";
-import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap/dropdown/dropdown";
+
 import {CharacterMagicSubthemeComponent} from "../character-magic-subtheme/character-magic-subtheme.component";
 import {nextTick} from "q";
 import {SpellSelectionComponent} from "../character-magic-subtheme/spell-selection/spell-selection.component";
@@ -27,7 +27,7 @@ describe('CharacterSubthemeModalComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
       declarations: [SubthemeComponent, CharacterSubthemeModalComponent, CharacterMagicSubthemeComponent, SpellSelectionComponent],
-      providers: [NgbDropdownConfig, NgbModal, NgbActiveModal, NgbModalStack]
+      providers: [NgbDropdownConfig, NgbModal, NgbActiveModal]
     })
       .compileComponents();
   }));

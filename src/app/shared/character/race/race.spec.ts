@@ -17,12 +17,12 @@ describe('Race', () => {
     prim = new Race(RaceType.Primental);
     fey = new Race(RaceType.Feydra);
     halfling = new Race(RaceType.Halfling);
-    orc = new Race(RaceType.Gryx);
+    orc = new Race(RaceType.HighOrc);
     elder = new Race(RaceType.Elder);
   });
 
   it('should create an instance of race', () => {
-    expect(new Race(RaceType.Gryx)).toBeTruthy();
+    expect(new Race(RaceType.HighOrc)).toBeTruthy();
   });
 
   it('should be able to create a level 4 burman who has a recovery bonus of 2', () => {

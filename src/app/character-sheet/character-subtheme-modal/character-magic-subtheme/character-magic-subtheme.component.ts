@@ -8,7 +8,7 @@ import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import {ConfirmationComponent} from "../../../shared/ui/confirmation/confirmation.component";
 
 @Component({
-  selector: 'corps-character-magic-subtheme',
+  selector: 'fulcrum-character-magic-subtheme',
   templateUrl: './character-magic-subtheme.component.html',
   styleUrls: ['./character-magic-subtheme.component.css']
 })

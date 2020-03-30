@@ -14,11 +14,11 @@ describe('Character', () => {
   let bob: Character;
 
   beforeEach(() => {
-    bob = new Character("Bob", RaceType.Gryx);
+    bob = new Character("Bob", RaceType.HighOrc);
   });
 
   it('should create an instance', () => {
-    expect(new Character("Bob", RaceType.Gryx)).toBeTruthy();
+    expect(new Character("Bob", RaceType.HighOrc)).toBeTruthy();
   });
 
   it('should be able to get default movement of 6', function () {
@@ -88,7 +88,7 @@ describe('Character', () => {
   });
 
   it('should be able to see attribute bonus based off of selected race of character', function () {
-    expect(bob.raceType).toBe(RaceType.Gryx);
+    expect(bob.raceType).toBe(RaceType.HighOrc);
     expect(bob.attributes.Brawn.strength).toBe(AttributeStrength.Heroic);
   });
 

@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DropdownComponent } from './dropdown.component';
 import {mockDropdownData} from "../../constants/testing-constants";
 import {By} from "@angular/platform-browser";
-import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap/dropdown/dropdown";
-import {NgbDropdownConfig, NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
+
+import {NgbDropdownConfig, NgbDropdownMenu, NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 
 describe('DropdownComponent', () => {
   let component: DropdownComponent;

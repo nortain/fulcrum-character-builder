@@ -6,6 +6,6 @@ export class AppPage {
   }
 
   getParagraphText() {
-    return element(by.css('corps-root h1')).getText();
+    return element(by.css('fulcrum-root h1')).getText();
   }
 }

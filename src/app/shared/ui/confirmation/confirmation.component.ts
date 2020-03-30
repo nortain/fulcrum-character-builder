@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: 'corps-confirmation',
+  selector: 'fulcrum-confirmation',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

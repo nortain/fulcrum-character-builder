@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
-  selector: 'corps-input',
+  selector: 'fulcrum-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css']
 })

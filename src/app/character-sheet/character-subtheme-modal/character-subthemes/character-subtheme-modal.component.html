@@ -25,38 +25,38 @@
         </button>
       </div>
       <div class="col-9">
-        <corps-subthemes *ngIf="selectedSubtheme.themeType !== themeType.Magic && subthemeToggle"
-                         id="corpsSubtheme"
+        <fulcrum-subthemes *ngIf="selectedSubtheme.themeType !== themeType.Magic && subthemeToggle"
+                         id="fulcrumSubtheme"
                          [assignedSubthemePoints]="getAssignedSubthemes()"
                          [subtheme]="selectedSubtheme"
                          [subthemePointCap]="getSubthemePointCap()"
                          (submitter)="updateSubtheme($event)">
-        </corps-subthemes>
-        <corps-subthemes *ngIf="selectedSubtheme.themeType !== themeType.Magic && !subthemeToggle"
-                         id="corpsSubtheme1"
+        </fulcrum-subthemes>
+        <fulcrum-subthemes *ngIf="selectedSubtheme.themeType !== themeType.Magic && !subthemeToggle"
+                         id="fulcrumSubtheme1"
                          [assignedSubthemePoints]="getAssignedSubthemes()"
                          [subtheme]="selectedSubtheme"
                          [subthemePointCap]="getSubthemePointCap()"
                          (submitter)="updateSubtheme($event)">
-        </corps-subthemes>
-        <corps-character-magic-subtheme
+        </fulcrum-subthemes>
+        <fulcrum-character-magic-subtheme
           *ngIf="selectedSubtheme.themeType === themeType.Magic && subthemeToggle"
-          id="corpsMagicSubtheme"
+          id="fulcrumMagicSubtheme"
           [subtheme]="selectedSubtheme"
           [previouslySelectedKnacks]="subthemePoints.spellKnacks"
           [generalThemePoint]="subthemePoints.themePoints.general.getStrength()"
           [subthemePointCap]="getSubthemePointCap()"
           (submitter)="updateMagicSubtheme($event)">
-        </corps-character-magic-subtheme>
-        <corps-character-magic-subtheme
+        </fulcrum-character-magic-subtheme>
+        <fulcrum-character-magic-subtheme
           *ngIf="selectedSubtheme.themeType === themeType.Magic && !subthemeToggle"
-          id="corpsMagicSubtheme1"
+          id="fulcrumMagicSubtheme1"
           [subtheme]="selectedSubtheme"
           [previouslySelectedKnacks]="subthemePoints.spellKnacks"
           [generalThemePoint]="subthemePoints.themePoints.general.getStrength()"
           [subthemePointCap]="getSubthemePointCap()"
           (submitter)="updateMagicSubtheme($event)">
-        </corps-character-magic-subtheme>
+        </fulcrum-character-magic-subtheme>
       </div>
     </div>
   </div>

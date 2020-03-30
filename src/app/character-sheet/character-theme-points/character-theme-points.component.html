@@ -1,36 +1,36 @@
 <div class="row">
-  <corps-dropdown class="col-3"
+  <fulcrum-dropdown class="col-3"
                   id="combat"
                   labelName="Combat"
                   [newLineLabelName]="true"
                   [values]="getDropdownValues('combat')"
                   (valueChange)="updateThemePoints('combat', $event.value)">
 
-  </corps-dropdown>
-  <corps-dropdown class="col-3"
+  </fulcrum-dropdown>
+  <fulcrum-dropdown class="col-3"
                   id="stealth"
                   labelName="Stealth"
                   [newLineLabelName]="true"
                   [values]="getDropdownValues('stealth')"
                   (valueChange)="updateThemePoints('stealth', $event.value)">
 
-  </corps-dropdown>
-  <corps-dropdown class="col-3"
+  </fulcrum-dropdown>
+  <fulcrum-dropdown class="col-3"
                   id="magic"
                   labelName="Magic"
                   [newLineLabelName]="true"
                   [values]="getDropdownValues('magic')"
                   (valueChange)="updateThemePoints('magic', $event.value)">
 
-  </corps-dropdown>
-  <corps-dropdown class="col-3"
+  </fulcrum-dropdown>
+  <fulcrum-dropdown class="col-3"
                   id="general"
                   labelName="General"
                   [newLineLabelName]="true"
                   [values]="getDropdownValues('general', true)"
                   (valueChange)="updateThemePoints('general', $event.value)">
 
-  </corps-dropdown>
+  </fulcrum-dropdown>
   <label id="themePointsRemaining" class="col-auto">Remaining Theme Points {{4 - getRemainingThemePoints()}} of 4</label>
 </div>
 

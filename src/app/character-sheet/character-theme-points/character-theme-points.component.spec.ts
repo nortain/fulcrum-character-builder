@@ -2,9 +2,9 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {CharacterThemePointsComponent} from './character-theme-points.component';
 import {By} from "@angular/platform-browser";
-import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap/dropdown/dropdown";
+
 import {SharedModule} from "../../shared/shared.module";
-import {NgbDropdownConfig} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDropdownConfig, NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap";
 import {actionClickDropdownItemX} from "../../shared/constants/testing-constants";
 
 describe('CharacterThemePointsComponent', () => {

@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('corps-character-builder App', () => {
+describe('fulcrum-character-builder App', () => {
   let page: AppPage;
 
   beforeEach(() => {

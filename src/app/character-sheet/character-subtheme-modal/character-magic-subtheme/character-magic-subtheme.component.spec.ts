@@ -9,7 +9,7 @@ import {ONE_MAGIC_SPELLS} from "../../../shared/constants/constants";
 import {By} from "@angular/platform-browser";
 import {SharedModule} from "../../../shared/shared.module";
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {NgbModalStack} from "@ng-bootstrap/ng-bootstrap/modal/modal-stack";
+
 import {Subtheme} from "../../../shared/theme-points/subthemes/subtheme";
 import {SpellSelectionComponent} from "./spell-selection/spell-selection.component";
 
@@ -29,8 +29,8 @@ describe('CharacterMagicSubthemeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, NgbModule.forRoot()],
-      providers: [NgbModal, NgbModalStack],
+      imports: [SharedModule, NgbModule],
+      providers: [NgbModal],
       declarations: [CharacterMagicSubthemeComponent, SpellSelectionComponent],
     })
       .compileComponents();

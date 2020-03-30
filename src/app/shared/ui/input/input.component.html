@@ -1,0 +1,5 @@
+<div [ngClass]="newLineLabelName ? 'col-lg-12' : 'row'">
+  <label class="font-weight-bold col-lg-2">{{labelName}}</label>
+  <input id="{{labelName}}Id" name="{{labelName}}Id" class="form-control" [type]="inputType" [ngStyle]="{'width': fixedWidth ? fixedWidth + 'px' : '100%'}" [ngClass]="newLineLabelName ? 'col-lg-12' : 'col-lg-10'" [ngModel]="inputModel" [required]="required" (ngModelChange)="changeModel($event)">
+</div>
+<div *ngIf="isInvalid" class="errorMessage">Invalid Value!</div>

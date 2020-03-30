@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 header font-weight-bold">
+      {{headerText}}
+    </div>
+  </div>
+  <div class="row text-sm-center">
+    <div class="col-12" *ngFor="let text of bodyText">
+      {{text}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 card-body">
+      <button id="cancelBtn" class="float-left btn btn-outline-danger" (click)="submit(false)">{{cancelText}}</button>
+      <button id="confirmBtn" class="float-right btn btn-outline-primary" (click)="submit(true)">{{confirmText}}
+      </button>
+    </div>
+  </div>
+</div>
+

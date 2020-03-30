@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <label class="font-weight-bold">Subtheme Name: {{subtheme.subthemeName | subthemes}}</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <corps-dropdown
+        id="subthemeDropdown"
+        [labelName]="'Subtheme Strength: '"
+        [value]="loadSelectedDropdownValue()"
+        [values]="getDropdownValues()"
+        (valueChange)="reloadSubtheme($event)"
+      >
+      </corps-dropdown>
+    </div><br>
+    <div class="col-12">
+      You can assign {{getRemainingSubthemePointsToAssign()}} of {{totalAssignableSubthemePointsForUI()}}
+      {{themeType[subtheme.getThemeType()]}} points
+    </div>
+
+  </div>
+
+
+  <div *ngFor="let text of getTextInfo()" class="row halfBottomTextPadding">
+    <div class="col halfBottomTextPadding" [innerHtml]="text">
+    </div>
+  </div>
+  <br>
+
+  <div class="row">
+    <div class="col-12">
+      <div *ngFor="let table of getTableData(); let i = index">
+        <b>{{i+1}} Subtheme Rank{{i+1 === 1 ? '' : 's'}}</b>
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th scope="col">Bonus</th>
+            <th scope="col">L 1</th>
+            <th scope="col">L 2</th>
+            <th scope="col">L 3</th>
+            <th scope="col">L 4</th>
+            <th scope="col">L 5</th>
+            <th scope="col">L 6</th>
+            <th scope="col">L 7</th>
+            <th scope="col">L 8</th>
+            <th scope="col">L 9</th>
+            <th scope="col">L 10</th>
+          </tr>
+          </thead>
+          <tr *ngFor="let header of getRowHeader(table)">
+            <th>{{header}}</th>
+            <td *ngFor="let data of getRowData(table, header)">{{data}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

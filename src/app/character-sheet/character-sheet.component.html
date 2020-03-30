@@ -1,0 +1,141 @@
+<form name="characterSheetForm">
+  <div class="row">
+    <corps-input id="characterName" labelName="Name" class="col" [newLineLabelName]="true"
+                 [inputModel]="character.name" (outGoingModel)="character.name=$event"></corps-input>
+
+    <div class="col">
+      <corps-dropdown id="characterRace" labelName="Race" class="col" [newLineLabelName]="true" [values]="races"
+                      (valueChange)="startReloadWithRace($event.value)"></corps-dropdown>
+
+      <corps-dropdown *ngIf="character.raceType === RaceType.Primental" id="characterSubRace" labelName="Sub-Race"
+                      [values]="subraces" (valueChange)="updateSubRace($event.value)" class="col"></corps-dropdown>
+    </div>
+
+    <corps-dropdown id="characterLevel" labelName="Level" class="col" [newLineLabelName]="true"
+                    [values]="levels" (valueChange)="startReloadWithLevel($event.value)"></corps-dropdown>
+
+  </div>
+
+  <div class="col">
+    <div class="row">
+      <div class="col-5 col-md-3">
+        <div class="row">
+          <div class="col-9">
+            <label class="font-weight-bold col-12">Theme Points</label>
+            <corps-character-theme-points id="themePoints"
+                                          (emitter)="updateThemePoints($event)">
+            </corps-character-theme-points>
+          </div>
+          <div class="col-3">
+            <button id="subthemesBtn" class="btn btn-sm btn-outline-secondary subthemesBtn" *ngIf="character.themePoints.getOtherThemePoints('general') > 0" (click)="launchSubthemesModal()">+ Subthemes</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <label class="font-weight-bold label-thickener">Initiative</label><br>
+
+        <label class="font-weight-normal">{{character.getInitiative()}}</label>
+      </div>
+      <div class="col">
+        <label class="font-weight-bold label-thickener">Movement</label><br>
+
+        <label class="font-weight-normal">{{character.getSpeed()}}</label>
+      </div>
+      <div class="col">
+        <label class="font-weight-bold label-thickener">Vision</label><br>
+
+        <label class="font-weight-normal">{{character.vision}}</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col border border-dark border-spacing">
+        <label id="activeDefense" class="font-weight-bold">Active Defense: {{getActiveDefenseValue()}}</label>
+        <div class="d-flex justify-content-center row">
+          <label *ngFor="let defense of character.physicalDefense.activeDefenses"
+                 class="activeList col">{{defense}}</label>
+        </div>
+
+      </div>
+      <div class="col border border-dark border-spacing">
+        <label class="font-weight-bold" id="passiveDefense">Passive Defenses: {{getPassiveDefenseValue()}}</label>
+        <div class="d-flex justify-content-center row">
+          <label *ngFor="let defense of character.physicalDefense.passiveDefenses; let index = index"
+                 class="passiveList col">{{defense}}
+            <span *ngIf="index > character.physicalDefense.passiveDefenses.length">, </span>
+          </label>
+        </div>
+      </div>
+      <div class="col border border-dark border-spacing">
+        <label class="font-weight-bold" id="magicalDefense">Magic Defenses:</label>
+        <div class="d-flex justify-content-center row">
+          <label id="fortitude" class="col font-weight-bold">Fort: {{getMagicDefensiveValue(MagicDefenseType.Fortitude)}}</label>
+          <label id="reflex" class="col font-weight-bold">Reflex: {{getMagicDefensiveValue(MagicDefenseType.Reflex)}}</label>
+          <label id="will" class="col font-weight-bold">Will: {{getMagicDefensiveValue(MagicDefenseType.Will)}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-3 float-right border-spacing magicResistancesBorder">
+    <label class="font-weight-bold">Magic Resistance (Prim/Sec):</label><br>
+    {{getPrimaryMagicResistanceValue()}}/{{getSecondaryMagicRestanceValue()}}
+    More stuff here
+  </div>
+  <div class="col">
+    <div class="row d-flex clearfix rowPaddingAlongTop">
+      <div class="col">
+        <label class="font-weight-bold">Hit Points:</label>
+        {{getHitPointsValue()}}
+      </div>
+      <div class="col">
+        <label class="font-weight-bold">Bloodied Value:</label>
+        {{getBloodiedValue()}}
+      </div>
+      <div class="col">
+        <label class="font-weight-bold">Recovery Value (Combat/OoC):</label>
+        {{getRecoveryValue()}} / {{getOutofCombatRecoveryValue()}}
+      </div>
+      <div class="col">
+        <label class="font-weight-bold">Critical Reduction:</label>
+        {{getCriticalReductionValue()}}
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="row d-flex">
+      <div class="col">
+        <label class="font-weight-bold">Power Points:</label>
+        {{getPowerPoints()}}
+      </div>
+      <div class="col">
+        <label class="font-weight-bold">Adrenaline Points:</label>
+        {{getAdrenalinePoints()}}
+      </div>
+      <div class="col">
+        <label class="font-weight-bold">Recovery Points:</label>
+        {{getRecoveries()}}
+      </div>
+      <div class="col">
+        <label class="font-weight-bold">Auras:</label>
+        {{getAuras()}}
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="col-auto">
+    <div class="row">
+      <div class="col-12">
+        Brawn: {{character.attributes.Brawn.strength}}
+        Vitality: {{character.attributes.Vitality.strength}}
+        Quickness: {{character.attributes.Quickness.strength}}
+        Agility: {{character.attributes.Agility.strength}}
+        Reasoning: {{character.attributes.Reasoning.strength}}
+        Presence: {{character.attributes.Presence.strength}}
+        Self Discipline: {{character.attributes.SelfDiscipline.strength}}
+        Intuition: {{character.attributes.Intuition.strength}}
+      </div>
+    </div>
+  </div>
+</form>

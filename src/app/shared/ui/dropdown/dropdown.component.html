@@ -1,0 +1,26 @@
+<label class="font-weight-bold">
+  {{labelName}}
+</label>
+<br class="newLineForLabel" *ngIf="newLineLabelName">
+<div ngbDropdown
+     class="d-inline-block">
+  <button class="btn"
+          ngClass="{{isInvalid ? 'btn-outline-danger' : 'btn-outline-primary'}}"
+          id="dropdownMenu"
+          [ngStyle]="{'width.px': fixedWidth ? fixedWidth : '100%'}"
+          ngbDropdownToggle>
+    {{selectedValue ? selectedValue.label : 'Button'}}
+  </button>
+  <div ngbDropdownMenu
+       aria-labelledby="dropdownMenu">
+    <button *ngFor="let value of values"
+            (click)="selectDropdown(value)"
+            class="dropdown-item">
+      {{value.label}}
+    </button>
+  </div>
+</div>
+
+<div *ngIf="isInvalid" class="errorMessage">Invalid Value!</div>
+
+

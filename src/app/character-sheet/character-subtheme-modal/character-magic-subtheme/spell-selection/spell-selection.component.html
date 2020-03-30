@@ -1,0 +1,90 @@
+<div class="row">
+  <div class="col-12">
+    <label class="font-weight-bold">{{propertyName}}: </label>
+    <button id="displaySpellButton" class="btn btn-outline-primary btn-sm" (click)="displaySpells()">
+      {{selectionDisplayToggle ? 'Hide' :
+      'Show'}} {{propertyName}}
+    </button>
+    <div class="selectedSpellDisplay float-right row" *ngIf="selectedSpells.length > 0">
+      <label class="font-weight-bold col">Selected {{selectedSpells.length === 1 ? propertyName : propertyName+'s'}}:
+      </label>
+      <div class="btn-sm bg-success" *ngFor="let selectDisplaySpell of selectedSpells">
+        {{selectDisplaySpell.name | castleCase}}
+      </div>
+    </div>
+    <div *ngIf="selectionDisplayToggle">
+      <p>You can select {{numberOfSpellsToSelect}} {{numberOfSpellsToSelect === 1 ? propertyName : propertyName + 's'}}
+      </p>
+      <div class="col-12" *ngFor="let spell of getSpellData()">
+        <div class="card-header" (click)="openSpell(spell)">
+          <span class="name font-weight-bold">
+            {{spell.name | castleCase}} ({{spell.spellType | castleCase}})
+          </span>
+          <span class="font-weight-bold" *ngIf="spell.castAction === actionType.Deliberate">*</span>
+          <span class="font-weight-bold" *ngIf="spell.castAction === actionType.Move">-</span>
+          <span class="font-weight-bold" *ngIf="spell.castAction === actionType.Minor">#</span>
+
+          <button class="btn btn-sm spellButton float-right"
+                  [ngClass]="{'disabled': !isSubthemeSelected() ||
+                    numberOfSpellsToSelect === 0,
+                     'btn-success': isSpellSelected(spell),
+                     'btn-primary': !isSpellSelected(spell)
+                    }"
+                  [disabled]="!isSubthemeSelected()"
+                  (click)="selectSpell(spell)">
+            {{isSpellSelected(spell) ? 'Deselect' : 'Select'}} Spell
+          </button>
+        </div>
+        <div class="card-text spellWell" *ngIf="isSpellOpen(spell)">
+          <div id="keywordsHolder"
+               class="px-2"
+               *ngIf="spell.spellKeywords && spell.spellKeywords.length > 0 || spell.damageKeyword"
+          >
+            <label for="keywords" class="font-weight-bold">Keywords: </label>
+            <span id="keywords">{{spell.damageKeyword}}<span id="otherKeywords"
+                                                             *ngFor="let keyword of spell.spellKeywords">, {{keyword}}</span></span>
+          </div>
+          <div id="defenseTypeHolder" class="px-2" *ngIf="!!spell.defenseType && spell.defenseType.length > 0">
+            <label for="defenseType" class="font-weight-bold">Defense Type:</label>
+            <span id="defenseType" *ngFor="let defense of spell.defenseType; let index=index">{{defense.toString().trim()}}<span
+              *ngIf="index < spell.defenseType.length - 1">/</span></span>
+          </div>
+          <div id="aoeHolder" class="px-2" *ngIf="!!spell.areaOfEffect">
+            <label for="aoe" class="font-weight-bold">Area of Effect:</label>
+            <span id="aoe">{{getAOEString(spell)}}</span>
+          </div>
+          <div id="castActionHolder" class="px-2" *ngIf="!!spell.castAction">
+            <label for="castAction" class="font-weight-bold">Cast Action:</label>
+            <span id="castAction">{{getCastActionString(spell.castAction)}}</span>
+          </div>
+          <div id="durationHolder" class="px-2" *ngIf="!!spell.duration && spell.duration.length > 0">
+            <label for="duration" class="font-weight-bold">Duration:</label>
+            <span id="duration" *ngFor="let duration of spell.duration; let index=index">{{duration}}<span
+              *ngIf="index < spell.duration.length - 1">/</span></span>
+          </div>
+          <div id="critDieHolder" class="px-2" *ngIf="!!spell.critRoll">
+            <label for="critDie" class="font-weight-bold">Crit Die:</label>
+            <span id="critDie">{{spell.critRoll.printRoll()}}</span>
+          </div>
+          <div id="spellEffectHolder"
+               class="px-2"
+               *ngFor="let effect of spell.spellEffectText; let index=index"
+          >
+            <label class="font-weight-bold label{{index}}">{{effect.type | castleCase}}:</label><br>
+            <span class="spellEffect{{index}}">{{effect.text}}</span>
+            <table id="{{effect.type+index}}Table"
+                   class="table table-bordered"
+                   *ngFor="let chart of effect.spellChart; let chartIndex = index">
+              <tr>
+                <td *ngIf="chartIndex % 5 === 0">Level {{chartIndex+0}}-{{chartIndex+5}}<br>{{chart.rowName}}</td>
+                <td *ngIf="chartIndex % 6 === 1">{{getSpellRoll(chart.minValue, chart.maxValue, chart.dieSize, chart.levelRange)}}</td>
+              </tr>
+            </table>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

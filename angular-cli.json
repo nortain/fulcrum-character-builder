@@ -55,10 +55,12 @@
   },
   "defaults": {
     "styleExt": "css",
-    "component": {
-    }
+    "component": {}
   },
   "warnings": {
     "typescriptMismatch": false
+  },
+  "cli": {
+    "analytics": "27979926-8a12-4b4a-a006-21d1b26478ad"
   }
 }

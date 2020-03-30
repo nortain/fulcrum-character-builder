@@ -37,7 +37,7 @@ export class SpellSelectionComponent implements OnInit, OnChanges {
   /**
    * number of spells a character can select
    */
-  @Input() numberOfSpellsToSelect: number;
+  @Input() numberOfSpellsToSelect = 0;
   /**
    * This tells the component where it is getting it's spell data from
    */

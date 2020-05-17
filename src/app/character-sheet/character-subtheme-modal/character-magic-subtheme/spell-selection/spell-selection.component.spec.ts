@@ -86,11 +86,11 @@ fdescribe('SpellSelectionComponent', () => {
     component.openSpell(mockSpell());
     fixture.detectChanges();
     const keywords = fixture.debugElement.query(By.css("#keywordsHolder"));
-    expect(keywords.nativeElement.innerText).toBe("Keywords: " + mockSpell().damageKeyword + ", " + mockSpell().spellKeywords[0]);
+    expect(keywords.nativeElement.innerText).toBe("Keywords:" + mockSpell().damageKeyword + ", " + mockSpell().spellKeywords[0]);
   });
 
 
-  describe('', function () {
+  describe('mocking data coming back', function () {
 
 
     /*Same setup as above only now we open the spell and mock out the data coming back*/

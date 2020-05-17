@@ -21,7 +21,7 @@ export const NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS = 4;
 
 export const STARTING_MOVEMENT = 6;
 export const STARTING_INITIATIVE = 0;
-export const STARTING_HIT_POINTS = 8;
+export const STARTING_HIT_POINTS = 3;
 export const STARTING_RECOVERIES = 6;
 export const STARTING_THEME_POINTS = 4;
 

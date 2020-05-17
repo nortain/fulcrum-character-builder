@@ -1,35 +1,39 @@
-<form name="characterSheetForm">
+<form name="characterSheetForm" class="container-fluid">
   <div class="row">
     <fulcrum-input id="characterName" labelName="Name" class="col" [newLineLabelName]="true"
-                 [inputModel]="character.name" (outGoingModel)="character.name=$event"></fulcrum-input>
+                   [inputModel]="character.name" (outGoingModel)="character.name=$event"></fulcrum-input>
 
     <div class="col">
       <fulcrum-dropdown id="characterRace" labelName="Race" class="col" [newLineLabelName]="true" [values]="races"
-                      (valueChange)="startReloadWithRace($event.value)"></fulcrum-dropdown>
+                        (valueChange)="startReloadWithRace($event.value)"></fulcrum-dropdown>
 
       <fulcrum-dropdown *ngIf="character.raceType === RaceType.Primental" id="characterSubRace" labelName="Sub-Race"
-                      [values]="subraces" (valueChange)="updateSubRace($event.value)" class="col"></fulcrum-dropdown>
+                        [values]="subraces" (valueChange)="updateSubRace($event.value)" class="col"></fulcrum-dropdown>
     </div>
 
     <fulcrum-dropdown id="characterLevel" labelName="Level" class="col" [newLineLabelName]="true"
-                    [values]="levels" (valueChange)="startReloadWithLevel($event.value)"></fulcrum-dropdown>
+                      [values]="levels" (valueChange)="startReloadWithLevel($event.value)"></fulcrum-dropdown>
 
   </div>
 
   <div class="col">
     <div class="row">
-      <div class="col-5 col-md-3">
-        <div class="row">
-          <div class="col-9">
-            <label class="font-weight-bold col-12">Theme Points</label>
+      <div class="col-5">
+        <div class="card mb-1 pt-1 mr-2 mt-1 border-0">
+          <label class="font-weight-bold card-title">Theme Points</label>
+          <div class="card-body">
             <fulcrum-character-theme-points id="themePoints"
-                                          (emitter)="updateThemePoints($event)">
+                                            (emitter)="updateThemePoints($event)">
             </fulcrum-character-theme-points>
           </div>
-          <div class="col-3">
-            <button id="subthemesBtn" class="btn btn-sm btn-outline-secondary subthemesBtn" *ngIf="character.themePoints.getOtherThemePoints('general') > 0" (click)="launchSubthemesModal()">+ Subthemes</button>
-          </div>
         </div>
+      </div>
+
+      <div>
+        <button id="subthemesBtn" class="btn btn-sm btn-outline-secondary subthemesBtn"
+                *ngIf="character.themePoints.getOtherThemePoints('general') > 0" (click)="launchSubthemesModal()">+
+          Subthemes
+        </button>
       </div>
 
       <div class="col">
@@ -48,6 +52,8 @@
         <label class="font-weight-normal">{{character.vision}}</label>
       </div>
     </div>
+
+
     <div class="row">
       <div class="col border border-dark border-spacing">
         <label id="activeDefense" class="font-weight-bold">Active Defense: {{getActiveDefenseValue()}}</label>
@@ -69,8 +75,10 @@
       <div class="col border border-dark border-spacing">
         <label class="font-weight-bold" id="magicalDefense">Magic Defenses:</label>
         <div class="d-flex justify-content-center row">
-          <label id="fortitude" class="col font-weight-bold">Fort: {{getMagicDefensiveValue(MagicDefenseType.Fortitude)}}</label>
-          <label id="reflex" class="col font-weight-bold">Reflex: {{getMagicDefensiveValue(MagicDefenseType.Reflex)}}</label>
+          <label id="fortitude"
+                 class="col font-weight-bold">Fort: {{getMagicDefensiveValue(MagicDefenseType.Fortitude)}}</label>
+          <label id="reflex"
+                 class="col font-weight-bold">Reflex: {{getMagicDefensiveValue(MagicDefenseType.Reflex)}}</label>
           <label id="will" class="col font-weight-bold">Will: {{getMagicDefensiveValue(MagicDefenseType.Will)}}</label>
         </div>
       </div>
@@ -82,7 +90,7 @@
     More stuff here
   </div>
   <div class="col">
-    <div class="row d-flex clearfix rowPaddingAlongTop">
+    <div class="row d-flex rowPaddingAlongTop">
       <div class="col">
         <label class="font-weight-bold">Hit Points:</label>
         {{getHitPointsValue()}}

@@ -97,7 +97,7 @@ export class CharacterSheetComponent implements OnInit, OnChanges {
   getHitPointsValue(): number {
     let hp = STARTING_HIT_POINTS;
     const level = (this.character.level + 3);
-    const themeBonus = (8 + this.character.themePoints.combat.getStrength() * .5 + this.character.themePoints.stealth.getStrength() * .25);
+    const themeBonus = (5 + this.character.themePoints.combat.getStrength() * .5 + this.character.themePoints.stealth.getStrength() * .25);
     const attributes = +this.character.attributes.getBonus(AttributeBonus.HitPointBonus, this.character.level);
     const talentBonusHp = 0; // TODO add talents
     hp += Math.floor(level * themeBonus);

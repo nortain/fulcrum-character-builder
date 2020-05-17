@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-12">
-    <label class="font-weight-bold">{{propertyName}}: </label>
+    <label class="font-weight-bold pr-1">{{propertyName}}:  </label>
     <button id="displaySpellButton" class="btn btn-outline-primary btn-sm" (click)="displaySpells()">
       {{selectionDisplayToggle ? 'Hide' :
       'Show'}} {{propertyName}}
     </button>
     <div class="selectedSpellDisplay float-right row" *ngIf="selectedSpells.length > 0">
-      <label class="font-weight-bold col">Selected {{selectedSpells.length === 1 ? propertyName : propertyName+'s'}}:
+      <label class="font-weight-bold col">Selected {{selectedSpells.length === 1 ? propertyName : propertyName + 's'}}:
       </label>
       <div class="btn-sm bg-success" *ngFor="let selectDisplaySpell of selectedSpells">
         {{selectDisplaySpell.name | castleCase}}
@@ -40,13 +40,14 @@
                class="px-2"
                *ngIf="spell.spellKeywords && spell.spellKeywords.length > 0 || spell.damageKeyword"
           >
-            <label for="keywords" class="font-weight-bold">Keywords: </label>
+            <label for="keywords" class="font-weight-bold pr-1">Keywords: </label>
             <span id="keywords">{{spell.damageKeyword}}<span id="otherKeywords"
                                                              *ngFor="let keyword of spell.spellKeywords">, {{keyword}}</span></span>
           </div>
           <div id="defenseTypeHolder" class="px-2" *ngIf="!!spell.defenseType && spell.defenseType.length > 0">
             <label for="defenseType" class="font-weight-bold">Defense Type:</label>
-            <span id="defenseType" *ngFor="let defense of spell.defenseType; let index=index">{{defense.toString().trim()}}<span
+            <span id="defenseType"
+                  *ngFor="let defense of spell.defenseType; let index=index">{{defense.toString().trim()}}<span
               *ngIf="index < spell.defenseType.length - 1">/</span></span>
           </div>
           <div id="aoeHolder" class="px-2" *ngIf="!!spell.areaOfEffect">
@@ -76,8 +77,9 @@
                    class="table table-bordered"
                    *ngFor="let chart of effect.spellChart; let chartIndex = index">
               <tr>
-                <td *ngIf="chartIndex % 5 === 0">Level {{chartIndex+0}}-{{chartIndex+5}}<br>{{chart.rowName}}</td>
-                <td *ngIf="chartIndex % 6 === 1">{{getSpellRoll(chart.minValue, chart.maxValue, chart.dieSize, chart.levelRange)}}</td>
+                <td *ngIf="chartIndex % 5 === 0">Level {{chartIndex + 0}}-{{chartIndex + 5}}<br>{{chart.rowName}}</td>
+                <td
+                  *ngIf="chartIndex % 6 === 1">{{getSpellRoll(chart.minValue, chart.maxValue, chart.dieSize, chart.levelRange)}}</td>
               </tr>
             </table>
           </div>

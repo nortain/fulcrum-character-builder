@@ -1,36 +1,37 @@
 <div class="row">
-  <fulcrum-dropdown class="col-3"
-                  id="combat"
-                  labelName="Combat"
-                  [newLineLabelName]="true"
-                  [values]="getDropdownValues('combat')"
-                  (valueChange)="updateThemePoints('combat', $event.value)">
+  <fulcrum-dropdown class="col p-0"
+                    id="combat"
+                    labelName="Combat"
+                    [newLineLabelName]="true"
+                    [values]="getDropdownValues('combat')"
+                    (valueChange)="updateThemePoints('combat', $event.value)">
 
   </fulcrum-dropdown>
-  <fulcrum-dropdown class="col-3"
-                  id="stealth"
-                  labelName="Stealth"
-                  [newLineLabelName]="true"
-                  [values]="getDropdownValues('stealth')"
-                  (valueChange)="updateThemePoints('stealth', $event.value)">
+  <fulcrum-dropdown class="col p-0"
+                    id="stealth"
+                    labelName="Stealth"
+                    [newLineLabelName]="true"
+                    [values]="getDropdownValues('stealth')"
+                    (valueChange)="updateThemePoints('stealth', $event.value)">
 
   </fulcrum-dropdown>
-  <fulcrum-dropdown class="col-3"
-                  id="magic"
-                  labelName="Magic"
-                  [newLineLabelName]="true"
-                  [values]="getDropdownValues('magic')"
-                  (valueChange)="updateThemePoints('magic', $event.value)">
+  <fulcrum-dropdown class="col p-0"
+                    id="magic"
+                    labelName="Magic"
+                    [newLineLabelName]="true"
+                    [values]="getDropdownValues('magic')"
+                    (valueChange)="updateThemePoints('magic', $event.value)">
 
   </fulcrum-dropdown>
-  <fulcrum-dropdown class="col-3"
-                  id="general"
-                  labelName="General"
-                  [newLineLabelName]="true"
-                  [values]="getDropdownValues('general', true)"
-                  (valueChange)="updateThemePoints('general', $event.value)">
+  <fulcrum-dropdown class="col p-0"
+                    id="general"
+                    labelName="General"
+                    [newLineLabelName]="true"
+                    [values]="getDropdownValues('general', true)"
+                    (valueChange)="updateThemePoints('general', $event.value)">
 
   </fulcrum-dropdown>
-  <label id="themePointsRemaining" class="col-auto">Remaining Theme Points {{4 - getRemainingThemePoints()}} of 4</label>
+  <label id="themePointsRemaining" class="col-auto">Remaining Theme Points {{4 - getRemainingThemePoints()}} of
+    4</label>
 </div>
 

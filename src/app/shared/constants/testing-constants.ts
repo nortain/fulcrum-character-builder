@@ -83,7 +83,7 @@ export function actionClickDropdownItemX(fixture: ComponentFixture<any>, selecto
 export function actionGetDropdownValue(fixture: ComponentFixture<any>, selector: string) {
   const dropdown = fixture.debugElement.query(By.css(selector));
   const dropdownBtn = dropdown.query(By.css("button")).nativeElement;
-  return dropdownBtn.innerText;
+  return dropdownBtn.innerText.trim();
 }
 
 export function mockAreaOfEffect(): AreaOfEffect {

@@ -105,19 +105,19 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('should be able to get hit points for a character', () => {
-    expect(component.getHitPointsValue()).toEqual(40);
+    expect(component.getHitPointsValue()).toEqual(23);
   });
 
   it('should be able to get hit points for a character with ranks in theme points', () => {
     component.character.themePoints.combat.setStrength(ThemeStrength.Lesser);
-    expect(component.getHitPointsValue()).toEqual(44);
+    expect(component.getHitPointsValue()).toEqual(27);
     component.character.themePoints.stealth.setStrength(ThemeStrength.Minor);
-    expect(component.getHitPointsValue()).toEqual(45);
+    expect(component.getHitPointsValue()).toEqual(28);
   });
 
   it('should be able to get hit points when a character has ranks in attributes', () => {
     component.character.attributes.Vitality.strength = AttributeStrength.Champion;
-    expect(component.getHitPointsValue()).toEqual(48);
+    expect(component.getHitPointsValue()).toEqual(31);
     component.character.attributes.Vitality.strength = AttributeStrength.Legendary;
     expect(component.getHitPointsValue()).toEqual(52);
     component.character.attributes.SelfDiscipline.strength = AttributeStrength.Heroic;
@@ -131,22 +131,21 @@ describe('CharacterSheetComponent', () => {
 
   it('should be able to get hit points when characters gain levels', () => {
     component.character.level = Level.Three;
-    expect(component.getHitPointsValue()).toEqual(56);
+    expect(component.getHitPointsValue()).toEqual(44);
     component.character.level = Level.Seven;
-    expect(component.getHitPointsValue()).toEqual(88);
+    expect(component.getHitPointsValue()).toEqual(53);
     component.character.level = Level.Ten;
-    expect(component.getHitPointsValue()).toEqual(112
-    );
+    expect(component.getHitPointsValue()).toEqual(68);
   });
 
   it('should be able to get hit points when a character has theme points and levels', () => {
     component.character.themePoints.combat.setStrength(ThemeStrength.Lesser);
     component.character.level = Level.Four;
-    expect(component.getHitPointsValue()).toEqual(71);
+    expect(component.getHitPointsValue()).toEqual(45);
     component.character.themePoints.stealth.setStrength(ThemeStrength.Lesser);
-    expect(component.getHitPointsValue()).toEqual(74);
+    expect(component.getHitPointsValue()).toEqual(48);
     component.character.level = Level.Six;
-    expect(component.getHitPointsValue()).toEqual(93);
+    expect(component.getHitPointsValue()).toEqual(61);
   });
 
   it('should be able to get hit points when a character has theme points, levels and attributes', () => {

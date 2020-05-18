@@ -11,7 +11,7 @@ import {By} from "@angular/platform-browser";
 
 import {Spell} from "../../../../shared/spells/spell";
 
-fdescribe('SpellSelectionComponent', () => {
+describe('SpellSelectionComponent', () => {
   let component: SpellSelectionComponent;
   let fixture: ComponentFixture<SpellSelectionComponent>;
 

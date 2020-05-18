@@ -33,20 +33,21 @@ describe('Weapon', () => {
     expect(dagger.baseValues.specialText).toBe("");
     expect(spear.baseValues.specialText).toBe("");
     expect(crossbow.baseValues.specialText).toBe(BASE_WEAPON_DAMAGE.Simple[WeaponClass.Ranged].specialText);
-
-    it('should be able to get critical for the weapon', () => {
-      expect(axe.baseValues.critical.printRoll()).toBe("1d10+1");
-      expect(dagger.baseValues.critical.printRoll()).toBe("1d8+1");
-      expect(spear.baseValues.critical.printRoll()).toBe("1d8+1");
-      expect(crossbow.baseValues.critical.printRoll()).toBe("1d8");
-    });
-
-    it('should be able to get range for weapons that have it', () => {
-      expect(axe.baseValues.range.length).toEqual(0);
-      expect(dagger.baseValues.range.length).toEqual(3);
-      expect(spear.baseValues.range).toEqual(BASE_WEAPON_DAMAGE.Balanced.Polearm.range);
-      expect(crossbow.baseValues.range).toEqual(BASE_WEAPON_DAMAGE.Simple.Ranged.range);
-    });
-
   });
+
+  it('should be able to get critical for the weapon', () => {
+    expect(axe.baseValues.critical.printRoll()).toBe("1d10+1");
+    expect(dagger.baseValues.critical.printRoll()).toBe("1d8+1");
+    expect(spear.baseValues.critical.printRoll()).toBe("1d8+1");
+    expect(crossbow.baseValues.critical.printRoll()).toBe("1d8");
+  });
+
+  it('should be able to get range for weapons that have it', () => {
+    expect(axe.baseValues.range.length).toEqual(0);
+    expect(dagger.baseValues.range.length).toEqual(3);
+    expect(spear.baseValues.range).toEqual(BASE_WEAPON_DAMAGE.Balanced.Polearm.range);
+    expect(crossbow.baseValues.range).toEqual(BASE_WEAPON_DAMAGE.Simple.Ranged.range);
+  });
+
+
 });

@@ -18,22 +18,15 @@ export class DiceService {
   }
 
   getDieStatic(diceSize: DiceSize): number {
-    switch (diceSize) {
-      case DiceSize.d6:
-        return 5;
-      case DiceSize.d8:
-        return 6;
-      case DiceSize.d10:
-        return 7;
-      case DiceSize.d12:
-        return 8;
-      default:
-        return 1;
+    if (diceSize === DiceSize.None) {
+      return 1;
+    } else {
+      return parseFloat((this.getDieAverage(diceSize) * .3).toFixed(3));
     }
   }
 
   /**
-   * gets the number of dice needed for a particular spell
+   * gets the number of dice needed for a particular damage value
    * @param {DiceSize} diceSize
    * @param {number} modifier
    * @param {number} damage
@@ -47,9 +40,10 @@ export class DiceService {
     if (damage < 1) {
       return null;
     } else if (damage < dieAverage) {
-      return new Dice(0, DiceSize.None, damage);
+
+      return new Dice(0, DiceSize.None, Math.round(damage));
     } else if (diceSize === DiceSize.None) {
-      return new Dice(0, DiceSize.None, damage);
+      return new Dice(0, DiceSize.None, Math.round(damage));
     }
     do {
       damage -= dieAverage;
@@ -58,7 +52,7 @@ export class DiceService {
       totalModifierValue += modifier;
     } while (damage >= dieAverage && numOfDice < 9);
     totalModifierValue += damage;
-    return new Dice(numOfDice, diceSize, totalModifierValue);
+    return new Dice(numOfDice, diceSize, Math.round(parseFloat(totalModifierValue.toFixed(2))));
   }
 
   /**
@@ -77,8 +71,27 @@ export class DiceService {
 
   // getMap
 
-  getDiceArray(minDamage: number, maxDamage: number, maxLevel: LevelRange) {
-
+  /**
+   *
+   * @param minDamage
+   * @param maxDamage
+   * @param maxLevel
+   * @param dieSize
+   */
+  getDiceArrayFromDamageRange(minDamage: number, maxDamage: number, maxLevel: LevelRange, dieSize = DiceSize.None): Dice[] {
+    if (maxLevel || maxDamage < minDamage) {
+      const damageArray = [];
+      const numberOfLevelsToGain = maxLevel - 1;
+      minDamage = Math.floor(minDamage + this.getRemainder(dieSize, 0, minDamage) / 2);
+      maxDamage = Math.floor(maxDamage + this.getRemainder(dieSize, 0, maxDamage) / 2);
+      const damageAverage = (maxDamage - minDamage) / numberOfLevelsToGain;
+      for (let i = 0; i < maxLevel; i++) {
+        const damageAtLevelI = minDamage + i * damageAverage;
+        damageArray.push(this.getNumOfDice(dieSize, 0, damageAtLevelI));
+      }
+      return damageArray;
+    }
+    return null;
   }
 
 }

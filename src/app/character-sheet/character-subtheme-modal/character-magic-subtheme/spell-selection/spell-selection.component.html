@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-12">
-    <label class="font-weight-bold pr-1">{{propertyName}}:  </label>
+    <label class="font-weight-bold pr-1">{{propertyName}}: </label>
     <button id="displaySpellButton" class="btn btn-outline-primary btn-sm" (click)="displaySpells()">
       {{selectionDisplayToggle ? 'Hide' :
       'Show'}} {{propertyName}}
@@ -47,7 +47,8 @@
           <div id="defenseTypeHolder" class="px-2" *ngIf="!!spell.defenseType && spell.defenseType.length > 0">
             <label for="defenseType" class="font-weight-bold">Defense Type:</label>
             <span id="defenseType"
-                  *ngFor="let defense of spell.defenseType; let index=index">{{defense.toString().trim()}}<span
+                  *ngFor="let defense of spell.defenseType; let index=index"><span
+              *ngIf="index < 1">&nbsp;</span>{{defense.toString().trim()}}<span
               *ngIf="index < spell.defenseType.length - 1">/</span></span>
           </div>
           <div id="aoeHolder" class="px-2" *ngIf="!!spell.areaOfEffect">
@@ -60,7 +61,8 @@
           </div>
           <div id="durationHolder" class="px-2" *ngIf="!!spell.duration && spell.duration.length > 0">
             <label for="duration" class="font-weight-bold">Duration:</label>
-            <span id="duration" *ngFor="let duration of spell.duration; let index=index">{{duration}}<span
+            <span id="duration" *ngFor="let duration of spell.duration; let index=index"><span
+              *ngIf="index < 1">&nbsp;</span>{{duration}}<span
               *ngIf="index < spell.duration.length - 1">/</span></span>
           </div>
           <div id="critDieHolder" class="px-2" *ngIf="!!spell.critRoll">

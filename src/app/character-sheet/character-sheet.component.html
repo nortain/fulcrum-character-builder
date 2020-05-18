@@ -23,7 +23,7 @@
         <div class="col-7">
           <div class="card border-0">
             <label class="font-weight-bold card-title">Theme Points</label>
-            <div class="card-body pt-2">
+            <div class="card-body pt-2 pb-1">
               <fulcrum-character-theme-points id="themePoints"
                                               (emitter)="updateThemePoints($event)">
               </fulcrum-character-theme-points>
@@ -47,29 +47,45 @@
           </div>
         </div>
       </div>
+      <!--HP Row-->
       <div class="row">
         <div class="card col border-0">
-          <label class="card-title font-weight-bold p-0">Hit Points:</label>
+          <label class="card-title font-weight-bold mb-1 p-0">Hit Points</label>
           <div class="card-body p-0">
             {{getHitPointsValue()}}
           </div>
         </div>
         <div class="card col border-0">
-          <label class="card-title font-weight-bold p-0">Bloodied Value:</label>
+          <label class="card-title font-weight-bold mb-1 p-0">Bloodied Value</label>
           <div class="card-body p-0">
             {{getBloodiedValue()}}
           </div>
         </div>
         <div class="card col border-0">
-          <label class="card-title font-weight-bold p-0">Recovery (I/O):</label>
+          <label class="card-title font-weight-bold mb-1 p-0">Recovery Points</label>
           <div class="card-body p-0">
-            {{getRecoveryValue()}} / {{getOutofCombatRecoveryValue()}}
+            {{getRecoveries()}}
+          </div>
+        </div>
+      </div>
+      <!--Points Row-->
+      <div class="row">
+        <div class="card col border-0">
+          <label class="card-title font-weight-bold mb-1 p-0">Power Points</label>
+          <div class="card-body p-0">
+            {{getPowerPoints()}}
           </div>
         </div>
         <div class="card col border-0">
-          <label class="card-title font-weight-bold p-0">Crit Reduction:</label>
+          <label class="card-title font-weight-bold mb-1 p-0">Adrenaline Pts</label>
           <div class="card-body p-0">
-            {{getCriticalReductionValue()}}
+            {{getAdrenalinePoints()}}
+          </div>
+        </div>
+        <div class="card col border-0">
+          <label class="card-title font-weight-bold mb-1 p-0">Recovery (I/O)</label>
+          <div class="card-body p-0">
+            {{getRecoveryValue()}} / {{getOutofCombatRecoveryValue()}}
           </div>
         </div>
       </div>
@@ -109,7 +125,8 @@
           <div class="body">
             <div class="row">
               <div class="col border border-dark">
-                <label id="activeDefense" class="font-weight-bold">Active: {{getActiveDefenseValue()}}</label>
+                <label id="activeDefense" class="font-weight-bold">Active </label>
+                {{getActiveDefenseValue()}}
                 <div class="d-flex row">
                   <label *ngFor="let defense of character.physicalDefense.activeDefenses"
                          class="activeList col">{{defense}}</label>
@@ -117,7 +134,7 @@
               </div>
 
               <div class="col border border-left-0 border-dark">
-                <label class="font-weight-bold" id="passiveDefense">Passive: {{getPassiveDefenseValue()}}</label>
+                <label class="font-weight-bold" id="passiveDefense">Passive</label> {{getPassiveDefenseValue()}}
                 <div class="d-flex row">
                   <label *ngFor="let defense of character.physicalDefense.passiveDefenses; let index = index"
                          class="passiveList col p-0 mr-1">{{defense}}
@@ -129,13 +146,37 @@
 
             <div class="row">
               <div class="col border border-top-0 border-dark">
-                <div class="d-flex justify-content-center row">
-                  <label id="fortitude"
-                         class="col font-weight-bold">Fortitude: {{getMagicDefensiveValue(MagicDefenseType.Fortitude)}}</label>
-                  <label id="reflex"
-                         class="col font-weight-bold">Reflex: {{getMagicDefensiveValue(MagicDefenseType.Reflex)}}</label>
-                  <label id="will"
-                         class="col font-weight-bold">Will: {{getMagicDefensiveValue(MagicDefenseType.Will)}}</label>
+                <div class="d-flex justify-content-center row pl-0 pr-0 pb-2">
+
+                  <div class="col">
+                    <div class="card border-0">
+                      <label id="fortitude"
+                             class="card-title mb-1 font-weight-bold">Fortitude</label>
+                      <div class="body">
+                        {{getMagicDefensiveValue(MagicDefenseType.Fortitude)}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card border-0">
+                      <label id="reflex"
+                             class="card-title mb-1 font-weight-bold">Reflex</label>
+                      <div class="body">
+                        {{getMagicDefensiveValue(MagicDefenseType.Reflex)}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card border-0">
+                      <label id="will"
+                             class="card-title mb-1 font-weight-bold">Will </label>
+                      <div class="body">
+                        {{getMagicDefensiveValue(MagicDefenseType.Will)}}
+                      </div>
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
             </div>
@@ -148,49 +189,43 @@
   </div>
   <!--End of the second row-->
 
+  <div class="row">
 
-  <div class="col-3 float-right border-spacing magicResistancesBorder">
-    <label class="font-weight-bold">Magic Resistance (Prim/Sec):</label><br>
-    {{getPrimaryMagicResistanceValue()}}/{{getSecondaryMagicRestanceValue()}}
-    More stuff here
-  </div>
-  <div class="col">
-
-  </div>
-  <div class="col">
-    <div class="row d-flex">
-      <div class="col">
-        <label class="font-weight-bold">Power Points:</label>
-        {{getPowerPoints()}}
-      </div>
-      <div class="col">
-        <label class="font-weight-bold">Adrenaline Points:</label>
-        {{getAdrenalinePoints()}}
-      </div>
-      <div class="col">
-        <label class="font-weight-bold">Recovery Points:</label>
-        {{getRecoveries()}}
-      </div>
-      <div class="col">
-        <label class="font-weight-bold">Auras:</label>
+    <div class="card col border-0">
+      <label class="card-title font-weight-bold mb-1 p-0">Auras</label>
+      <div class="card-body p-0">
         {{getAuras()}}
       </div>
+    </div>
 
+    <div class="card col border-0">
+      <label class="card-title font-weight-bold mb-1 p-0">Critical Resistance</label>
+      <div class="card-body p-0">
+        {{getCriticalReductionValue()}}
+      </div>
+    </div>
+    <div class="card col border-0">
+      <label class="card-title font-weight-bold mb-1 p-0">Magic Resistance (Prim/Sec)</label><br>
+      <div class="card-body p-0">
+        {{getPrimaryMagicResistanceValue()}}/{{getSecondaryMagicRestanceValue()}}
+        More stuff here
+      </div>
     </div>
 
   </div>
 
+
   <div class="col-auto">
     <div class="row">
       <div class="col-12">
-        Brawn: {{character.attributes.Brawn.strength}}
-        Vitality: {{character.attributes.Vitality.strength}}
-        Quickness: {{character.attributes.Quickness.strength}}
-        Agility: {{character.attributes.Agility.strength}}
-        Reasoning: {{character.attributes.Reasoning.strength}}
-        Presence: {{character.attributes.Presence.strength}}
-        Self Discipline: {{character.attributes.SelfDiscipline.strength}}
-        Intuition: {{character.attributes.Intuition.strength}}
+        Brawn {{character.attributes.Brawn.strength}}
+        Vitality {{character.attributes.Vitality.strength}}
+        Quickness {{character.attributes.Quickness.strength}}
+        Agility {{character.attributes.Agility.strength}}
+        Reasoning {{character.attributes.Reasoning.strength}}
+        Presence {{character.attributes.Presence.strength}}
+        Self Discipline {{character.attributes.SelfDiscipline.strength}}
+        Intuition {{character.attributes.Intuition.strength}}
       </div>
     </div>
   </div>

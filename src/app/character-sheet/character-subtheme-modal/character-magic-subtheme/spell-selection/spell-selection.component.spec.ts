@@ -109,7 +109,7 @@ fdescribe('SpellSelectionComponent', () => {
 
     it('should be able to show defense type', () => {
       const defenseType = fixture.debugElement.query(By.css("#defenseTypeHolder"));
-      expect(defenseType.nativeElement.innerText).toBe("Defense Type: " + mockSpell().defenseType[0] + "/" + mockSpell().defenseType[1]);
+      expect(defenseType.nativeElement.innerText).toBe("Defense Type: " + mockSpell().defenseType[0] + "/" + mockSpell().defenseType[1]);
     });
 
     it('should be able to show area of effect', () => {
@@ -125,7 +125,7 @@ fdescribe('SpellSelectionComponent', () => {
 
     it('should be able to display duration', () => {
       const duration = fixture.debugElement.query(By.css("#durationHolder"));
-      expect(duration.nativeElement.innerText).toBe("Duration: Immediate/Encounter");
+      expect(duration.nativeElement.innerText).toBe("Duration: Immediate/Encounter");
     });
 
     it('should be able to display crit die as a roll', () => {

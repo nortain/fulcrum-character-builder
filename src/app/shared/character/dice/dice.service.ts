@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {DiceSize} from "./dice-size.enum";
 import {Dice} from "./dice";
+import {LevelRange} from "../../spells/enums/level-range.enum";
 
 @Injectable()
 export class DiceService {
@@ -75,5 +76,9 @@ export class DiceService {
   }
 
   // getMap
+
+  getDiceArray(minDamage: number, maxDamage: number, maxLevel: LevelRange) {
+
+  }
 
 }

@@ -54,7 +54,7 @@ export class Character extends Race {
     let attributeBonus = 0;
     if (this.weapons[index].baseValues.category === WeaponCategory.Balanced) {
       attributeBonus = this.attributes.getBonus(AttributeBonus.SecondaryDamage);
-    } else if (this.weapons[index].baseValues.category !== WeaponCategory.Simple) {
+    } else {
       attributeBonus = this.attributes.getBonus(AttributeBonus.PrimaryDamage);
     }
     this.weapons[0].baseValues.damage.modifierOfDice.addVal['attributes'] = attributeBonus;

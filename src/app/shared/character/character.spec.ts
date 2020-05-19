@@ -64,8 +64,6 @@ describe('Character', () => {
     expect(bob.getWeaponDamage(0)).toBe("2d6+3", "unarmed weapon");
     bob.attributes.Brawn.strength = AttributeStrength.Champion;
     expect(bob.getWeaponDamage(0)).toBe("2d6+7", "unarmed with some brawn");
-    bob.weapons[0] = new Weapon("Crossbow", WeaponClass.Ranged, WeaponCategory.Simple);
-    expect(bob.getWeaponDamage(0)).toBe("2d6+2", "with a simple ranged weapon");
   });
 
   it('should be able to assign attribute points to a character and follow valid attribute point logic', function () {

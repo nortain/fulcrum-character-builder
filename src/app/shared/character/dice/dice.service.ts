@@ -3,7 +3,9 @@ import {DiceSize} from "./dice-size.enum";
 import {Dice} from "./dice";
 import {LevelRange} from "../../spells/enums/level-range.enum";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DiceService {
 
   constructor() {

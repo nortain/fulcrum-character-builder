@@ -15,6 +15,8 @@ import {Bonus} from "../character/bonus";
 import {MagentSpellList, SpellWardenSpellList} from "./spells/minor-spell-constants";
 import {Spell} from "../spells/spell";
 import {AssassinSpellList, ClericSpellList, DruidSpellList, WarriorMageSpellList} from "./spells/lesser-spell-constants";
+import {AttributeModel} from "./attribute-constants/attribute-model";
+import {AttributeType} from "../attribute/attribute-type.enum";
 
 
 export const NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS = 4;
@@ -53,19 +55,13 @@ export const SD_PP_BONUS = [0, 2, 3, 3, 4];
 export const QU_INIT_BONUS = [0, 5, 8, 9, 10];
 export const IN_INIT_BONUS = [0, 2, 4, 6, 8];
 export const TRAINED_SKILL_BONUS = [0, 0, 1, 1, 2];
-// Attribute constants based off of Level constant and AttributeStrength enum
-export const VI_HP_BONUS = [
-  [0, 0, 0, 0, 0], // should never happen cause there is no level 0 but done to keep level 1 - 10 rather than 0-9 as an index
-  [0, 5, 8, 10, 12],
-  [0, 6, 10, 12, 14],
-  [0, 7, 11, 14, 17],
-  [0, 8, 13, 16, 20],
-  [0, 9, 15, 19, 22],
-  [0, 10, 17, 21, 25],
-  [0, 11, 18, 23, 28],
-  [0, 13, 12, 25, 30],
-  [0, 14, 22, 28, 33],
-  [0, 15, 24, 30, 36]
+// AttributeStrength enum min and max bonus values based on strength
+export const VITALITY_HP_BONUS = [
+  [0, 0],
+  [4, 10],
+  [8, 20],
+  [10, 25],
+  [14, 35]
 ];
 export const QU_HP_BONUS = [
   [0, 0, 0, 0, 0], // should never happen cause there is no level 0 but done to keep level 1 - 10 rather than 0-9 as an index

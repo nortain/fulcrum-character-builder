@@ -17,7 +17,8 @@ export enum SpellKeywords {
   Wall = "Wall",
   Summoning = "Summoning",
   Weapon = "Weapon",
-  Implement = "Implement"
+  Implement = "Implement",
+  Environment = "Environment"
 
 
 }

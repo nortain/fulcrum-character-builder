@@ -1,6 +1,5 @@
-import {DiceService} from "../character/dice/dice.service";
 import {Injectable} from '@angular/core';
-
+import {DiceService} from "../character/dice/dice.service";
 import {AttributeName} from "./attribute-name.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";

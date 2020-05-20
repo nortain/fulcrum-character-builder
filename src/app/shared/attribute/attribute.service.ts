@@ -3,7 +3,9 @@ import {DropdownValueObject} from "../ui/dropdown/dropdown-value-object";
 import {Level} from "../character/level.enum";
 import {ThemeStrength} from "../theme-points/theme-strength.enum";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AttributeService {
 
   constructor() {

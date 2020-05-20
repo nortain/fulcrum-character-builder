@@ -9,7 +9,6 @@ describe('Weapon', () => {
     axe = new Weapon("axe", WeaponClass.Melee2h, WeaponCategory.Heavy);
     dagger = new Weapon("dagger", WeaponClass.Thrown, WeaponCategory.Agile);
     spear = new Weapon("spear", WeaponClass.Polearm, WeaponCategory.Balanced);
-    crossbow = new Weapon("crossbow", WeaponClass.Ranged, WeaponCategory.Simple);
   });
 
   it('should create an instance', () => {

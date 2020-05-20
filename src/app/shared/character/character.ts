@@ -7,7 +7,6 @@ import {Level} from "./level.enum";
 import {RacialSubType} from "./race/racial-sub-type.enum";
 import {ThemePointsContainer} from "../theme-points/theme-points-container";
 import {AttributeType} from "../attribute/attribute-type.enum";
-import {StartingCharacterAttributes} from "../attribute/character-attribute/starting-character-attributes";
 import {AttributeBonus} from "../attribute/character-attribute/attribute-bonus.enum";
 import {WeaponClass} from "../weapon/weapon-class.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
@@ -27,7 +26,7 @@ export class Character extends Race {
               public physicalDefense = new PhysicalDefense(),
               public weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
               public magicDefense = new StartingCharacterMagicDefense(),
-              public attributes = new StartingCharacterAttributes()) {
+              public attributes: any = {}) { // TODO find a new way to build attributes and put them here
     super(raceType, level, subRace);
     for (const attribute of this.attributes.attributesArray) {
       this.assignAttributePoint(attribute.strength, attribute.getName());

@@ -5,4 +5,8 @@ export enum WeaponCategory {
   Agile = "Agile",
   Balanced = "Balanced",
   Heavy = "Heavy",
+  Presence = "Presence",
+  Hybrid = "Hybrid",
+  Reasoning = "Reasoning"
 }
+

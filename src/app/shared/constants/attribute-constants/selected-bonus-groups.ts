@@ -3,6 +3,22 @@ import {AttributeStrength} from "../../attribute/attribute-strength.enum";
 import {AttributeType} from "../../attribute/attribute-type.enum";
 import {AttributeName} from "../../attribute/attribute-name.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
+import {ValueRange} from "./attribute-constants";
+
+
+export class CriticalAndEmpoweredBonus {
+  bonusToCritical: ValueRange;
+  bonusToEmpowered: ValueRange;
+  maxPicks: number;
+  pickValue: number;
+}
+
+export class AttributeBonus {
+  bonusTo: ValueRange;
+  maxPicks: number;
+  pickValue: number;
+}
+
 
 export class PresenceAttributePicks {
   requiredHybridAttributeStrength: Array<{
@@ -16,8 +32,8 @@ export class PresenceAttributePicks {
     bonusToHitWithEnvironmentAttacks: {
       maxPicks: number, bonusToHit: number, keyword: SpellKeywords
     };
-    convertAttackDamageIntoGlobal: { maxPicks: number, minBonus: number, maxBonus: number };
-    bonusToGlobalDamageAndPenaltyToCrit: { maxPicks: number, pickValue: number, minBonus: number, maxBonus: number };
+    convertAttackDamageIntoGlobal: AttributeBonus;
+    bonusToGlobalDamageAndPenaltyToCritical: AttributeBonus;
   };
 }
 
@@ -28,11 +44,9 @@ export class ReasoningAttributePicks {
     numberOfPicks: number;
   }>;
   selections: {
-    bonusToCrit: { minBonus: number, maxBonus: number };
-    bonusToEmpowered: { minBonus: number, maxBonus: number };
-    bonusToEmpoweredAndCrit: {
-      minBonusToCrit: number, maxBonusToCrit: number, minEmpoweredBonus: number, maxEmpoweredBonus: number
-    };
+    bonusToCritical: ValueRange;
+    bonusToEmpowered: ValueRange;
+    bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
   };
 }
 
@@ -43,15 +57,16 @@ export class BrawnAttributePicks {
     numberOfPicks: number;
   }>;
   selections: {
-    bonusToCriticalAndAggressivePress: { minBonus: number, maxBonus: number, pressText: string };
+    bonusToCriticalAndAggressivePress: { criticalBonus: ValueRange, maxPicks: number, pressText: string };
     bonusToEmpoweredAndAggressivePress: {
-      pickValue: number, minBonus: number, maxBonus: number, pressText: string
+      empoweredBonus: ValueRange,
+      maxPicks: number,
+      pressText: string,
+      pickValue: number
     };
-    bonusToEmpowered: { pickValue: number, minBonus: number, maxBonus: number };
-    bonusToProtectorAura: { minBonus: number, maxBonus: number };
-    bonusToEmpoweredAndCrit: {
-      minEmpoweredBonus: number, minBonusToCrit: number, maxEmpoweredBonus: number, maxBonusToCrit: number
-    };
+    bonusToEmpowered: AttributeBonus;
+    bonusToProtectorAura: ValueRange;
+    bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
   };
 
 }
@@ -59,14 +74,15 @@ export class BrawnAttributePicks {
 export class AgilityAttributePicks {
   requiredHybridAttributeStrength: Array<{
     category: WeaponCategory,
-    attributeStrength: AttributeStrength, attributeName: AttributeName,
+    attributeStrength: AttributeStrength,
+    attributeName: AttributeName,
     numberOfPicks: number;
   }>;
   selections: {
-    bonusToCrit: { minBonus: number, maxBonus: number };
-    bonusToSpeedAndCrit: { maxPicks: number, bonusToSpeed: number, minBonusToCrit: number, maxBonusToCrit: number };
-    bonusToDualist: { minBonus: number, maxBonus: number };
-    bonusToFindWeakness: { minBonus: number, maxBonus: number };
+    bonusToCritical: ValueRange;
+    bonusToSpeedAndCritical: { maxPicks: number, bonusToSpeed: number, bonusToCritical: ValueRange};
+    bonusToDualist: ValueRange;
+    bonusToFindWeakness: ValueRange;
   };
 }
 

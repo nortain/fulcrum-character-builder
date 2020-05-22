@@ -5,6 +5,7 @@ import {AttributeStrength} from "./attribute-strength.enum";
 import {AttributeModel} from "./attribute-model";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";
+import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 
 
 fdescribe('AttributeFactoryService', () => {
@@ -44,40 +45,46 @@ fdescribe('AttributeFactoryService', () => {
   });
 
   it('should have strength 0 by default', () => {
-    expect(bra.attributeStrength).toEqual(AttributeStrength.Normal);
+    const testAttribute = service.getNewAttribute(AttributeName.Presence);
+    expect(testAttribute.attributeStrength).toEqual(AttributeStrength.Normal);
   });
 
-  // it('should confirm that certain attributes give a skill bonus while others do not', () => {
-  //   const vitality = makeAttribute(AttributeName.Vitality, AttributeStrength.Legendary);
-  //   expect(vitality.hasSkillBonus()).toBeFalsy();
-  // });
+  it('should confirm that certain attributes give a skill bonus while others do not', () => {
+    expect(service.getSkillBonus(bra, AttributeName.Brawn)).toEqual(5);
+    expect(service.getSkillBonus(qu, AttributeName.Quickness)).toEqual(0);
+    expect(service.getSkillBonus(bra, AttributeName.Agility)).toEqual(0);
+    expect(service.getSkillBonus(int, AttributeName.Reasoning)).toEqual(5);
+    expect(service.getSkillBonus(int, AttributeName.Vitality)).toEqual(0);
+  });
 
-  // it('should be able to get skill bonus', () => {
-  //   expect(bra.getSkillBonus()).toEqual(0);
-  // });
+  it('should change skill bonus as strength changes', () => {
+    expect(service.getSkillBonus(agi, AttributeName.Agility)).toEqual(5);
+    agi.attributeStrength = AttributeStrength.Champion;
+    expect(service.getSkillBonus(agi, AttributeName.Agility)).toEqual(3);
+  });
 
-  // it('should be able to get skill bonus heroic brawn', () => {
-  //   attribute = makeAttribute(AttributeName.Brawn, AttributeStrength.Heroic);
-  //   expect(bra.getSkillBonus()).toEqual(2);
-  // });
+  it('should be able to determine if an attribute is defensive', () => {
+    expect(service.getMagicDefense(bra, MagicDefenseType.Fortitude)).toEqual(0);
+    expect(service.getMagicDefense(vit, MagicDefenseType.Fortitude)).toEqual(5);
+    expect(service.getMagicDefense(agi, MagicDefenseType.Reflex)).toEqual(0);
+  });
 
-  // it('should have skill bonus of 4 with legendary brawn but 0 with legendary vitality', () => {
-  //   attribute = makeAttribute(AttributeName.Brawn, AttributeStrength.Legendary);
-  //   expect(bra.getSkillBonus()).toEqual(4);
-  //   attribute = makeAttribute(AttributeName.Vitality, AttributeStrength.Legendary);
-  //   expect(bra.getSkillBonus()).toEqual(0);
-  // });
+  it('should provide magic defense only for the type of md it gives', () => {
+    expect(service.getMagicDefense(qu, MagicDefenseType.Reflex)).toEqual(5);
+    expect(service.getMagicDefense(qu, MagicDefenseType.Will)).toEqual(0);
+  });
 
-  // it('should be able to determine if an attribute is defensive', () => {
-  //   expect(bra(MagicDefenseType.Fortitude)).toBeFalsy();
-  // });
-  //
-  // it('should be able to get magic defense for attributes that have magic defense', () => {
-  //   attribute = vit;
-  //   expect(attribute.getMagicDefense(MagicDefenseType.Fortitude)).toEqual(5);
-  //   attribute = int;
-  //   expect(attribute.getMagicDefense(MagicDefenseType.Reflex)).toEqual(3);
-  // });
+  it('should determine that intution gives defense to all kinds of magic', () => {
+    expect(service.getMagicDefense(int, MagicDefenseType.Reflex)).toEqual(3);
+    expect(service.getMagicDefense(int, MagicDefenseType.Fortitude)).toEqual(3);
+    expect(service.getMagicDefense(int, MagicDefenseType.Will)).toEqual(3);
+  });
+
+  it('should show that magic defense changes based on strength', () => {
+    expect(service.getMagicDefense(int, MagicDefenseType.Reflex)).toEqual(3);
+    int.attributeStrength = AttributeStrength.Heroic;
+    expect(service.getMagicDefense(int, MagicDefenseType.Reflex)).toEqual(1);
+  });
 
   it('should be able to get damage for legendary brawn', () => {
     bra.attributeStrength = AttributeStrength.Legendary;
@@ -94,20 +101,17 @@ fdescribe('AttributeFactoryService', () => {
   it('should be able to get damage for epic presence', () => {
     pre.attributeStrength = AttributeStrength.Epic;
     expect(service.getAttackDamageBonus(pre, WeaponCategory.Presence, Level.Three).modifierOfDice.value()).toEqual(5);
-    expect(service.getAttackDamageBonus(pre, WeaponCategory.Hybrid, Level.Six).modifierOfDice.value()).toEqual(6);
+    expect(service.getAttackDamageBonus(pre, WeaponCategory.Hybrid, Level.Six).printRoll()).toEqual(6);
   });
-  //
-  // it('should be able to determine which attributes are defensive and which are offensive', () => {
-  //   expect(vit.hasDamageBonus()).toBeFalsy();
-  //   expect(bra.hasDamageBonus()).toBeTruthy();
-  // });
-  //
-  // it('should show that a defensive stat does not get a damage bonus', () => {
-  //   expect(vit.hasDamageBonus()).toBeFalsy();
-  //   expect(vit.getPrimaryDamage()).toEqual(0);
-  //   expect(vit.getSecondaryDamage()).toEqual(0);
-  // });
-  //
+
+
+  it('should show that a defensive stat does not get a damage bonus', () => {
+    Object.keys(WeaponCategory).map(key => {
+      expect(service.getAttackDamageBonus(vit, WeaponCategory[key], Level.Six).modifierOfDice.value()).toEqual(0);
+    });
+  });
+
+  // TODO work on implemented getting critical
   // it('should show bonus critical dice for legendary offensive attributes only', () => {
   //   expect(bra.getCritDieBonus(1)).toEqual(1);
   //   expect(attribute.getCritDieBonus(1)).toEqual(0);
@@ -184,6 +188,6 @@ fdescribe('AttributeFactoryService', () => {
     if (!name) {
       name = AttributeName.Brawn;
     }
-    return service.getNewAttribute(name);
+    return service.getNewAttribute(name, AttributeStrength.Legendary);
   }
 });

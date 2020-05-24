@@ -166,6 +166,10 @@ fdescribe('AttributeFactoryService', () => {
     expect(service.getCriticalBonus(pre, Level.One, WeaponCategory.Hybrid)).toEqual(0);
     pre.attributeStrength = AttributeStrength.Epic;
     expect(service.getCriticalBonus(pre, Level.One, WeaponCategory.Hybrid)).toEqual(1);
+
+    expect(service.getCriticalBonus(rea, Level.One, WeaponCategory.Hybrid)).toEqual(0);
+    rea.attributeStrength = AttributeStrength.Epic;
+    expect(service.getCriticalBonus(rea, Level.One, WeaponCategory.Hybrid)).toEqual(1);
   });
 
   //

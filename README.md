@@ -1,6 +1,6 @@
 # FulcrumCharacterBuilder
 This is a web tier character builder for Fulcrum (Combat Oriented Role Playing System)
-More information regarding Fulcrum and its development please visit herf: http://nortain.net or find us on facebook at href: https://www.facebook.com/FulcrumGaming/ You can even go as far as to scour twitter using the hashtag #FulcrumGaming.
+More information regarding Fulcrum and its development please visit herf: http://nortain.net or find us on facebook at href: https://www.facebook.com/FulcrumRPS/ You can even go as far as to scour twitter using the hashtag #FulcrumGaming.
 
 ## Docker and the Dockerfile
 This project is being developed with deployment in mind so is meant to be ran inside of a docker container.

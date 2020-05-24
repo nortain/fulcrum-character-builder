@@ -4,12 +4,13 @@ import {AttributeName} from "./attribute-name.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";
 import {AttributeModel} from "./attribute-model";
-import {ATTRIBUTE, AttributeAttackDamage} from "../constants/attribute-constants/attribute-constants";
+import {ATTRIBUTE, AttributeAttackDamage, ValueRange} from "../constants/attribute-constants/attribute-constants";
 import {LevelRange} from "../spells/enums/level-range.enum";
 import {DiceSize} from "../character/dice/dice-size.enum";
 import {Dice} from "../character/dice/dice";
 import {AttributeStrength} from "./attribute-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
+import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "../constants/attribute-constants/selected-bonus-groups";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,11 @@ export class AttributeFactoryService {
     if (attackDamages) {
       for (const attackDamage of attackDamages) {
         if (attackDamage.category === category) {
-          const damageRange = attackDamage.range[attribute.attributeStrength];
+          let damageRange = attackDamage.range[attribute.attributeStrength];
+          if (attribute.attributeName === AttributeName.Presence) {
+            const picks: Array<PresenceSelections> = attribute.choosenBonusPicks as Array<PresenceSelections>;
+            damageRange = this.applyPresenceAttackPenaltyToDamageRange(damageRange, picks);
+          }
           const array = this.diceService.getDiceArrayFromDamageRange(damageRange.minBonus, damageRange.maxBonus, LevelRange.TEN, DiceSize.None);
           return array[level - 1];
         }
@@ -48,8 +53,21 @@ export class AttributeFactoryService {
     return new Dice();
   }
 
+  applyPresenceAttackPenaltyToDamageRange(damageRange: ValueRange, presenceSelections: Array<PresenceSelections>): ValueRange {
+    const newRange: ValueRange = {...damageRange};
+    if (presenceSelections) {
+      for (const selection of presenceSelections) {
+        if ((selection as PresenceSelections).convertAttackDamageIntoGlobal) {
+          newRange.minBonus += selection.convertAttackDamageIntoGlobal.bonusToAttack.minBonus;
+          newRange.maxBonus += selection.convertAttackDamageIntoGlobal.bonusToAttack.maxBonus;
+        }
+      }
+    }
+    return newRange;
+  }
+
   /**
-   * Given an attribute and an attributeName this will return the bonus associated with the attribute name if any.  If no bonus exists then this will return 0.
+   * Given an attribute and an attributeName this will return the bonus associated with the attribute name if any.  If no bonus exists then this will return 0.  This makes use of the fact that the attribute-model object has all skills listed as bonusTo<SkillName>Skills.  This allows us to literally pull the correct skill from the very attributeName that is passed in.
    * @param attribute
    * @param skillType
    */
@@ -57,25 +75,6 @@ export class AttributeFactoryService {
     let bonus: Array<number>;
     const text = "bonusTo" + skillType + "Skills";
     bonus = attribute[text];
-    // switch (skillType) {
-    //   case AttributeName.Brawn:
-    //     bonus = attribute.bonusToBrawnSkills;
-    //     break;
-    //   case AttributeName.Presence:
-    //     bonus = attribute.bonusToPresenceSkills;
-    //     break;
-    //   case AttributeName.Agility:
-    //     bonus = attribute.bonusToAgilitySkills;
-    //     break;
-    //   case AttributeName.Intuition:
-    //     bonus = attribute.bonusToIntuitionSKills;
-    //     break;
-    //   case AttributeName.Reasoning:
-    //     bonus = attribute.bonusToReasoningSkills;
-    //     break;
-    //   default:
-    //     return 0;
-    // }
     if (bonus) {
       return bonus[attribute.attributeStrength];
     } else {
@@ -99,11 +98,65 @@ export class AttributeFactoryService {
   }
 
   /**
-   * Given an attribute and a level this will return a dice object with the critical bonus provided by the attribute.  If the attribute doesn't provide any kind of critical bonus then the dice object will be an empty instance.
+   * Given an attribute and a level this will return a dice object with the critical bonus provided by the attribute.  If the attribute doesn't provide any kind of critical bonus then the dice object will be an empty instance.  Fetches values for bonusToCritical, bonusToSpeedAndCritical, bonusToCriticalAndAggressivePress, bonusToEmpoweredAndCritical and bonusToBaseCritical
    * @param attribute
    * @param level
    */
-  getCriticalBonus(attribute: AttributeModel, level: Level) {
+  getCriticalBonus(attribute: AttributeModel, level: Level, weaponCategory?: WeaponCategory): number {
+    let bonus = 0;
+    if (attribute.choosenBonusPicks) {
+      for (const att of attribute.choosenBonusPicks) {
+        if (attribute.attributeName === AttributeName.Brawn) {
+          if ((att as BrawnSelections).bonusToCriticalAndAggressivePress) {
+            const range = (att as BrawnSelections).bonusToCriticalAndAggressivePress.criticalBonus;
+            bonus += this.extractNumberFromValueRange(range, level);
+          } else if ((att as BrawnSelections).bonusToEmpoweredAndCritical) {
+            const range = (att as BrawnSelections).bonusToEmpoweredAndCritical.bonusToCritical;
+            bonus += this.extractNumberFromValueRange(range, level);
+          }
+        } else if (attribute.attributeName === AttributeName.Agility) {
+          if ((att as AgilitySelections).bonusToCritical) {
+            const range = (att as AgilitySelections).bonusToCritical.bonusTo;
+            bonus += this.extractNumberFromValueRange(range, level);
+          } else if ((att as AgilitySelections).bonusToSpeedAndCritical) {
+            const range = (att as AgilitySelections).bonusToSpeedAndCritical.bonusToCritical;
+            bonus += this.extractNumberFromValueRange(range, level);
+          }
+        } else if (attribute.attributeName === AttributeName.Presence) {
+          if ((att as PresenceSelections).bonusToGlobalDamageAndPenaltyToCritical) {
+            const range = (att as PresenceSelections).bonusToGlobalDamageAndPenaltyToCritical.bonusToCritical;
+            bonus += this.extractNumberFromValueRange(range, level);
+          }
+        } else {
+          if ((att as ReasoningSelections).bonusToCritical) {
+            const range = (att as ReasoningSelections).bonusToCritical.bonusTo;
+            bonus += this.extractNumberFromValueRange(range, level);
+          } else if ((att as ReasoningSelections).bonusToEmpoweredAndCritical) {
+            const range = (att as ReasoningSelections).bonusToEmpoweredAndCritical.bonusToCritical;
+            bonus += this.extractNumberFromValueRange(range, level);
+          }
+        }
+      }
+    }
+    if (weaponCategory && attribute.bonusToBaseCritical && weaponCategory === attribute.bonusToBaseCritical.category) {
+      const range = attribute.bonusToBaseCritical.range[attribute.attributeStrength];
+      bonus += this.extractNumberFromValueRange(range, level);
+    }
+    return bonus;
+  }
 
+
+  /**
+   * Helper function that will take a value, range and dicesize and pull out the printed roll and return
+   * it as a number,
+   * @param range
+   * @param level
+   * @param diceSize
+   */
+  extractNumberFromValueRange(range: ValueRange, level: Level, diceSize = DiceSize.None): number {
+    const array = this.diceService.getDiceArrayFromDamageRange(range.minBonus, range.maxBonus, LevelRange.TEN, diceSize);
+    return parseInt(array[level - 1].modifierOfDice.value(), 10);
   }
 }
+
+

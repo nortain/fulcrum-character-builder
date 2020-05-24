@@ -19,6 +19,55 @@ export class AttributeBonus {
   pickValue: number;
 }
 
+export class GlobalDamageAndPenaltyToCritical {
+  bonusToGlobal: ValueRange;
+  bonusToCritical: ValueRange;
+  maxPicks: number;
+  pickValue: number;
+}
+
+export class GlobalDamageAndPenaltyToAttack {
+  bonusToGlobal: ValueRange;
+  bonusToAttack: ValueRange;
+  maxPicks: number;
+  pickValue: number;
+}
+
+export class NonScalingAttributeBonus {
+  bonusTo: number;
+  maxPicks: number;
+  pickValue: number;
+}
+
+export class PresenceSelections {
+  forcedMovement: NonScalingAttributeBonus;
+  friendlyMovement: NonScalingAttributeBonus;
+  bonusToHitWithEnvironmentAttacks: NonScalingAttributeBonus;
+  convertAttackDamageIntoGlobal: GlobalDamageAndPenaltyToAttack;
+  bonusToGlobalDamageAndPenaltyToCritical: GlobalDamageAndPenaltyToCritical;
+}
+
+export class ReasoningSelections {
+  bonusToCritical: AttributeBonus;
+  bonusToEmpowered: AttributeBonus;
+  bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
+}
+
+export class BrawnSelections {
+  bonusToCriticalAndAggressivePress: { criticalBonus: ValueRange, pressText: string, pickValue: number };
+  bonusToEmpoweredAndAggressivePress: { empoweredBonus: ValueRange, pressText: string, pickValue: number };
+  bonusToEmpowered: AttributeBonus;
+  bonusToProtectorAura: AttributeBonus;
+  bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
+}
+
+export class AgilitySelections {
+  bonusToCritical: AttributeBonus;
+  bonusToSpeedAndCritical: { maxPicks: number, bonusToSpeed: number, bonusToCritical: ValueRange };
+  bonusToDualist: AttributeBonus;
+  bonusToFindWeakness: AttributeBonus;
+}
+
 
 export class PresenceAttributePicks {
   requiredHybridAttributeStrength: Array<{
@@ -26,15 +75,7 @@ export class PresenceAttributePicks {
     attributeStrength: AttributeStrength, attributeName: AttributeName,
     numberOfPicks: number;
   }>;
-  selections: {
-    forcedMovement: { maxPicks: number, movementBonus: number };
-    friendlyMovement: { maxPicks: number, movementBonus: number };
-    bonusToHitWithEnvironmentAttacks: {
-      maxPicks: number, bonusToHit: number, keyword: SpellKeywords
-    };
-    convertAttackDamageIntoGlobal: AttributeBonus;
-    bonusToGlobalDamageAndPenaltyToCritical: AttributeBonus;
-  };
+  selections: PresenceSelections;
 }
 
 export class ReasoningAttributePicks {
@@ -43,11 +84,7 @@ export class ReasoningAttributePicks {
     attributeStrength: AttributeStrength, attributeName: AttributeName,
     numberOfPicks: number;
   }>;
-  selections: {
-    bonusToCritical: ValueRange;
-    bonusToEmpowered: ValueRange;
-    bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
-  };
+  selections: ReasoningSelections;
 }
 
 export class BrawnAttributePicks {
@@ -56,19 +93,7 @@ export class BrawnAttributePicks {
     attributeStrength: AttributeStrength, attributeName: AttributeName,
     numberOfPicks: number;
   }>;
-  selections: {
-    bonusToCriticalAndAggressivePress: { criticalBonus: ValueRange, maxPicks: number, pressText: string };
-    bonusToEmpoweredAndAggressivePress: {
-      empoweredBonus: ValueRange,
-      maxPicks: number,
-      pressText: string,
-      pickValue: number
-    };
-    bonusToEmpowered: AttributeBonus;
-    bonusToProtectorAura: ValueRange;
-    bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
-  };
-
+  selections: BrawnSelections;
 }
 
 export class AgilityAttributePicks {
@@ -78,12 +103,7 @@ export class AgilityAttributePicks {
     attributeName: AttributeName,
     numberOfPicks: number;
   }>;
-  selections: {
-    bonusToCritical: ValueRange;
-    bonusToSpeedAndCritical: { maxPicks: number, bonusToSpeed: number, bonusToCritical: ValueRange};
-    bonusToDualist: ValueRange;
-    bonusToFindWeakness: ValueRange;
-  };
+  selections: AgilitySelections;
 }
 
 

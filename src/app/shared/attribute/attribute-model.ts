@@ -1,6 +1,6 @@
 import {AttributeName} from "./attribute-name.enum";
 import {ArmorType} from "../armor/armor-type.enum";
-import {AgilityAttributePicks, BrawnAttributePicks, PresenceAttributePicks, ReasoningAttributePicks} from "../constants/attribute-constants/selected-bonus-groups";
+import {AgilityAttributePicks, AgilitySelections, BrawnAttributePicks, BrawnSelections, PresenceAttributePicks, PresenceSelections, ReasoningAttributePicks, ReasoningSelections} from "../constants/attribute-constants/selected-bonus-groups";
 import {AttributeStrength} from "./attribute-strength.enum";
 import {AttributeAttackDamage, ValueRange} from "../constants/attribute-constants/attribute-constants";
 
@@ -8,16 +8,18 @@ export class AttributeModel {
   attributeName: AttributeName;
   attributeStrength: AttributeStrength;
   bonusToAttackDamage: Array<AttributeAttackDamage>;
-  bonusToCrit: AttributeAttackDamage;
+  bonusToBaseCritical: AttributeAttackDamage;
   bonusToHitPoints: Array<ValueRange>;
   bonusToStartingTHP: Array<ValueRange>;
   bonusToDodge: Array<ValueRange>;
   firstTurnDamageResist: Array<ValueRange>;
 
   // Selected Bonus
-  selectedBonusPicks: {
+  selectableBonusPicks: {
     typeOfPick: Array<BrawnAttributePicks | AgilityAttributePicks | PresenceAttributePicks | ReasoningAttributePicks>;
   };
+
+  choosenBonusPicks: Array<BrawnSelections | AgilitySelections | PresenceSelections | ReasoningSelections>;
 
   // Magic Defense Bonus
   bonusToFortitude: Array<number>;

@@ -1,7 +1,7 @@
 import {AttributeModel} from "../../attribute/attribute-model";
 import {AttributeName} from "../../attribute/attribute-name.enum";
 
-import {AgilityAttributePicks, AttributeBonus, BrawnAttributePicks, PresenceAttributePicks, ReasoningAttributePicks} from "./selected-bonus-groups";
+import {AgilityAttributePicks, AttributeBonus, BrawnAttributePicks, BrawnSelections, PresenceAttributePicks, ReasoningAttributePicks} from "./selected-bonus-groups";
 import {AttributeStrength} from "../../attribute/attribute-strength.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ArmorType} from "../../armor/armor-type.enum";
@@ -59,7 +59,7 @@ export const ATTRIBUTE = {
         ]
       }], // end damage
     bonusToBrawnSkills: ATTRIBUTE_SKILL_BONUS,
-    selectedBonusPicks: {
+    selectableBonusPicks: {
       typeOfPick: [
         {
           ...new BrawnAttributePicks()
@@ -79,18 +79,20 @@ export const ATTRIBUTE = {
             bonusToCriticalAndAggressivePress: {
               criticalBonus: {
                 minBonus: 1,
-                maxBonus: 3
+                maxBonus: 3,
               },
               pressText: PRESS_TEXT,
-              maxPicks: 1
+              pickValue: 1
             },
             bonusToEmpoweredAndCritical: {
               bonusToCritical: {minBonus: 1, maxBonus: 3},
               bonusToEmpowered: {minBonus: 1, maxBonus: 3},
               pickValue: 1,
+              maxPicks: 0
             },
             bonusToProtectorAura: {
-              minBonus: 4, maxBonus: 10
+              bonusTo: {minBonus: 4, maxBonus: 10},
+              maxPicks: 0, pickValue: 1
             }
           }
         } as BrawnAttributePicks, {
@@ -102,7 +104,6 @@ export const ATTRIBUTE = {
           ],
           selections: {
             bonusToEmpoweredAndAggressivePress: {
-              maxPicks: 1,
               empoweredBonus: {
                 minBonus: 2, maxBonus: 5
               },
@@ -121,9 +122,11 @@ export const ATTRIBUTE = {
               bonusToCritical: {minBonus: 1, maxBonus: 3},
               bonusToEmpowered: {minBonus: 1, maxBonus: 3},
               pickValue: 1,
+              maxPicks: 0
             },
             bonusToProtectorAura: {
-              minBonus: 4, maxBonus: 10
+              bonusTo: {minBonus: 4, maxBonus: 10},
+              maxPicks: 0, pickValue: 1
             }
           }
         } as BrawnAttributePicks, {
@@ -137,8 +140,7 @@ export const ATTRIBUTE = {
             bonusToEmpoweredAndAggressivePress: {
               empoweredBonus: {minBonus: 2, maxBonus: 5},
               pressText: PRESS_TEXT,
-              pickValue: 2,
-              maxPicks: 1
+              pickValue: 2
             },
             bonusToEmpowered: {
               pickValue: 2,
@@ -149,12 +151,14 @@ export const ATTRIBUTE = {
               maxPicks: 3
             },
             bonusToEmpoweredAndCritical: {
-              bonusToCritical: {minBonus: 1, maxBonus: 3},
+              bonusToCritical: {minBonus: 1, maxBonus: 2},
               bonusToEmpowered: {minBonus: 1, maxBonus: 3},
               pickValue: 1,
+              maxPicks: 0
             },
             bonusToProtectorAura: {
-              minBonus: 4, maxBonus: 10
+              bonusTo: {minBonus: 4, maxBonus: 10},
+              maxPicks: 0, pickValue: 1
             }
           }
         } as BrawnAttributePicks
@@ -186,7 +190,7 @@ export const ATTRIBUTE = {
         ]
       }], // end damage
     bonusToAgilitySkills: ATTRIBUTE_SKILL_BONUS,
-    selectedBonusPicks: {
+    selectableBonusPicks: {
       typeOfPick: [
         {
           ...new AgilityAttributePicks()
@@ -204,7 +208,8 @@ export const ATTRIBUTE = {
           ],
           selections: {
             bonusToCritical: {
-              minBonus: 3, maxBonus: 8,
+              bonusTo: {minBonus: 3, maxBonus: 8},
+              maxPicks: 0, pickValue: 1
             },
             bonusToSpeedAndCritical: {
               bonusToSpeed: 1,
@@ -215,10 +220,12 @@ export const ATTRIBUTE = {
               maxPicks: 2
             },
             bonusToDualist: {
-              minBonus: 1, maxBonus: 3
+              bonusTo: {minBonus: 1, maxBonus: 3},
+              maxPicks: 0, pickValue: 1
             },
             bonusToFindWeakness: {
-              minBonus: 2, maxBonus: 5
+              bonusTo: {minBonus: 2, maxBonus: 5},
+              maxPicks: 0, pickValue: 1
             }
           }
         } as AgilityAttributePicks, {
@@ -230,7 +237,8 @@ export const ATTRIBUTE = {
           ],
           selections: {
             bonusToCritical: {
-              minBonus: 3, maxBonus: 8,
+              bonusTo: {minBonus: 3, maxBonus: 8},
+              maxPicks: 0, pickValue: 1
             },
             bonusToSpeedAndCritical: {
               bonusToSpeed: 1,
@@ -241,10 +249,12 @@ export const ATTRIBUTE = {
               maxPicks: 2
             },
             bonusToDualist: {
-              minBonus: 1, maxBonus: 3
+              bonusTo: {minBonus: 1, maxBonus: 3},
+              maxPicks: 0, pickValue: 1
             },
             bonusToFindWeakness: {
-              minBonus: 2, maxBonus: 5
+              bonusTo: {minBonus: 2, maxBonus: 5},
+              maxPicks: 0, pickValue: 1
             }
           }
         } as AgilityAttributePicks, {
@@ -256,7 +266,8 @@ export const ATTRIBUTE = {
           ],
           selections: {
             bonusToCritical: {
-              minBonus: 3, maxBonus: 8,
+              bonusTo: {minBonus: 3, maxBonus: 8},
+              maxPicks: 0, pickValue: 1
             },
             bonusToSpeedAndCritical: {
               bonusToSpeed: 1,
@@ -267,10 +278,12 @@ export const ATTRIBUTE = {
               maxPicks: 2
             },
             bonusToDualist: {
-              minBonus: 1, maxBonus: 3
+              bonusTo: {minBonus: 1, maxBonus: 3},
+              maxPicks: 0, pickValue: 1
             },
             bonusToFindWeakness: {
-              minBonus: 2, maxBonus: 5
+              bonusTo: {minBonus: 2, maxBonus: 5},
+              maxPicks: 0, pickValue: 1
             }
           }
         } as AgilityAttributePicks
@@ -301,7 +314,7 @@ export const ATTRIBUTE = {
           {minBonus: 6, maxBonus: 15},
         ]
       }], // end damage
-    bonusToCrit:
+    bonusToBaseCritical:
       {
         category: WeaponCategory.Hybrid,
         range: [
@@ -313,7 +326,7 @@ export const ATTRIBUTE = {
         ]
       },
     bonusToReasoningSkills: ATTRIBUTE_SKILL_BONUS,
-    selectedBonusPicks: {
+    selectableBonusPicks: {
       typeOfPick: [
         { // normal
           ...new ReasoningAttributePicks()
@@ -328,8 +341,8 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
-            bonusToCritical: {minBonus: 2, maxBonus: 5},
-            bonusToEmpowered: {minBonus: 1, maxBonus: 2.5}
+            bonusToCritical: {bonusTo: {minBonus: 2, maxBonus: 5}},
+            bonusToEmpowered: {bonusTo: {minBonus: 1, maxBonus: 2.5}}
           }
         } as ReasoningAttributePicks, { // champion
           ...new ReasoningAttributePicks(),
@@ -342,8 +355,8 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
-            bonusToCritical: {minBonus: 2, maxBonus: 5},
-            bonusToEmpowered: {minBonus: 1, maxBonus: 2.5}
+            bonusToCritical: {bonusTo: {minBonus: 2, maxBonus: 5}},
+            bonusToEmpowered: {bonusTo: {minBonus: 1, maxBonus: 2.5}}
           }
         } as ReasoningAttributePicks, { // EPIC
           ...new ReasoningAttributePicks(),
@@ -366,7 +379,7 @@ export const ATTRIBUTE = {
               bonusToEmpowered: {minBonus: 1, maxBonus: 2.5},
               pickValue: 1
             },
-            bonusToCritical: {minBonus: 3, maxBonus: 7.5}
+            bonusToCritical: {bonusTo: {minBonus: 3, maxBonus: 7.5}}
           }
         } as ReasoningAttributePicks, { // legendary
           ...new ReasoningAttributePicks(),
@@ -377,10 +390,10 @@ export const ATTRIBUTE = {
           ],
           selections: {
             bonusToCritical: {
-              minBonus: 3, maxBonus: 7.5,
+              bonusTo: {minBonus: 3, maxBonus: 7.5},
             },
             bonusToEmpowered: {
-              minBonus: 1, maxBonus: 2.5
+              bonusTo: {minBonus: 1, maxBonus: 2.5}
             }
           }
         } as ReasoningAttributePicks
@@ -411,7 +424,7 @@ export const ATTRIBUTE = {
           {minBonus: 4, maxBonus: 10},
         ]
       }], // end damage
-    bonusToCrit:
+    bonusToBaseCritical:
       {
         category: WeaponCategory.Hybrid,
         range: [
@@ -423,7 +436,7 @@ export const ATTRIBUTE = {
         ]
       },
     bonusToPresenceSkills: ATTRIBUTE_SKILL_BONUS,
-    selectedBonusPicks: {
+    selectableBonusPicks: {
       typeOfPick: [
         { // normal
           ...new PresenceAttributePicks()
@@ -439,22 +452,24 @@ export const ATTRIBUTE = {
           ],
           selections: {
             forcedMovement: {
-              movementBonus: 1,
-              maxPicks: 2
+              bonusTo: 1,
+              maxPicks: 2,
+              pickValue: 1
             },
             friendlyMovement: {
-              movementBonus: 1,
-              maxPicks: 2
+              bonusTo: 1,
+              maxPicks: 2,
+              pickValue: 1
             },
             bonusToHitWithEnvironmentAttacks: {
-              bonusToHit: 1,
+              bonusTo: 1,
               maxPicks: 2,
-              keyword: SpellKeywords.Environment
+              pickValue: 1
             },
             convertAttackDamageIntoGlobal: {
-              bonusTo: {minBonus: 1, maxBonus: 2.5},
-              maxPicks: 4,
-              pickValue: 1
+              bonusToGlobal: {minBonus: 1, maxBonus: 3},
+              bonusToAttack: {minBonus: -1, maxBonus: -3},
+              maxPicks: 4, pickValue: 1
             }
           }
         } as PresenceAttributePicks, { // champion
@@ -474,18 +489,18 @@ export const ATTRIBUTE = {
           ],
           selections: {
             forcedMovement: {
-              movementBonus: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             friendlyMovement: {
-              movementBonus: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             bonusToHitWithEnvironmentAttacks: {
-              bonusToHit: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             convertAttackDamageIntoGlobal: {
-              bonusTo: {minBonus: 1, maxBonus: 2.5},
-              maxPicks: 4,
-              pickValue: 1
+              bonusToGlobal: {minBonus: 1, maxBonus: 3},
+              bonusToAttack: {minBonus: -1, maxBonus: -3},
+              maxPicks: 4, pickValue: 1
             }
           }
         } as PresenceAttributePicks, { // EPIC
@@ -497,21 +512,23 @@ export const ATTRIBUTE = {
           ],
           selections: {
             forcedMovement: {
-              movementBonus: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             friendlyMovement: {
-              movementBonus: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             bonusToHitWithEnvironmentAttacks: {
-              bonusToHit: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             convertAttackDamageIntoGlobal: {
-              bonusTo: {minBonus: 1, maxBonus: 2.5},
-              maxPicks: 4,
-              pickValue: 1
+              bonusToGlobal: {minBonus: 1, maxBonus: 3},
+              bonusToAttack: {minBonus: -1, maxBonus: -3},
+              maxPicks: 4, pickValue: 1
             },
             bonusToGlobalDamageAndPenaltyToCritical: {
-              bonusTo: {minBonus: 1, maxBonus: 2.5}, pickValue: 2, maxPicks: 1
+              bonusToGlobal: {minBonus: 1, maxBonus: 2.5},
+              bonusToCritical: {minBonus: -1, maxBonus: -2.5},
+              pickValue: 2, maxPicks: 1
             }
           }
         } as PresenceAttributePicks, { // legendary
@@ -523,19 +540,23 @@ export const ATTRIBUTE = {
           ],
           selections: {
             forcedMovement: {
-              movementBonus: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             friendlyMovement: {
-              movementBonus: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             bonusToHitWithEnvironmentAttacks: {
-              bonusToHit: 1, maxPicks: 2
+              bonusTo: 1, maxPicks: 2
             },
             convertAttackDamageIntoGlobal: {
-              bonusTo: {minBonus: 1, maxBonus: 2.5}, maxPicks: 4
+              bonusToGlobal: {minBonus: 1, maxBonus: 3},
+              bonusToAttack: {minBonus: -1, maxBonus: -3},
+              maxPicks: 4, pickValue: 1
             },
             bonusToGlobalDamageAndPenaltyToCritical: {
-              bonusTo: {minBonus: 1, maxBonus: 2.5}, pickValue: 2, maxPicks: 1
+              bonusToGlobal: {minBonus: 1, maxBonus: 2.5},
+              bonusToCritical: {minBonus: -1, maxBonus: -2.5},
+              pickValue: 2, maxPicks: 1
             }
           }
         } as PresenceAttributePicks

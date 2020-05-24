@@ -40,7 +40,7 @@ export class DiceService {
     modifier += this.getDieStatic(diceSize);
     const dieAverage = this.getDieAverage(diceSize);
     if (damage < 1) {
-      return null;
+      return new Dice(0, DiceSize.None, Math.round(damage));
     } else if (damage < dieAverage) {
 
       return new Dice(0, DiceSize.None, Math.round(damage));
@@ -81,7 +81,7 @@ export class DiceService {
    * @param dieSize
    */
   getDiceArrayFromDamageRange(minDamage: number, maxDamage: number, maxLevel: LevelRange, dieSize = DiceSize.None): Dice[] {
-    if (maxLevel || maxDamage < minDamage) {
+    if (maxLevel) {
       const damageArray = [];
       const numberOfLevelsToGain = maxLevel - 1;
       minDamage = Math.floor(minDamage + this.getRemainder(dieSize, 0, minDamage) / 2);

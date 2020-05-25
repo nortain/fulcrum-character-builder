@@ -11,6 +11,7 @@ import {Dice} from "../character/dice/dice";
 import {AttributeStrength} from "./attribute-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "../constants/attribute-constants/selected-bonus-groups";
+import {ArmorType} from "../armor/armor-type.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,17 @@ export class AttributeFactoryService {
   }
 
   /**
+   * Given an attributeModel determine the number of bonus trained skills a character gets
+   * @param attribute
+   */
+  getTrainedSkillsBonus(attribute: AttributeModel): number {
+    if (attribute && attribute.bonusToTrainedSkills) {
+      return attribute.bonusToTrainedSkills[attribute.attributeStrength];
+    }
+    return 0;
+  }
+
+  /**
    * Given an attribute and a magicDefenseType determine if the attribute offers any magic defense for the given defense type.  If so, return the value as a number otherwise return 0;
    * @param attribute
    * @param magicDefense
@@ -145,7 +157,84 @@ export class AttributeFactoryService {
     return bonus;
   }
 
+  getFirstTurnDamageResist(attribute: AttributeModel, level: Level): number {
+    if (attribute && attribute.firstTurnDamageResist) {
+      const range = attribute.firstTurnDamageResist[attribute.attributeStrength];
+      return this.extractNumberFromValueRange(range, level);
+    }
+    return 0;
+  }
 
+  getSpeedBonus(attribute: AttributeModel): number {
+    let speedBonus = 0;
+    if (attribute && attribute.choosenBonusPicks) {
+      for (const pick of attribute.choosenBonusPicks) {
+        if ((pick as AgilitySelections).bonusToSpeedAndCritical) {
+          speedBonus += (pick as AgilitySelections).bonusToSpeedAndCritical.bonusToSpeed;
+        }
+      }
+    }
+    return speedBonus;
+  }
+
+  getArmorBonus(attribute: AttributeModel, armorType: ArmorType): number {
+    if (attribute && attribute.bonusToAd) {
+      const bonusToAdElement = attribute.bonusToAd[attribute.attributeStrength];
+      if (bonusToAdElement.armorTypes.includes(armorType)) {
+        return bonusToAdElement.bonusValue;
+      }
+    }
+    return 0;
+  }
+
+  getPowerPointBonus(attribute: AttributeModel): number {
+    if (attribute && attribute.bonusToPowerPoints) {
+      return attribute.bonusToPowerPoints[attribute.attributeStrength];
+    }
+    return 0;
+  }
+
+  getHitPointBonus(attribute: AttributeModel, level: Level): number {
+    if (attribute && attribute.bonusToHitPoints) {
+      const range = attribute.bonusToHitPoints[attribute.attributeStrength];
+      return this.extractNumberFromValueRange(range, level);
+    }
+    return 0;
+  }
+
+  getStartingTemporaryHitPoints(attribute: AttributeModel, level: Level): number {
+    if (attribute && attribute.bonusToStartingTHP) {
+      const range = attribute.bonusToStartingTHP[attribute.attributeStrength];
+      return this.extractNumberFromValueRange(range, level);
+    }
+    return 0;
+  }
+
+  getBonusRecoveryPoints(attribute: AttributeModel): number {
+    if (attribute && attribute.bonusToRecoveries) {
+      return attribute.bonusToRecoveries[attribute.attributeStrength];
+    }
+    return 0;
+  }
+
+  getInitiativeBonus(attribute: AttributeModel): number {
+    if (attribute && attribute.bonusToInitiative) {
+      return attribute.bonusToInitiative[attribute.attributeStrength];
+    }
+    return 0;
+  }
+
+  getDodgeBonus(attribute: AttributeModel, level: Level): number {
+    if (attribute && attribute.bonusToDodge) {
+      const range = attribute.bonusToDodge[attribute.attributeStrength];
+      return this.extractNumberFromValueRange(range, level);
+    }
+    return 0;
+  }
+
+
+
+// ******* HELPER FUNCTIONS BELOW **********
   /**
    * Helper function that will take a value, range and dicesize and pull out the printed roll and return
    * it as a number,

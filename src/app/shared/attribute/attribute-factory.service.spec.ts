@@ -7,9 +7,10 @@ import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "../constants/attribute-constants/selected-bonus-groups";
+import {ArmorType} from "../armor/armor-type.enum";
 
 
-fdescribe('AttributeFactoryService', () => {
+describe('AttributeFactoryService', () => {
   let service: AttributeFactoryService;
   let bra: AttributeModel, vit: AttributeModel, rea: AttributeModel, sd: AttributeModel, int: AttributeModel, attribute: AttributeModel, qu: AttributeModel, agi: AttributeModel, pre: AttributeModel;
   beforeEach(() => {
@@ -172,70 +173,99 @@ fdescribe('AttributeFactoryService', () => {
     expect(service.getCriticalBonus(rea, Level.One, WeaponCategory.Hybrid)).toEqual(1);
   });
 
-  //
-  // it('should be able to show how many bonus hit points it gives', () => {
-  //   expect(service.getHitPointBonus(1)).toEqual(12);
-  //   expect(vit.getHitPointBonus(10)).toEqual(36);
-  //   expect(bra.getHitPointBonus(10)).toEqual(0);
-  //   expect(qu.getHitPointBonus(1)).toEqual(5);
-  //   expect(sd.getHitPointBonus(1)).toEqual(4);
-  //   expect(int.getHitPointBonus(1)).toEqual(0);
-  // });
-  //
-  // it('should be able to show how many bonus thp an attribute has', () => {
-  //   expect(int.getTemporaryHitPointBonus(1)).toEqual(5);
-  //   expect(int.getTemporaryHitPointBonus(10)).toEqual(15);
-  //   expect(qu.getTemporaryHitPointBonus(1)).toEqual(0);
-  //   expect(bra.getTemporaryHitPointBonus(1)).toEqual(0);
-  // });
-  //
-  // it('should be able to get bonus recoveries', () => {
-  //   expect(vit.getRecoveryBonus()).toEqual(1);
-  //   expect(qu.getRecoveryBonus()).toEqual(0);
-  // });
-  //
-  // it('should be able to get bonus initiative', () => {
-  //   expect(qu.getInitiativeBonus()).toEqual(10);
-  //   expect(int.getInitiativeBonus()).toEqual(8);
-  //   expect(bra.getInitiativeBonus()).toEqual(0);
-  // });
+  it('should be able to show how many bonus hit points it gives', () => {
+    expect(service.getHitPointBonus(vit, Level.One)).toEqual(14);
+    expect(service.getHitPointBonus(vit, Level.Ten)).toEqual(35);
+    expect(service.getHitPointBonus(qu, Level.One)).toEqual(0);
+    expect(service.getHitPointBonus(agi, Level.One)).toEqual(0);
+    expect(service.getHitPointBonus(vit, Level.Six)).toEqual(26);
+    vit.attributeStrength = AttributeStrength.Champion;
+    expect(service.getHitPointBonus(vit, Level.One)).toEqual(8);
+  });
 
-  // it('should be able to get speed bonus', () => {
-  //   expect(agi.getSpeedBonus()).toEqual(1);
-  //   attribute = makeAttribute(AttributeName.Agility, AttributeStrength.Champion);
-  //   expect(attribute.getSpeedBonus()).toEqual(0);
-  // });
+  it('should be able to show how many bonus thp an attribute has', () => {
+    expect(service.getStartingTemporaryHitPoints(sd, Level.One)).toEqual(7);
+    expect(service.getStartingTemporaryHitPoints(sd, Level.Ten)).toEqual(18);
+    expect(service.getStartingTemporaryHitPoints(bra, Level.One)).toEqual(0);
+    expect(service.getStartingTemporaryHitPoints(int, Level.One)).toEqual(0);
+    sd.attributeStrength = AttributeStrength.Epic;
+    expect(service.getStartingTemporaryHitPoints(sd, Level.One)).toEqual(5);
+  });
 
-  // it('should be able to get power point bonus', () => {
-  //   expect(rea.getPowerPointBonus()).toEqual(1);
-  //   expect(sd.getPowerPointBonus()).toEqual(4);
-  //   expect(bra.getPowerPointBonus()).toEqual(0);
-  // });
 
-  // it('should be able to get armor bonus', () => {
-  //   let armor = new Armor(ArmorType.LightArmor);
-  //   expect(bra.getArmorBonus(armor)).toEqual(0);
-  //   expect(qu.getArmorBonus(armor)).toEqual(1);
-  //   attribute = makeAttribute(AttributeName.Quickness, AttributeStrength.Champion);
-  //   expect(attribute.getArmorBonus(armor)).toEqual(0);
-  //   expect(sd.getArmorBonus(armor)).toEqual(0);
-  //   armor = new Armor(ArmorType.CasterArmor);
-  //   expect(sd.getArmorBonus(armor)).toEqual(1);
-  // });
+  it('should be able to get bonus recoveries', () => {
+    expect(service.getBonusRecoveryPoints(vit)).toEqual(1);
+    vit.attributeStrength = AttributeStrength.Champion;
+    expect(service.getBonusRecoveryPoints(vit)).toEqual(0);
+    expect(service.getBonusRecoveryPoints(agi)).toEqual(0);
+  });
 
-  // it('should be reasonable to say that you shoudld get an armor bonus if you are unarmored as well as wearing light armor', function () {
-  //   const armor = new Armor(ArmorType.None);
-  //   expect(qu.getArmorBonus(armor)).toEqual(1);
-  // });
+  it('should be able to get bonus initiative', () => {
+    expect(service.getInitiativeBonus(qu)).toEqual(16);
+    qu.attributeStrength = AttributeStrength.Heroic;
+    expect(service.getInitiativeBonus(qu)).toEqual(5);
+    expect(service.getInitiativeBonus(vit)).toEqual(0);
+    expect(service.getInitiativeBonus(int)).toEqual(8);
+  });
 
-  // it('should be able to get trained skill bonus', () => {
-  //   expect(bra.getTrainedSkillBonus()).toEqual(0);
-  //   expect(qu.getTrainedSkillBonus()).toEqual(2);
-  //   expect(vit.getTrainedSkillBonus()).toEqual(2);
-  //   expect(sd.getTrainedSkillBonus()).toEqual(2);
-  //   attribute = makeAttribute(AttributeName.Quickness, AttributeStrength.Champion);
-  //   expect(attribute.getTrainedSkillBonus()).toEqual(1);
-  // });
+  it('should be able to get speed bonus', () => {
+    expect(service.getSpeedBonus(agi)).toEqual(0);
+    agi.choosenBonusPicks = [{bonusToSpeedAndCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToSpeedAndCritical"]} as AgilitySelections];
+    expect(service.getSpeedBonus(agi)).toEqual(1);
+    agi.choosenBonusPicks.push({bonusToSpeedAndCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToSpeedAndCritical"]} as AgilitySelections);
+    expect(service.getSpeedBonus(agi)).toEqual(2);
+    expect(service.getSpeedBonus(bra)).toEqual(0);
+
+  });
+
+  it('should be able to get power point bonus', () => {
+    expect(service.getPowerPointBonus(rea)).toEqual(0);
+    expect(service.getPowerPointBonus(sd)).toEqual(7);
+    sd.attributeStrength = AttributeStrength.Champion;
+    expect(service.getPowerPointBonus(sd)).toEqual(4);
+
+  });
+
+  it('should be able to get armor bonus', () => {
+    expect(service.getArmorBonus(qu, ArmorType.LightArmor)).toEqual(0);
+    expect(service.getArmorBonus(sd, ArmorType.CasterArmor)).toEqual(1);
+    sd.attributeStrength = AttributeStrength.Champion;
+    expect(service.getArmorBonus(sd, ArmorType.CasterArmor)).toEqual(0);
+    expect(service.getArmorBonus(int, ArmorType.LightArmor)).toEqual(1);
+    expect(service.getArmorBonus(int, ArmorType.MediumArmor)).toEqual(1);
+    expect(service.getArmorBonus(int, ArmorType.None)).toEqual(1);
+    int.attributeStrength = AttributeStrength.Champion;
+    expect(service.getArmorBonus(int, ArmorType.MediumArmor)).toEqual(0);
+  });
+
+  it('should be able to get trained skill bonus', () => {
+    expect(service.getTrainedSkillsBonus(bra)).toEqual(0);
+    expect(service.getTrainedSkillsBonus(qu)).toEqual(2);
+    expect(service.getTrainedSkillsBonus(vit)).toEqual(2);
+    expect(service.getTrainedSkillsBonus(sd)).toEqual(2);
+    sd.attributeStrength = AttributeStrength.Champion;
+    expect(service.getTrainedSkillsBonus(sd)).toEqual(1);
+    qu.attributeStrength = AttributeStrength.Epic;
+    expect(service.getTrainedSkillsBonus(qu)).toEqual(1);
+    vit.attributeStrength = AttributeStrength.Heroic;
+    expect(service.getTrainedSkillsBonus(vit)).toEqual(0);
+  });
+
+  it('should be able to get a bonus to dodge', () => {
+    expect(service.getDodgeBonus(sd, Level.One)).toEqual(0);
+    expect(service.getDodgeBonus(int, Level.One)).toEqual(7);
+    int.attributeStrength = AttributeStrength.Champion;
+    expect(service.getDodgeBonus(int, Level.One)).toEqual(4);
+    expect(service.getDodgeBonus(int, Level.Seven)).toEqual(8);
+  });
+
+  it('should be able to get first turn damage resist', () => {
+    expect(service.getFirstTurnDamageResist(qu, Level.One)).toEqual(7);
+    expect(service.getFirstTurnDamageResist(qu, Level.Ten)).toEqual(18);
+    qu.attributeStrength = AttributeStrength.Champion;
+    expect(service.getFirstTurnDamageResist(qu, Level.One)).toEqual(4);
+    expect(service.getFirstTurnDamageResist(sd, Level.Ten)).toEqual(0);
+  });
 
   function makeAttribute(name?: AttributeName): AttributeModel {
     if (!name) {

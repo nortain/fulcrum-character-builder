@@ -1,11 +1,10 @@
 import {AttributeModel} from "../../attribute/attribute-model";
 import {AttributeName} from "../../attribute/attribute-name.enum";
 
-import {AgilityAttributePicks, AttributeBonus, BrawnAttributePicks, BrawnSelections, PresenceAttributePicks, ReasoningAttributePicks} from "./selected-bonus-groups";
+import {AgilityAttributePicks, AttributeBonus, BrawnAttributePicks, PresenceAttributePicks, ReasoningAttributePicks} from "./selected-bonus-groups";
 import {AttributeStrength} from "../../attribute/attribute-strength.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ArmorType} from "../../armor/armor-type.enum";
-import {SpellKeywords} from "../../spells/spell-keywords.enum";
 
 
 const PRESS_TEXT = "When you press a foe after hitting you may choose the square they withdraw to as if you had performed a Tactical Rush, or you can displace a large foe.  This can not place the creature into Hazardous or Deadly terrain";
@@ -649,23 +648,23 @@ export const ATTRIBUTE = {
     ],
     bonusToAd: [{
       bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Normal],
-      armorTypes: [ArmorType.LightArmor, ArmorType.MediumArmor]
+      armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
     },
       {
         bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Heroic],
-        armorTypes: [ArmorType.LightArmor, ArmorType.MediumArmor]
+        armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
       },
       {
         bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Champion],
-        armorTypes: [ArmorType.LightArmor, ArmorType.MediumArmor]
+        armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
       },
       {
         bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Epic],
-        armorTypes: [ArmorType.LightArmor, ArmorType.MediumArmor]
+        armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
       }
       , {
         bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Legendary],
-        armorTypes: [ArmorType.LightArmor, ArmorType.MediumArmor]
+        armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
       }
     ],
     bonusToTrainedSkills: ATTRIBUTE_TRAINED_SKILL_BONUS

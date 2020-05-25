@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
 import {DiceService} from "../character/dice/dice.service";
-import {AttributeName} from "./attribute-name.enum";
+import {AttributeName} from "./attribute-enums/attribute-name.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";
 import {AttributeModel} from "./attribute-model";
-import {ATTRIBUTE, AttributeAttackDamage, ValueRange} from "../constants/attribute-constants/attribute-constants";
+import {ATTRIBUTE, AttributeAttackDamage, ValueRange} from "./attribute-constants/attribute-constants";
 import {LevelRange} from "../spells/enums/level-range.enum";
 import {DiceSize} from "../character/dice/dice-size.enum";
 import {Dice} from "../character/dice/dice";
-import {AttributeStrength} from "./attribute-strength.enum";
+import {AttributeStrength} from "./attribute-enums/attribute-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
-import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "../constants/attribute-constants/selected-bonus-groups";
+import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
 
 @Injectable({
@@ -19,6 +19,14 @@ import {ArmorType} from "../armor/armor-type.enum";
 export class AttributeFactoryService {
 
   constructor(private diceService: DiceService) {
+  }
+
+  initializeAllAttributes(): Array<AttributeModel> {
+    const attributesArray = new Array<AttributeModel>();
+    for (const name of Object.keys(AttributeName)) {
+      attributesArray.push(this.getNewAttribute(AttributeName[name]));
+    }
+    return attributesArray;
   }
 
   getNewAttribute(name: AttributeName, strength = AttributeStrength.Normal): AttributeModel {

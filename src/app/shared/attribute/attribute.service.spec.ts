@@ -1,8 +1,8 @@
 import {TestBed, inject} from '@angular/core/testing';
 
 import {AttributeService} from './attribute.service';
-import {AttributeName} from "./attribute-name.enum";
-import {AttributeStrength} from "./attribute-strength.enum";
+import {AttributeName} from "./attribute-enums/attribute-name.enum";
+import {AttributeStrength} from "./attribute-enums/attribute-strength.enum";
 
 describe('AttributeService', () => {
   let attributeService;

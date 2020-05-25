@@ -5,7 +5,7 @@ import {MagicDefenseType} from "../magic-defense/magic-defense-type.enum";
 import {NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS} from "../../constants/constants";
 import {RacialSubType} from "./racial-sub-type.enum";
 import {ThemeType} from "../../theme-points/theme-type.enum";
-import {AttributeName} from "../../attribute/attribute-name.enum";
+import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum";
 
 describe('Race', () => {
   let elf, human, dwarf, prim, fey, halfling, orc, elder;

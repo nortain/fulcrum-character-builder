@@ -1,6 +1,6 @@
 import { Character } from './character';
 import {RaceType} from "./race/race-type.enum";
-import {AttributeStrength} from "../attribute/attribute-strength.enum";
+import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
 import {ArmorType} from "../armor/armor-type.enum";
 import {Armor} from "../armor/armor";
 import {STARTING_INITIATIVE, STARTING_MOVEMENT} from "../constants/constants";
@@ -8,7 +8,7 @@ import {ThemeStrength} from "../theme-points/theme-strength.enum";
 import {Weapon} from "../weapon/weapon";
 import {WeaponClass} from "../weapon/weapon-class.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
-import {AttributeName} from "../attribute/attribute-name.enum";
+import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 
 describe('Character', () => {
   let bob: Character;

@@ -1,6 +1,6 @@
 
-import {AttributeStrength} from "../../attribute/attribute-strength.enum";
-import {AttributeName} from "../../attribute/attribute-name.enum";
+import {AttributeStrength} from "../attribute-enums/attribute-strength.enum";
+import {AttributeName} from "../attribute-enums/attribute-name.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ValueRange} from "./attribute-constants";
 

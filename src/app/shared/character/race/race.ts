@@ -1,29 +1,21 @@
-import {AttributeName} from "../../attribute/attribute-name.enum";
+import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum";
 import {ThemeType} from "../../theme-points/theme-type.enum";
 import {MagicDefenseType} from "../magic-defense/magic-defense-type.enum";
 import {RaceType} from "./race-type.enum";
 import {VisionType} from "./vision-type.enum";
 import {RacialSubType, RacialSubTypeToDamageTypeConverter} from "./racial-sub-type.enum";
 import {Level} from "../level.enum";
-import {NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS, STARTING_PLAYER_RACES} from "../../constants/constants";
+import {NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS} from "../../constants/constants";
 import {BonusByLevel} from "../bonus-by-level";
 import {Bonus} from "../bonus";
+import {STARTING_PLAYER_RACES} from "./race-constants/race-constants";
+import {Injectable} from "@angular/core";
+import {RaceModel} from "./race-model";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class Race {
-  vision: VisionType;
-  magicDefenseBonus: MagicDefenseType;
-  availableAttributePoints: number;
-  availableLanguagePoints: number;
-  passiveBonuses: Array<Bonus>;
-  activeBonuses: Array<Bonus>;
-  talentBonus: Array<ThemeType>;
-  startingAttributes: Array<AttributeName>;
-  optionalStartingAttributes: Array<AttributeName>;
-  powerPointBonus: number;
-  skillPointBonus: number;
-  recoveryBonus: number;
-  racialRestriction: string;
-  mechanicalBonusValues: BonusByLevel;
 
   constructor(public raceType: RaceType, public level?: Level, public racialSubType?: RacialSubType) {
     if (!level) {
@@ -32,13 +24,23 @@ export class Race {
     this.initializeData(raceType, this.level, racialSubType);
   }
 
+  getNewRace(raceType: RaceType, level: Level, racialSubType?: RacialSubType): RaceModel {
+    const model: RaceModel = {
+      ...new RaceModel(),
+      mechanicalBonusValues: STARTING_PLAYER_RACES[raceType].mechanicalBonusValues,
+      vision: STARTING_PLAYER_RACES[raceType].vision ? STARTING_PLAYER_RACES[raceType].vision : VisionType.Normal,
+      racialSubType: racialSubType ? racialSubType : null,
+      magicDefenseBonus: STARTING_PLAYER_RACES[raceType].magicDefenseBonus !== undefined ? STARTING_PLAYER_RACES[raceType].magicDefenseBonus : null,
+      availableAttributePoints: STARTING_PLAYER_RACES[raceType].availableAttributePoints ? STARTING_PLAYER_RACES[raceType].availableAttributePoints : NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS;
+    };
+    return model;
+  }
+
 
   initializeData(raceType: RaceType, level: Level, racialSubType?: RacialSubType) {
-    this.mechanicalBonusValues = STARTING_PLAYER_RACES[raceType].mechanicalBonusValues;
-    this.vision = STARTING_PLAYER_RACES[raceType].vision ? STARTING_PLAYER_RACES[raceType].vision : VisionType.Normal;
-    this.racialSubType = racialSubType ? racialSubType : null;
-    this.magicDefenseBonus = STARTING_PLAYER_RACES[raceType].magicDefenseBonus !== undefined ? STARTING_PLAYER_RACES[raceType].magicDefenseBonus : null;
-    this.availableAttributePoints = STARTING_PLAYER_RACES[raceType].availableAttributePoints ? STARTING_PLAYER_RACES[raceType].availableAttributePoints : NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS;
+
+
+    this.availableAttributePoints =
     this.availableLanguagePoints = STARTING_PLAYER_RACES[raceType].availableLanguagePoints;
     this.passiveBonuses = STARTING_PLAYER_RACES[raceType].passiveBonuses;
     this.activeBonuses = STARTING_PLAYER_RACES[raceType].activeBonuses;

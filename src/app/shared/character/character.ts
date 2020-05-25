@@ -8,8 +8,8 @@ import {ThemePointsContainer} from "../theme-points/theme-points-container";
 import {AttributeBonus} from "../attribute/character-attribute/attribute-bonus.enum";
 import {WeaponClass} from "../weapon/weapon-class.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
-import {AttributeStrength} from "../attribute/attribute-strength.enum";
-import {AttributeName} from "../attribute/attribute-name.enum";
+import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
+import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {PhysicalDefense} from "./physical-defense/physical-defense";
 import {SubthemeContainer} from "../theme-points/subthemes/subtheme-container";
 

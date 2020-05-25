@@ -1,14 +1,14 @@
 import {TestBed} from '@angular/core/testing';
 import {AttributeFactoryService} from "./attribute-factory.service";
-import {AttributeName} from "./attribute-name.enum";
-import {AttributeStrength} from "./attribute-strength.enum";
+import {AttributeName} from "./attribute-enums/attribute-name.enum";
+import {AttributeStrength} from "./attribute-enums/attribute-strength.enum";
 import {AttributeModel} from "./attribute-model";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
-import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "../constants/attribute-constants/selected-bonus-groups";
+import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
-import {INITATIVE_TEXT, PRESS_TEXT} from "../constants/attribute-constants/attribute-constants";
+import {INITATIVE_TEXT, PRESS_TEXT} from "./attribute-constants/attribute-constants";
 
 
 describe('AttributeFactoryService', () => {
@@ -275,6 +275,20 @@ describe('AttributeFactoryService', () => {
     qu.attributeStrength = AttributeStrength.Champion;
     expect(service.getSpecialText(qu)).toBe("");
     expect(service.getSpecialText(agi)).toBe("");
+  });
+
+  it('should be able to initalize all attributes', () => {
+    const newArray = service.initializeAllAttributes();
+    expect(newArray[0].attributeName).toEqual(AttributeName.Brawn);
+    expect(newArray[1].attributeName).toEqual(AttributeName.Vitality);
+    expect(newArray[2].attributeName).toEqual(AttributeName.Agility);
+    expect(newArray[3].attributeName).toEqual(AttributeName.Quickness);
+    expect(newArray[4].attributeName).toEqual(AttributeName.Reasoning);
+    expect(newArray[5].attributeName).toEqual(AttributeName.Presence);
+    expect(newArray[6].attributeName).toEqual(AttributeName.SelfDiscipline);
+    expect(newArray[7].attributeName).toEqual(AttributeName.Intuition);
+
+
   });
 
   function makeAttribute(name?: AttributeName): AttributeModel {

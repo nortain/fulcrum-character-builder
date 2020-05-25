@@ -12,7 +12,7 @@ import {By} from "@angular/platform-browser";
 import {RacialSubType} from "../shared/character/race/racial-sub-type.enum";
 import {CharacterSheetModule} from "./character-sheet.module";
 import {ThemeStrength} from "../shared/theme-points/theme-strength.enum";
-import {AttributeStrength} from "../shared/attribute/attribute-strength.enum";
+import {AttributeStrength} from "../shared/attribute/attribute-enums/attribute-strength.enum";
 import {ArmorType} from "../shared/armor/armor-type.enum";
 import {Armor} from "../shared/armor/armor";
 import {ThemePointsContainer} from "../shared/theme-points/theme-points-container";

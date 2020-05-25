@@ -1,8 +1,8 @@
-import {AttributeName} from "./attribute-name.enum";
+import {AttributeName} from "./attribute-enums/attribute-name.enum";
 import {ArmorType} from "../armor/armor-type.enum";
-import {AgilityAttributePicks, AgilitySelections, BrawnAttributePicks, BrawnSelections, PresenceAttributePicks, PresenceSelections, ReasoningAttributePicks, ReasoningSelections} from "../constants/attribute-constants/selected-bonus-groups";
-import {AttributeStrength} from "./attribute-strength.enum";
-import {AttributeAttackDamage, ValueRange} from "../constants/attribute-constants/attribute-constants";
+import {AgilityAttributePicks, AgilitySelections, BrawnAttributePicks, BrawnSelections, PresenceAttributePicks, PresenceSelections, ReasoningAttributePicks, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
+import {AttributeStrength} from "./attribute-enums/attribute-strength.enum";
+import {AttributeAttackDamage, ValueRange} from "./attribute-constants/attribute-constants";
 
 export class AttributeModel {
   attributeName: AttributeName;

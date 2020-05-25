@@ -1,8 +1,8 @@
-import {AttributeModel} from "../../attribute/attribute-model";
-import {AttributeName} from "../../attribute/attribute-name.enum";
+import {AttributeModel} from "../attribute-model";
+import {AttributeName} from "../attribute-enums/attribute-name.enum";
 
 import {AgilityAttributePicks, AttributeBonus, BrawnAttributePicks, PresenceAttributePicks, ReasoningAttributePicks} from "./selected-bonus-groups";
-import {AttributeStrength} from "../../attribute/attribute-strength.enum";
+import {AttributeStrength} from "../attribute-enums/attribute-strength.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ArmorType} from "../../armor/armor-type.enum";
 
@@ -25,7 +25,7 @@ export class AttributeAttackDamage {
 export const ATTRIBUTE_SKILL_BONUS = [0, 2, 3, 4, 5];
 export const ATTRIBUTE_MAGIC_DEFENSE = [0, 2, 3, 4, 5];
 export const ATTRIBUTE_INTUITION_MAGIC_DEFENSE = [0, 1, 2, 2, 3];
-export const ATTRIBUTE_INTUITION_INITAITIVE = [0, 2, 4, 6, 8];
+export const ATTRIBUTE_INTUITION_INITIATIVE = [0, 2, 4, 6, 8];
 export const ATTRIBUTE_RECOVERY_BONUS = [0, 0, 0, 1, 1];
 export const ATTRIBUTE_TRAINED_SKILL_BONUS = [0, 0, 1, 1, 2];
 export const ATTRIBUTE_INITIATIVE_BONUS = [0, 5, 10, 11, 16];
@@ -633,7 +633,7 @@ export const ATTRIBUTE = {
     bonusToWill: ATTRIBUTE_INTUITION_MAGIC_DEFENSE,
     bonusToFortitude: ATTRIBUTE_INTUITION_MAGIC_DEFENSE,
     bonusToReflex: ATTRIBUTE_INTUITION_MAGIC_DEFENSE,
-    bonusToInitiative: ATTRIBUTE_INTUITION_INITAITIVE,
+    bonusToInitiative: ATTRIBUTE_INTUITION_INITIATIVE,
     bonusToBrawnSkills: ATTRIBUTE_SKILL_BONUS,
     bonusToPresenceSkills: ATTRIBUTE_SKILL_BONUS,
     bonusToAgilitySkills: ATTRIBUTE_SKILL_BONUS,

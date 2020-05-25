@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AttributeName} from "../../shared/attribute/attribute-name.enum";
-import {AttributeStrength} from "../../shared/attribute/attribute-strength.enum";
+import {AttributeName} from "../../shared/attribute/attribute-enums/attribute-name.enum";
+import {AttributeStrength} from "../../shared/attribute/attribute-enums/attribute-strength.enum";
 import {DropdownValueObject} from "../../shared/ui/dropdown/dropdown-value-object";
 import {AttributeService} from "../../shared/attribute/attribute.service";
 

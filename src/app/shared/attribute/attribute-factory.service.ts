@@ -84,6 +84,28 @@ export class AttributeFactoryService {
   }
 
   /**
+   * gets the special text of an attribute if it's chosen in the case of brawn or based on
+   * theme strength in the case of agility.
+   * @param attribute
+   */
+  getSpecialText(attribute: AttributeModel): string {
+    if (attribute && attribute.epicText && attribute.attributeStrength === AttributeStrength.Epic) {
+      return attribute.epicText;
+    } else if (attribute && attribute.legendaryText && attribute.attributeStrength === AttributeStrength.Legendary) {
+      return attribute.legendaryText;
+    } else if (attribute && attribute.attributeName === AttributeName.Brawn && attribute.choosenBonusPicks) {
+      for (const pick of attribute.choosenBonusPicks) {
+        if ((pick as BrawnSelections).bonusToCriticalAndAggressivePress) {
+          return (pick as BrawnSelections).bonusToCriticalAndAggressivePress.pressText;
+        } else if ((pick as BrawnSelections).bonusToEmpoweredAndAggressivePress) {
+          return (pick as BrawnSelections).bonusToEmpoweredAndAggressivePress.pressText;
+        }
+      }
+    }
+    return "";
+  }
+
+  /**
    * Given an attributeModel determine the number of bonus trained skills a character gets
    * @param attribute
    */
@@ -231,7 +253,6 @@ export class AttributeFactoryService {
     }
     return 0;
   }
-
 
 
 // ******* HELPER FUNCTIONS BELOW **********

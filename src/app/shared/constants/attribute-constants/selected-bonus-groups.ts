@@ -1,6 +1,5 @@
-import {SpellKeywords} from "../../spells/spell-keywords.enum";
+
 import {AttributeStrength} from "../../attribute/attribute-strength.enum";
-import {AttributeType} from "../../attribute/attribute-type.enum";
 import {AttributeName} from "../../attribute/attribute-name.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ValueRange} from "./attribute-constants";

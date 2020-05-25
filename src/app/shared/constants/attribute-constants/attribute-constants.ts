@@ -7,9 +7,9 @@ import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ArmorType} from "../../armor/armor-type.enum";
 
 
-const PRESS_TEXT = "When you press a foe after hitting you may choose the square they withdraw to as if you had performed a Tactical Rush, or you can displace a large foe.  This can not place the creature into Hazardous or Deadly terrain";
+export const PRESS_TEXT = "When you press a foe after hitting you may choose the square they withdraw to as if you had performed a Tactical Rush, or you can displace a large foe.  This can not place the creature into Hazardous or Deadly terrain";
 
-const INITATIVE_TEXT = "Gain a bonus move action when rolling two odd numbers for initiative";
+export const INITATIVE_TEXT = "Gain a bonus move action when rolling two odd numbers for initiative";
 
 export class ValueRange {
   minBonus: number;

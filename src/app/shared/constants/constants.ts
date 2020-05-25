@@ -15,8 +15,6 @@ import {Bonus} from "../character/bonus";
 import {MagentSpellList, SpellWardenSpellList} from "./spells/minor-spell-constants";
 import {Spell} from "../spells/spell";
 import {AssassinSpellList, ClericSpellList, DruidSpellList, WarriorMageSpellList} from "./spells/lesser-spell-constants";
-import {AttributeModel} from "../attribute/attribute-model";
-import {AttributeType} from "../attribute/attribute-type.enum";
 
 
 export const NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS = 4;

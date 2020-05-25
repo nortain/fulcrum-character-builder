@@ -1,12 +1,10 @@
 import {Race} from "./race/race";
 import {Weapon} from "../weapon/weapon";
-import {Armor} from "../armor/armor";
 import {StartingCharacterMagicDefense, STARTING_MOVEMENT, STARTING_INITIATIVE, STEALTH_INIT_BONUS} from "../constants/constants";
 import {RaceType} from "./race/race-type.enum";
 import {Level} from "./level.enum";
 import {RacialSubType} from "./race/racial-sub-type.enum";
 import {ThemePointsContainer} from "../theme-points/theme-points-container";
-import {AttributeType} from "../attribute/attribute-type.enum";
 import {AttributeBonus} from "../attribute/character-attribute/attribute-bonus.enum";
 import {WeaponClass} from "../weapon/weapon-class.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";

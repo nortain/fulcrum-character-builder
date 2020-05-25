@@ -8,6 +8,7 @@ import {Level} from "../character/level.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "../constants/attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
+import {INITATIVE_TEXT, PRESS_TEXT} from "../constants/attribute-constants/attribute-constants";
 
 
 describe('AttributeFactoryService', () => {
@@ -265,6 +266,15 @@ describe('AttributeFactoryService', () => {
     qu.attributeStrength = AttributeStrength.Champion;
     expect(service.getFirstTurnDamageResist(qu, Level.One)).toEqual(4);
     expect(service.getFirstTurnDamageResist(sd, Level.Ten)).toEqual(0);
+  });
+
+  it('should be able to get special text', () => {
+    expect(service.getSpecialText(qu)).toBe(INITATIVE_TEXT);
+    bra.choosenBonusPicks = [{bonusToCriticalAndAggressivePress: bra.selectableBonusPicks.typeOfPick[2].selections["bonusToCriticalAndAggressivePress"]} as BrawnSelections];
+    expect(service.getSpecialText(bra)).toBe(PRESS_TEXT);
+    qu.attributeStrength = AttributeStrength.Champion;
+    expect(service.getSpecialText(qu)).toBe("");
+    expect(service.getSpecialText(agi)).toBe("");
   });
 
   function makeAttribute(name?: AttributeName): AttributeModel {

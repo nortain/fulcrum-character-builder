@@ -77,7 +77,7 @@ describe('Race', () => {
   });
 
   it('should be able to get formatted text for a dwarf\'s virile recovery', () => {
-    expect(dwarf.formatText(dwarf.passiveBonuses[0].value)).toBe("Increase your recovery value by 1");
+    expect(service.formatText(dwarf, dwarf.passiveBonuses[0].value)).toBe("Increase your recovery value by 1");
   });
 
   it('should be able to get a dwarf\'s tough as nails bonus in a formatted version for at level 5', () => {
@@ -86,31 +86,31 @@ describe('Race', () => {
   });
 
   it(' should be able to format text of the elder\'s active bonus resistance of the ancients', () => {
-    expect(elder.formatText(elder.activeBonuses[0].value)).toBe("As a minor action you can remove all decaying effects on you and reduce your ongoing by 5");
+    expect(service.formatText(elder, elder.activeBonuses[0].value)).toBe("As a minor action you can remove all decaying effects on you and reduce your ongoing by 5");
   });
 
   it('should be able to format text when the bonus is a string', () => {
-    expect(fey.formatText(fey.activeBonuses[0].value)).toBe("As a minor action you gain advantage to the first roll of an attack or spell cast this turn.  You also increase the damage inflicted to all targets by 1 extra damage die.");
+    expect(service.formatText(fey, fey.activeBonuses[0].value)).toBe("As a minor action you gain advantage to the first roll of an attack or spell cast this turn.  You also increase the damage inflicted to all targets by 1 extra damage die.");
   });
 
   it('should be able to format text for an air primental\'s elemental resistance', () => {
-    prim.initializeData(prim.raceType, 1, RacialSubType.Air);
-    expect(prim.formatText(prim.passiveBonuses[0].value)).toBe("You gain 3 resistance to the Lightning keyword and 2 to all other magic damage keywords");
+    prim = service.getNewRace(RaceType.Primental, Level.One, RacialSubType.Air);
+    expect(service.formatText(prim, prim.passiveBonuses[0].value)).toBe("You gain 3 resistance to the Lightning keyword and 2 to all other magic damage keywords");
   });
 
   it('should be able to format test for a fire primental\'s active elemental release', () => {
-    prim.initializeData(prim.raceType, 1, RacialSubType.Fire);
-    expect(prim.formatText(prim.activeBonuses[0].value)).toBe("As a minor action any successful attacks gain the heat keyword and do an additional 1d8+3 heat damage (roll once).");
+    prim = service.getNewRace(RaceType.Primental, Level.One, RacialSubType.Fire);
+    expect(service.formatText(prim, prim.activeBonuses[0].value)).toBe("As a minor action any successful attacks gain the heat keyword and do an additional 1d8+3 heat damage (roll once).");
   });
 
   it('should be able to format the text for the earth elementals active elemental power', () => {
-    prim.initializeData(prim.raceType, 6, RacialSubType.Earth);
-    expect(prim.formatText(prim.activeBonuses[0].value)).toBe("As a minor action strike the ground with tremendous force.  All adjacent enemies must make a hard saving throw (17) throw or be knocked prone.");
+    prim = service.getNewRace(RaceType.Primental, Level.Six, RacialSubType.Earth);
+    expect(service.formatText(prim, prim.activeBonuses[0].value)).toBe("As a minor action strike the ground with tremendous force.  All adjacent enemies must make a hard saving throw (17) throw or be knocked prone.");
   });
 
   it('should be able to format text for the water elementals passive power', function () {
-    prim.initializeData(prim.raceType, 3, RacialSubType.Water);
-    expect(prim.formatText(prim.activeBonuses[0].value)).toBe("As a swift action you ignore all difficult terrain and your movement does not provoke opportunity attacks until the end of your turn.");
+    prim = service.getNewRace(RaceType.Primental, Level.Three, RacialSubType.Water);
+    expect(service.formatText(prim, prim.activeBonuses[0].value)).toBe("As a swift action you ignore all difficult terrain and your movement does not provoke opportunity attacks until the end of your turn.");
   });
 
   it('should be able to format text for the human active power', function () {

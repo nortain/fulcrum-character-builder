@@ -1,5 +1,4 @@
 import {DropdownValueObject} from "../ui/dropdown/dropdown-value-object";
-import {Character} from "../character/character";
 import {RaceType} from "../character/race/race-type.enum";
 import {ComponentFixture} from "@angular/core/testing";
 import {By} from "@angular/platform-browser";
@@ -23,6 +22,7 @@ import {AreaOfEffectTypes} from "../area-of-effect/area-of-effect-types.enum";
 import {LevelRange} from "../spells/enums/level-range.enum";
 import {AllDefenseType} from "../character/physical-defense/physical-defense-type.enum";
 import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap";
+import {CharacterModel} from "../character/character-model";
 
 export function mockDropdownData() {
   return [
@@ -33,7 +33,7 @@ export function mockDropdownData() {
 }
 
 export function mockCharacter(name = "Bob", raceType = RaceType.Altwani) {
-  const character = new Character(name, raceType);
+  const character = new CharacterModel();
   return character;
 }
 

@@ -62,7 +62,7 @@ export class Character {
     for (const attribute of this.attributes) {
       attributeBonus += this.attributeFactoryService.getAttackDamageBonus(attribute, this.weapons[index].baseValues.category, race.level).modifierOfDice.value();
     }
-    this.weapons[index].baseValues.damage.modifierOfDice.addVal['attributes'] = attributeBonus;\
+    this.weapons[index].baseValues.damage.modifierOfDice.addVal['attributes'] = attributeBonus;
     const result = this.weapons[index].baseValues.damage.printRoll();
     return result;
   }

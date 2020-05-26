@@ -6,6 +6,10 @@ import {NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS} from "../../constants/constants";
 import {STARTING_PLAYER_RACES} from "./race-constants/race-constants";
 import {Injectable} from "@angular/core";
 import {RaceModel} from "./race-model";
+import {DiceService} from "../dice/dice.service";
+import {ValueRange} from "../../attribute/attribute-constants/attribute-constants";
+import {DiceSize} from "../dice/dice-size.enum";
+import {LevelRange} from "../../spells/enums/level-range.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +56,6 @@ export class RaceFactoryService {
           if (valueText !== undefined) {
             result = result.concat(valueText);
           }
-
         }
       }
     } else {
@@ -60,6 +63,9 @@ export class RaceFactoryService {
     }
     return result;
   }
+
+
+
 
 
   /** In the constants file there are a number of default values for races.
@@ -72,7 +78,7 @@ export class RaceFactoryService {
     if (race.mechanicalBonusValues) {
       const valueArray = race.mechanicalBonusValues[propertyName];
       let valueResult: string;
-      if (valueArray && valueArray.length === 10) {
+      if (valueArray && valueArray.length === 2) {
         valueResult = valueArray[race.level - 1];
       } else if (valueArray) {
         valueResult = valueArray[RacialSubTypeToDamageTypeConverter[race.racialSubType]];

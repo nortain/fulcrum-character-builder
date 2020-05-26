@@ -11,6 +11,7 @@ import {Level} from "../level.enum";
 export class RaceModel {
   raceType: RaceType;
   level: Level;
+  movementPenalty: number;
   vision: VisionType;
   magicDefenseBonus: MagicDefenseType;
   availableAttributePoints: number;

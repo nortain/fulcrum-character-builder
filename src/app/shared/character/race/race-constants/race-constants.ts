@@ -29,7 +29,7 @@ export const STARTING_PLAYER_RACES = {
     ]
   } as RaceModel,
   Burman: {
-    vision: VisionType.Star,
+    vision: VisionType.Low,
     startingAttributes: [AttributeName.Brawn, AttributeName.Reasoning, AttributeName.Vitality],
     availableLanguagePoints: 3,
     magicDefenseBonus: MagicDefenseType.Will,
@@ -40,7 +40,7 @@ export const STARTING_PLAYER_RACES = {
       },
       {
         name: "Low Center of Mass",
-        value: "Any time you are affected with a non-falling attack that results in you being knocked prone you can make a medium saving throw, if the roll is successful you ignore the knockdown effect."
+        value: "Any time you are affected with a non-falling attack that results in you being knocked prone you can make a DC 13 saving throw, if the roll is successful you ignore the knockdown effect."
       }
     ],
     activeBonuses: [
@@ -50,18 +50,19 @@ export const STARTING_PLAYER_RACES = {
       },
     ],
     mechanicalBonusValues: {
-      "Tough as Nails": ["6", "7", "8", "10", "11", "12", "14", "15", "16", "18"],
+      "Tough as Nails": ["2", "3", "3", "4", "4", "5", "5", "6", "6", "7"],
       "Virile Recovery": ["1", "1", "1", "2", "2", "2", "2", "3", "3", "3"]
     } as BonusByLevel
   } as RaceModel,
   Elder: {
     startingAttributes: [AttributeName.Vitality, AttributeName.SelfDiscipline, AttributeName.Intuition],
-    availableLanguagePoints: 4,
-    talentBonus: [ThemeType.Combat, ThemeType.Magic],
+    movementPenalty: -1,
+    availableLanguagePoints: 3,
+    talentBonus: [ThemeType.General],
     passiveBonuses: [
       {
         name: "Steady Gait",
-        value: "As part of any movement you can reduce your speed by 1 to ignore difficult terrain for the action"
+        value: "As part of any movement you can reduce your speed by 1 to reduce difficult terrains movement cost by 2. (Movement costs cannot go below 1)"
       }
     ],
     activeBonuses: [
@@ -71,7 +72,7 @@ export const STARTING_PLAYER_RACES = {
       },
     ],
     mechanicalBonusValues: {
-      "Resistance of the Ancients": ["5", "6", "7", "8", "9", "10", "11", "12", "13", "14"]
+      "Resistance of the Ancients": ["3", "4", "4", "5", "5", "6", "6", "7", "7", "8"]
     } as BonusByLevel
   } as RaceModel,
   Human: {
@@ -93,7 +94,7 @@ export const STARTING_PLAYER_RACES = {
     activeBonuses: [
       {
         name: "Oh the Humanity",
-        value: "As a minor action you can gain a +4 to hit with all attacks and any critical rolls gain 1 additional die until the end of your turn."
+        value: "As a minor action you can gain a +3 to hit with all attacks and any critical rolls gain 1 additional die until the end of your turn."
       },
     ]
   } as RaceModel,
@@ -207,10 +208,10 @@ export const STARTING_PLAYER_RACES = {
     passiveBonuses: [
       {
         name: "No Small Skill",
-        value: "Increase the game your agility applies to weapons by $No Small Skill$.  Increase the damage your presence applies to magic attacks by $No Small Skill$"
+        value: "Increase the damage your agility applies to weapons by $No Small Skill$.  Increase the damage your presence applies to magic attacks by $No Small Skill$"
       } as Bonus, {
         name: "Sheer Luck",
-        value: "Gain a +1 bonus to your saving throw rolls"
+        value: "Gain a +1 bonus to your saving throw and to AD vs environment spells"
       } as Bonus
     ],
     activeBonuses: [
@@ -221,8 +222,8 @@ export const STARTING_PLAYER_RACES = {
     ],
     racialRestriction: "Can't use two handed melee weapons",
     mechanicalBonusValues: {
-      "No Small Skill": ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"],
-      "Tiny Target": ["11", "14", "16", "19", "21", "24", "26", "29", "31", "34"]
+      "No Small Skill": ["1", "1", "1", "2", "2", "2", "2", "3", "3", "3"],
+      "Tiny Target": ["6", "7", "8", "10", "11", "12", "13", "15", "16", "17"]
     } as BonusByLevel
   } as RaceModel
 

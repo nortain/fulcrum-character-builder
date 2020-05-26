@@ -1,4 +1,3 @@
-import {Race} from "./race/race";
 import {Weapon} from "../weapon/weapon";
 import {StartingCharacterMagicDefense, STARTING_MOVEMENT, STARTING_INITIATIVE, STEALTH_INIT_BONUS} from "../constants/constants";
 import {RaceType} from "./race/race-type.enum";
@@ -12,22 +11,31 @@ import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {PhysicalDefense} from "./physical-defense/physical-defense";
 import {SubthemeContainer} from "../theme-points/subthemes/subtheme-container";
+import {AttributeFactoryService} from "../attribute/attribute-factory.service";
+import {RaceFactoryService} from "./race/race-factory.service";
+import {AttributeModel} from "../attribute/attribute-model";
+import {RaceModel} from "./race/race-model";
 
-export class Character extends Race {
+export class Character {
+  attributes: Array<AttributeModel>;
+  race: RaceModel;
 
-  constructor(public name: string,
-              public raceType: RaceType = RaceType.Altwani,
-              level?: Level,
-              subRace: RacialSubType = null,
-              public themePoints = new ThemePointsContainer(),
-              public subthemes = new SubthemeContainer(themePoints),
-              public physicalDefense = new PhysicalDefense(),
-              public weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
-              public magicDefense = new StartingCharacterMagicDefense(),
-              public attributes: any = {}) { // TODO find a new way to build attributes and put them here
-    super(raceType, level, subRace);
-    for (const attribute of this.attributes.attributesArray) {
-      this.assignAttributePoint(attribute.strength, attribute.getName());
+  constructor(
+    private attributeFactoryService: AttributeFactoryService,
+    private raceFactoryService: RaceFactoryService,
+    public name: string,
+    public raceType: RaceType = RaceType.Altwani,
+    level?: Level,
+    subRace: RacialSubType = null,
+    public themePoints = new ThemePointsContainer(),
+    public subthemes = new SubthemeContainer(themePoints),
+    public physicalDefense = new PhysicalDefense(),
+    public weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
+    public magicDefense = new StartingCharacterMagicDefense()) { // TODO find a new way to build attributes and put them here
+    this.attributes = this.attributeFactoryService.initializeAllAttributes();
+    this.race = this.raceFactoryService.getNewRace(raceType, level, subRace);
+    for (const attribute of this.attributes) {
+      this.assignAttributePoint(attribute, this.race);
     }
   }
 
@@ -37,7 +45,8 @@ export class Character extends Race {
    */
   getInitiative(): number {
     let init = STARTING_INITIATIVE;
-    init += this.attributes.getBonus(AttributeBonus.InitiativeBonus);
+    init += this.attributeFactoryService.getInitiativeBonus(this.attributes[AttributeName.Quickness]);
+    init += this.attributeFactoryService.getInitiativeBonus(this.attributes[AttributeName.Intuition]);
     init += STEALTH_INIT_BONUS[this.themePoints.stealth.getStrength()];
     return init;
   }
@@ -45,17 +54,16 @@ export class Character extends Race {
   /**
    * gets the string based representation damage of a weapon given an index of the weapon in the array of weapons the character may have
    * @param {number} index of the weapon to fetch damage for
+   * @param race
    * @returns {string} based representation of said weapon's damage
    */
-  getWeaponDamage(index: number): string {
+  getWeaponDamage(index: number, race: RaceModel): string {
     let attributeBonus = 0;
-    if (this.weapons[index].baseValues.category === WeaponCategory.Balanced) {
-      attributeBonus = this.attributes.getBonus(AttributeBonus.SecondaryDamage);
-    } else {
-      attributeBonus = this.attributes.getBonus(AttributeBonus.PrimaryDamage);
+    for (const attribute of this.attributes) {
+      attributeBonus += this.attributeFactoryService.getAttackDamageBonus(attribute, this.weapons[index].baseValues.category, race.level).modifierOfDice.value();
     }
-    this.weapons[0].baseValues.damage.modifierOfDice.addVal['attributes'] = attributeBonus;
-    const result = this.weapons[0].baseValues.damage.printRoll();
+    this.weapons[index].baseValues.damage.modifierOfDice.addVal['attributes'] = attributeBonus;\
+    const result = this.weapons[index].baseValues.damage.printRoll();
     return result;
   }
 
@@ -65,7 +73,7 @@ export class Character extends Race {
    */
   getSpeed(): number {
     let result = STARTING_MOVEMENT;
-    result = result + this.attributes.getBonus(AttributeBonus.SpeedBonus);
+    result += this.attributeFactoryService.getSpeedBonus(this.attributes[AttributeName.Agility]);
     if (this.physicalDefense.armor) {
       result += this.physicalDefense.armor.getMaxMovement().movementPenalty;
       if (result > this.physicalDefense.armor.getMaxMovement().maxMovement) {
@@ -77,18 +85,18 @@ export class Character extends Race {
 
   /**
    * Need to add more notes about how attributes are assigned to characters.
-   * @param {number} strength of the attribute
    * @param {AttributeType} attribute is the type of the attribute
+   * @param race
    */
-  assignAttributePoint(strength: AttributeStrength, attribute: AttributeName) {
-    if (strength === AttributeStrength.Normal &&
-      this.startingAttributes.indexOf(attribute) > -1) {
-      this.attributes[attribute].strength = AttributeStrength.Heroic;
+  assignAttributePoint(attribute: AttributeModel, race: RaceModel) {
+    if (attribute.attributeStrength === AttributeStrength.Normal &&
+      race.startingAttributes.indexOf(attribute.attributeName) > -1) {
+      this.attributes[attribute.attributeName].strength = AttributeStrength.Heroic;
     } else {
-      const strengthDifference = this.attributes[attribute].strength - strength;
-      if (-strengthDifference <= this.availableAttributePoints) {
-        this.attributes[attribute].strength = strength;
-        this.availableAttributePoints += strengthDifference;
+      const strengthDifference = this.attributes[attribute.attributeName].strength - attribute.attributeStrength;
+      if (-strengthDifference <= race.availableAttributePoints) {
+        this.attributes[attribute.attributeName].strength = attribute.attributeStrength;
+        race.availableAttributePoints += strengthDifference;
       }
     }
   }

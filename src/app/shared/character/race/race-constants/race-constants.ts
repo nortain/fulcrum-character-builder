@@ -2,7 +2,6 @@ import {VisionType} from "../vision-type.enum";
 import {AttributeName} from "../../../attribute/attribute-enums/attribute-name.enum";
 import {ThemeType} from "../../../theme-points/theme-type.enum";
 import {Bonus} from "../../bonus";
-import {Race} from "../race";
 import {MagicDefenseType} from "../../magic-defense/magic-defense-type.enum";
 import {BonusByLevel} from "../../bonus-by-level";
 import {SavingThrow} from "../../saving-throw.enum";

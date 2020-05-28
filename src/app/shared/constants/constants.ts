@@ -541,30 +541,6 @@ export const BASE_WEAPON_DAMAGE = {
       range: [15, 30, 60],
       specialText: "1- to hit, Move action to Reload"
     } as WeaponType
-  },
-  Simple: {
-    Thrown: {
-      damage: new Dice(2, DiceSize.d6, -1),
-      critical: new Dice(1, DiceSize.d6, 0),
-      range: [3, 6, 9],
-      specialText: "Requires no training, no extra attribute damage"
-    } as WeaponType,
-    "Melee 1h": {
-      damage: new Dice(2, DiceSize.d6, 2),
-      critical: new Dice(1, DiceSize.d6, 1),
-      specialText: "Requires no training, no extra attribute damage"
-    } as WeaponType,
-    "Melee 2h": {
-      damage: new Dice(2, DiceSize.d8, 2),
-      critical: new Dice(1, DiceSize.d8, 1),
-      specialText: "Requires no training, no extra attribute damage"
-    } as WeaponType,
-    Ranged: {
-      damage: new Dice(2, DiceSize.d6, 2),
-      critical: new Dice(1, DiceSize.d8, 1),
-      range: [10, 20, 40],
-      specialText: "Requires no training, no extra attribute damage, Move action to Reload"
-    } as WeaponType
   }
 };
 

@@ -4,7 +4,7 @@ import {WeaponClass} from "./weapon-class.enum";
 import {BASE_WEAPON_DAMAGE} from "../constants/constants";
 
 describe('Weapon', () => {
-  let axe: Weapon, dagger: Weapon, spear: Weapon, crossbow: Weapon;
+  let axe: Weapon, dagger: Weapon, spear: Weapon;
   beforeEach(() => {
     axe = new Weapon("axe", WeaponClass.Melee2h, WeaponCategory.Heavy);
     dagger = new Weapon("dagger", WeaponClass.Thrown, WeaponCategory.Agile);
@@ -19,7 +19,6 @@ describe('Weapon', () => {
     expect(axe.baseValues.damage.printRoll()).toBe("2d12");
     expect(dagger.baseValues.damage.printRoll()).toBe("2d6-1");
     expect(spear.baseValues.damage.printRoll()).toBe("2d8");
-    expect(crossbow.baseValues.damage.printRoll()).toBe("2d6+2");
   });
 
   it('should be able to get attack roll for the weapon', () => {
@@ -31,22 +30,18 @@ describe('Weapon', () => {
     expect(axe.baseValues.specialText).toBe(BASE_WEAPON_DAMAGE.Heavy[WeaponClass.Melee2h].specialText);
     expect(dagger.baseValues.specialText).toBe("");
     expect(spear.baseValues.specialText).toBe("");
-    expect(crossbow.baseValues.specialText).toBe(BASE_WEAPON_DAMAGE.Simple[WeaponClass.Ranged].specialText);
   });
 
   it('should be able to get critical for the weapon', () => {
     expect(axe.baseValues.critical.printRoll()).toBe("1d10+1");
     expect(dagger.baseValues.critical.printRoll()).toBe("1d8+1");
     expect(spear.baseValues.critical.printRoll()).toBe("1d8+1");
-    expect(crossbow.baseValues.critical.printRoll()).toBe("1d8");
   });
 
   it('should be able to get range for weapons that have it', () => {
     expect(axe.baseValues.range.length).toEqual(0);
     expect(dagger.baseValues.range.length).toEqual(3);
     expect(spear.baseValues.range).toEqual(BASE_WEAPON_DAMAGE.Balanced.Polearm.range);
-    expect(crossbow.baseValues.range).toEqual(BASE_WEAPON_DAMAGE.Simple.Ranged.range);
   });
-
 
 });

@@ -78,7 +78,7 @@ export class RaceFactoryService {
     if (race.mechanicalBonusValues) {
       const valueArray = race.mechanicalBonusValues[propertyName];
       let valueResult: string;
-      if (valueArray && valueArray.length === 2) {
+      if (valueArray && valueArray.length === 10) {
         valueResult = valueArray[race.level - 1];
       } else if (valueArray) {
         valueResult = valueArray[RacialSubTypeToDamageTypeConverter[race.racialSubType]];

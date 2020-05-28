@@ -64,7 +64,7 @@ describe('DropdownComponent', () => {
     fixture.detectChanges();
     expect(component.selectedValue).toEqual(mockDropdownData()[1]);
     const dd = fixture.debugElement.query(By.css("button"));
-    expect(dd.nativeElement.innerText).toBe(mockDropdownData()[1].label);
+    expect(dd.nativeElement.innerText.trim()).toBe(mockDropdownData()[1].label);
   });
 
   it('should not have a br element in it', () => {
@@ -90,7 +90,7 @@ describe('DropdownComponent', () => {
     component.defaultSelect = true;
     fixture.detectChanges();
     const btn = fixture.debugElement.query(By.css("button")).nativeElement;
-    expect(btn.innerText).toBe("<Select>");
+    expect(btn.innerText.trim()).toBe("<Select>");
   });
 
   it('it should have a way to be mark itself in an error state', function () {

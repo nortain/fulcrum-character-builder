@@ -18,7 +18,7 @@ export const STARTING_PLAYER_RACES = {
     passiveBonuses: [
       {
         name: "Catstep",
-        value: "Abilities that allow you to shift and tactical move ignore difficult terrain"
+        value: "Abilities that allow you to shift and tactical reduce DT by 1. (Movement cannot go below 1)"
       } as Bonus
     ],
     activeBonuses: [
@@ -107,7 +107,7 @@ export const STARTING_PLAYER_RACES = {
     passiveBonuses: [
       {
         name: "Eldritch Enervation",
-        value: "Heal $Eldritch Infusion$ hit points when scoring a critical strike on an attack"
+        value: "Heal $Eldritch Enervation$ hit points when scoring a critical strike on an attack"
       }
     ],
     activeBonuses: [
@@ -117,7 +117,7 @@ export const STARTING_PLAYER_RACES = {
       },
     ],
     mechanicalBonusValues: {
-      "Eldritch Enervation": ["4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
+      "Eldritch Enervation": ["2", "3", "3", "4", "4", "5", "5", "6", "6", "7"],
       "Eldritch Infusion": ["1 extra damage die.",
         "1 extra damage die.",
         "1 extra damage die.",
@@ -134,7 +134,7 @@ export const STARTING_PLAYER_RACES = {
   HighOrc: {
     startingAttributes: [AttributeName.Brawn, AttributeName.Presence, AttributeName.Quickness],
     vision: VisionType.Low,
-    availableLanguagePoints: 3,
+    availableLanguagePoints: 4,
     talentBonus: [ThemeType.Combat],
     passiveBonuses: [
       {
@@ -152,7 +152,7 @@ export const STARTING_PLAYER_RACES = {
   Primental: {
     startingAttributes: [AttributeName.Brawn, AttributeName.Intuition],
     optionalStartingAttributes: [AttributeName.Reasoning, AttributeName.Presence],
-    availableLanguagePoints: 3,
+    availableLanguagePoints: 5,
     talentBonus: [ThemeType.Magic],
     passiveBonuses: [
       {
@@ -170,8 +170,8 @@ export const STARTING_PLAYER_RACES = {
       }
     ],
     mechanicalBonusValues: {
-      "Elemental Resistance": ["3", "4", "5", "5", "6", "7", "7", "8", "9", "9"],
-      "Other Elemental Resistance": ["2", "2", "3", "3", "4", "4", "5", "5", "6", "6"],
+      "Elemental Resistance": ["2", "2", "3", "3", "4", "4", "5", "5", "6", "6"],
+      "Other Elemental Resistance": ["1", "1", "1", "2", "2", "2", "2", "3", "3", "3"],
       racialSubTypePassive: [
         "Force",
         "Lightning",
@@ -179,23 +179,23 @@ export const STARTING_PLAYER_RACES = {
         "Cold",
       ],
       racialSubTypeActive: [
-        "minor action strike the ground with tremendous force.  All adjacent enemies must make a hard saving throw (" + SavingThrow.Hard + ") throw or be knocked prone",
-        "when you are hit with a melee attack by an enemy you can have the attacking enemy take $Lightning$ lightning damage as a free action",
+        "minor action strike the ground with tremendous force.  All adjacent enemies that are one size larger or less are knocked prone and any knockdown resistant creatures must make a DC 17 saving throw to avoid the effect",
+        "when you are hit with melee attack by an enemy you can have the attacking enemy take $Lightning$ lightning damage as a free action",
         "minor action any successful attacks gain the heat keyword and do an additional $Heat$ heat damage (roll once)",
         "swift action you ignore all difficult terrain and your movement does not provoke opportunity attacks until the end of your turn"
       ],
-      Lightning: ["17", "21", "25", "29", "33", "37", "41", "45", "49", "53"],
+      Lightning: ["10", "12", "14", "16", "18", "20", "22", "24", "26", "28"],
       Heat: [
-        new Dice(1, DiceSize.d8, 3).printRoll(),
-        new Dice(1, DiceSize.d8, 4).printRoll(),
+        new Dice(1, DiceSize.d6, 2).printRoll(),
+        new Dice(1, DiceSize.d6, 3).printRoll(),
+        new Dice(1, DiceSize.d6, 4).printRoll(),
+        new Dice(1, DiceSize.d8, 5).printRoll(),
         new Dice(1, DiceSize.d8, 6).printRoll(),
-        new Dice(1, DiceSize.d10, 7).printRoll(),
+        new Dice(1, DiceSize.d8, 7).printRoll(),
+        new Dice(1, DiceSize.d8, 8).printRoll(),
         new Dice(1, DiceSize.d10, 9).printRoll(),
         new Dice(1, DiceSize.d10, 10).printRoll(),
-        new Dice(1, DiceSize.d10, 12).printRoll(),
-        new Dice(1, DiceSize.d12, 13).printRoll(),
-        new Dice(1, DiceSize.d12, 15).printRoll(),
-        new Dice(1, DiceSize.d12, 16).printRoll(),
+        new Dice(1, DiceSize.d10, 11).printRoll(),
 
       ]
     } as BonusByLevel

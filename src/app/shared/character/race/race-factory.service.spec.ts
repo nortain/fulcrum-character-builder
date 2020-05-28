@@ -41,7 +41,7 @@ describe('Race', () => {
   it('should be able to create a a few different characters with different vision types', () => {
     expect(human.vision).toBe(VisionType.Normal);
     expect(elf.vision).toBe(VisionType.Low);
-    expect(dwarf.vision).toBe(VisionType.Star);
+    expect(dwarf.vision).toBe(VisionType.Low);
   });
 
   it('should be able to figure out what a race\s magicical defensive bonus is', () => {

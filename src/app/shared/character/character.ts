@@ -37,9 +37,11 @@ export class Character {
                   physicalDefense = new PhysicalDefense(),
                   weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
                   magicDefense = new StartingCharacterMagicDefense()): CharacterModel {
-    const model:CharacterModel = {
+    const model: CharacterModel = {
       ...new CharacterModel(),
-      race: this.raceFactoryService()
+      race: this.raceFactoryService.getNewRace(raceType, level, subRace),
+      level: level,
+
     };
     this.attributes = this.attributeFactoryService.initializeAllAttributes();
     this.race = this.raceFactoryService.getNewRace(raceType, level, subRace);

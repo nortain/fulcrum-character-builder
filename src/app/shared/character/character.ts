@@ -15,6 +15,7 @@ import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {RaceFactoryService} from "./race/race-factory.service";
 import {AttributeModel} from "../attribute/attribute-model";
 import {RaceModel} from "./race/race-model";
+import {CharacterModel} from "./character-model";
 
 export class Character {
   attributes: Array<AttributeModel>;
@@ -23,20 +24,29 @@ export class Character {
   constructor(
     private attributeFactoryService: AttributeFactoryService,
     private raceFactoryService: RaceFactoryService,
-    public name: string,
-    public raceType: RaceType = RaceType.Altwani,
-    level?: Level,
-    subRace: RacialSubType = null,
-    public themePoints = new ThemePointsContainer(),
-    public subthemes = new SubthemeContainer(themePoints),
-    public physicalDefense = new PhysicalDefense(),
-    public weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
-    public magicDefense = new StartingCharacterMagicDefense()) { // TODO find a new way to build attributes and put them here
+  ) { // TODO find a new way to build attributes and put them here
+
+  }
+
+  getNewCharacter(name: string,
+                  raceType: RaceType = RaceType.Altwani,
+                  level = Level.One,
+                  subRace: RacialSubType = null,
+                  themePoints = new ThemePointsContainer(),
+                  subthemes = new SubthemeContainer(themePoints),
+                  physicalDefense = new PhysicalDefense(),
+                  weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
+                  magicDefense = new StartingCharacterMagicDefense()): CharacterModel {
+    const model:CharacterModel = {
+      ...new CharacterModel(),
+      race: this.raceFactoryService()
+    };
     this.attributes = this.attributeFactoryService.initializeAllAttributes();
     this.race = this.raceFactoryService.getNewRace(raceType, level, subRace);
     for (const attribute of this.attributes) {
       this.assignAttributePoint(attribute, this.race);
     }
+
   }
 
   /**

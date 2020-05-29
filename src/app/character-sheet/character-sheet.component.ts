@@ -21,19 +21,19 @@ import {CharacterSubthemeModalComponent} from "./character-subtheme-modal/charac
 })
 export class CharacterSheetComponent implements OnInit, OnChanges {
 
-  // testName;
-  // character: Character;
-  // races: DropdownValueObject[];
-  // subraces: DropdownValueObject[];
-  // levels: DropdownValueObject[];
-  //
-  // RaceType = RaceType; // expose racetype to the UI
-  // MagicDefenseType = MagicDefenseType;
-  //
-  // constructor(private attributeService: AttributeService, private modalService: NgbModal) {
-  //   this.testName = "";
-  // }
-  //
+  testName;
+  character: Character;
+  races: DropdownValueObject[];
+  subraces: DropdownValueObject[];
+  levels: DropdownValueObject[];
+
+  RaceType = RaceType; // expose racetype to the UI
+  MagicDefenseType = MagicDefenseType;
+
+  constructor(private attributeService: AttributeService, private modalService: NgbModal) {
+    this.testName = "";
+  }
+
   ngOnChanges() {
     console.log("ngchanges was called");
   }

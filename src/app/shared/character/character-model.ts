@@ -50,7 +50,7 @@ export class CharacterModel {
   fortitude: MagicDefense;
   reflex: MagicDefense;
   will: MagicDefense;
-  physicalDefenses: PhysicalDefense;
+  physicalDefense: PhysicalDefense;
 
 
 

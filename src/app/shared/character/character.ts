@@ -1,10 +1,9 @@
 import {Weapon} from "../weapon/weapon";
-import {StartingCharacterMagicDefense, STARTING_MOVEMENT, STARTING_INITIATIVE, STEALTH_INIT_BONUS} from "../constants/constants";
+import {STARTING_INITIATIVE, STARTING_MOVEMENT, StartingCharacterMagicDefense, STEALTH_INIT_BONUS} from "../constants/constants";
 import {RaceType} from "./race/race-type.enum";
 import {Level} from "./level.enum";
 import {RacialSubType} from "./race/racial-sub-type.enum";
 import {ThemePointsContainer} from "../theme-points/theme-points-container";
-import {AttributeBonus} from "../attribute/character-attribute/attribute-bonus.enum";
 import {WeaponClass} from "../weapon/weapon-class.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
@@ -13,13 +12,10 @@ import {PhysicalDefense} from "./physical-defense/physical-defense";
 import {SubthemeContainer} from "../theme-points/subthemes/subtheme-container";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {RaceFactoryService} from "./race/race-factory.service";
-import {AttributeModel} from "../attribute/attribute-model";
 import {RaceModel} from "./race/race-model";
 import {CharacterModel} from "./character-model";
 
 export class Character {
-  attributes: Array<AttributeModel>;
-  race: RaceModel;
 
   constructor(
     private attributeFactoryService: AttributeFactoryService,
@@ -40,26 +36,24 @@ export class Character {
     const model: CharacterModel = {
       ...new CharacterModel(),
       race: this.raceFactoryService.getNewRace(raceType, level, subRace),
+      attributes: this.attributeFactoryService.initializeAllAttributes(),
       level: level,
-
     };
-    this.attributes = this.attributeFactoryService.initializeAllAttributes();
-    this.race = this.raceFactoryService.getNewRace(raceType, level, subRace);
-    for (const attribute of this.attributes) {
-      this.assignAttributePoint(attribute, this.race);
+    for (const attribute of model.attributes) { // loop through all attributes to apply racial bonuses if any.
+      this.assignAttributeStrength(model, attribute.attributeName, AttributeStrength.Normal);
     }
-
+    return model;
   }
 
   /**
    * Gets all initiative bonuses for a character and returns it as a whole number
    * @returns {number}
    */
-  getInitiative(): number {
+  getInitiative(character: CharacterModel): number {
     let init = STARTING_INITIATIVE;
-    init += this.attributeFactoryService.getInitiativeBonus(this.attributes[AttributeName.Quickness]);
-    init += this.attributeFactoryService.getInitiativeBonus(this.attributes[AttributeName.Intuition]);
-    init += STEALTH_INIT_BONUS[this.themePoints.stealth.getStrength()];
+    init += this.attributeFactoryService.getInitiativeBonus(character.attributes[AttributeName.Quickness]);
+    init += this.attributeFactoryService.getInitiativeBonus(character.attributes[AttributeName.Intuition]);
+    init += STEALTH_INIT_BONUS[character.themePoints.stealth.getStrength()];
     return init;
   }
 
@@ -69,13 +63,13 @@ export class Character {
    * @param race
    * @returns {string} based representation of said weapon's damage
    */
-  getWeaponDamage(index: number, race: RaceModel): string {
+  getWeaponDamage(character: CharacterModel, index: number): string {
     let attributeBonus = 0;
-    for (const attribute of this.attributes) {
-      attributeBonus += this.attributeFactoryService.getAttackDamageBonus(attribute, this.weapons[index].baseValues.category, race.level).modifierOfDice.value();
+    for (const attribute of character.attributes) {
+      attributeBonus += this.attributeFactoryService.getAttackDamageBonus(attribute, character.weapons[index].baseValues.category, character.level).modifierOfDice.value();
     }
-    this.weapons[index].baseValues.damage.modifierOfDice.addVal['attributes'] = attributeBonus;
-    const result = this.weapons[index].baseValues.damage.printRoll();
+    character.weapons[index].baseValues.damage.modifierOfDice.addVal['attributes'] = attributeBonus;
+    const result = character.weapons[index].baseValues.damage.printRoll();
     return result;
   }
 
@@ -83,35 +77,40 @@ export class Character {
    * Takes a normal characters default speed and should add in bonuses to speed from agility, armor and talents
    * @returns {number} the value that represents the speed of the character
    */
-  getSpeed(): number {
+  getSpeed(character: CharacterModel): number {
     let result = STARTING_MOVEMENT;
-    result += this.attributeFactoryService.getSpeedBonus(this.attributes[AttributeName.Agility]);
-    if (this.physicalDefense.armor) {
-      result += this.physicalDefense.armor.getMaxMovement().movementPenalty;
-      if (result > this.physicalDefense.armor.getMaxMovement().maxMovement) {
-        result = this.physicalDefense.armor.getMaxMovement().maxMovement;
+    result += this.attributeFactoryService.getSpeedBonus(character.attributes[AttributeName.Agility]);
+    result += character.race.movementPenalty;
+    if (character.physicalDefense.armor) {
+      result += character.physicalDefense.armor.getMaxMovement().movementPenalty;
+      if (result > character.physicalDefense.armor.getMaxMovement().maxMovement) {
+        result = character.physicalDefense.armor.getMaxMovement().maxMovement;
       }
     }
     return result;
   }
 
   /**
-   * Need to add more notes about how attributes are assigned to characters.
-   * @param {AttributeType} attribute is the type of the attribute
-   * @param race
+   * Given the character model, we want to assign to a strength value to one fo the character's attributes
+   * If the character is of a race where they get a bonus and their strength is normal, set it to heroic.  If
+   * @param character
+   * @param name
+   * @param strength
    */
-  assignAttributePoint(attribute: AttributeModel, race: RaceModel) {
+  assignAttributeStrength(character: CharacterModel, name: AttributeName, strength: AttributeStrength) {
+    const attribute = character.attributes[name];
+    const race = character.race;
     if (attribute.attributeStrength === AttributeStrength.Normal &&
-      race.startingAttributes.indexOf(attribute.attributeName) > -1) {
-      this.attributes[attribute.attributeName].strength = AttributeStrength.Heroic;
+      race.startingAttributes.indexOf(name) > -1) {
+      attribute.attributeStrength = AttributeStrength.Heroic;
     } else {
-      const strengthDifference = this.attributes[attribute.attributeName].strength - attribute.attributeStrength;
-      if (-strengthDifference <= race.availableAttributePoints) {
-        this.attributes[attribute.attributeName].strength = attribute.attributeStrength;
+      const strengthDifference = attribute.attributeStrength - strength;
+      if (-strengthDifference <= character.race.availableAttributePoints) {
+        attribute.attributeStrength = strength;
         race.availableAttributePoints += strengthDifference;
       }
     }
-  }
 
+  }
 
 }

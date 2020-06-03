@@ -2,6 +2,7 @@ import {ThemePoint} from "./theme-point";
 import {ThemeType} from "./theme-type.enum";
 import {ThemeStrength} from "./theme-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
+import {Level} from "../character/level.enum";
 
 export class ThemePointsContainer {
 
@@ -21,6 +22,12 @@ export class ThemePointsContainer {
   /**returns the total number of theme points that are assigned*/
   getTotalThemePoints(currentNumberOfTheme: number = 0): number {
     return this.combat.getStrength() + this.stealth.getStrength() + this.magic.getStrength() + this.general.getStrength() - currentNumberOfTheme;
+  }
+
+  getHitPointBonus(level: Level): number {
+    let bonus = 3;
+    bonus += Math.floor((3 + level) * 5 + this.combat.getStrength() * .5 + this.stealth.getStrength() * .25);
+    return bonus;
   }
 
   /**

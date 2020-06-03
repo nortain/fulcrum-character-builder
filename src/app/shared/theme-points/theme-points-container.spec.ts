@@ -2,9 +2,10 @@ import {ThemePointsContainer} from "./theme-points-container";
 import {ThemeType} from "./theme-type.enum";
 import {ThemeStrength} from "./theme-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
+import {Level} from "../character/level.enum";
 
 describe('', () => {
-  let thc;
+  let thc: ThemePointsContainer;
   beforeEach(() => {
     thc = new ThemePointsContainer();
   });
@@ -59,5 +60,13 @@ describe('', () => {
     expect(thc.getOtherThemePoints("combat")).toEqual(1);
     expect(thc.getOtherThemePoints("magic")).toEqual(2);
     expect(thc.getOtherThemePoints("stealth")).toEqual(1);
+  });
+
+  it('should be able to get bonus hit points given a level', () => {
+    expect(thc.getHitPointBonus(Level.One)).toEqual(23);
+    thc.combat.setStrength(ThemeStrength.Lesser);
+    expect(thc.getHitPointBonus(Level.One)).toEqual(27);
+    thc.stealth.setStrength(ThemeStrength.Minor);
+    expect(thc.getHitPointBonus(Level.One)).toEqual(28);
   });
 });

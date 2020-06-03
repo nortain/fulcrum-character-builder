@@ -16,41 +16,42 @@ import {AttributeStrength} from "../shared/attribute/attribute-enums/attribute-s
 import {ArmorType} from "../shared/armor/armor-type.enum";
 import {Armor} from "../shared/armor/armor";
 import {ThemePointsContainer} from "../shared/theme-points/theme-points-container";
+import {CharacterFactoryService} from "../shared/character/character-factory.service";
 
 
 describe('CharacterSheetComponent', () => {
-  // let component: CharacterSheetComponent;
-  // let fixture: ComponentFixture<CharacterSheetComponent>;
-  //
-  // beforeEach(async(() => {
-  //   TestBed.configureTestingModule({
-  //     imports: [SharedModule, NgbModule, CharacterSheetModule],
-  //     declarations: [],
-  //     providers: [NgbDropdownConfig, NgbModal]
-  //   })
-  //     .compileComponents();
-  // }));
-  //
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(CharacterSheetComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
-  //
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
-  //
-  // it('should be able to reload a character', () => {
-  //   component.character.name = "Bob";
-  //   expect(component.character).toEqual(mockCharacter());
-  //   component.reloadCharacter("raceType", RaceType.Burman);
-  //   component.reloadCharacter("level", Level.Two);
-  //   expect(component.character).not.toEqual(mockCharacter());
-  //   expect(component.character.name).toBe("Bob");
-  //   expect(component.character.raceType).toEqual(RaceType.Burman);
-  //   expect(component.character.level).toEqual(2);
-  // });
+  let component: CharacterSheetComponent;
+  let fixture: ComponentFixture<CharacterSheetComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [SharedModule, NgbModule, CharacterSheetModule],
+      declarations: [],
+      providers: [NgbDropdownConfig, NgbModal, CharacterFactoryService]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CharacterSheetComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should be able to reload a character', () => {
+    component.character.name = "Bob";
+    expect(component.character).toEqual(mockCharacter());
+    component.reloadCharacter("raceType", RaceType.Burman);
+    component.reloadCharacter("level", Level.Two);
+    expect(component.character).not.toEqual(mockCharacter());
+    expect(component.character.name).toBe("Bob");
+    expect(component.character.raceType).toEqual(RaceType.Burman);
+    expect(component.character.level).toEqual(2);
+  });
   //
   // it('should be able to set character name via the input component', function () {
   //   expect(component.character.name).toBe("");

@@ -101,144 +101,144 @@ export class CharacterSheetComponent implements OnInit, OnChanges {
   }
 
 
-  getRecoveries(): number {
-    let recoveries = STARTING_RECOVERIES;
-    const talentBonus = 0; // TODO add talents
-    recoveries += this.character.attributes.getBonus(AttributeBonus.RecoveryBonus);
-    recoveries += talentBonus;
-    return recoveries;
-  }
-
-  // floor(getOOCRV / 1.75)
-  getRecoveryValue(): number {
-    return Math.floor(this.getOutofCombatRecoveryValue() / 1.75);
-  }
-
-  // 45% of HP + bonus Recovery + if general > 1 then Floor((general+4)/4)
-  getOutofCombatRecoveryValue(): number {
-    let ooc = this.getHitPointsValue() * .45;
-    const talentBonus = 0; // TODO add talents
-    ooc += talentBonus;
-    ooc += this.character.recoveryBonus;
-    ooc += this.character.themePoints.getOOCRecoveryValue();
-    return Math.floor(ooc);
-  }
-
-  openModalWindow(modalOptions?) {
-    if (!modalOptions) {
-      modalOptions = {
-        backdrop: "static",
-        windowClass: "lg"
-      };
-    }
-    const modalRef = this.modalService.open(SubthemeComponent, modalOptions);
-    modalRef.result.then((result) => {
-      console.log("modal was closed with result: ", result);
-    }, (rejected) => {
-      console.log("modal was rejected with: ", rejected);
-    });
-  }
-
-
-  getCriticalReductionValue(): number {
-    let crv = 0;
-    const talentBonus = 0; // TODO add talents
-    const subThemeBonus = 0; // TODO add subthemes
-    crv += this.character.physicalDefense.armor.getCritReduction();
-    crv += talentBonus;
-    crv += subThemeBonus;
-    return crv;
-  }
-
-  getPrimaryMagicResistanceValue(): number {
-    let pmr = 0;
-    const resistanceAsString = this.character.getMechanicalBonus("Elemental Resistance");
-    pmr += resistanceAsString ? parseInt(resistanceAsString, 10) : 0;
-    return pmr;
-  }
-
-  getSecondaryMagicRestanceValue(): number {
-    return Math.round(this.getPrimaryMagicResistanceValue() * .75);
-  }
-
-  getPrimaryMagicReistances(): string[] {
-    return [];
-  }
-
-  getPowerPoints(): number {
-    let powerPoints = 2;
-    const talentBonus = 0; // TODO add talents
-    powerPoints += this.character.attributes.getBonus(AttributeBonus.PowerPointBonus);
-    powerPoints += this.character.themePoints.getPowerPointBonus();
-    powerPoints += this.character.powerPointBonus;
-    powerPoints += talentBonus;
-    powerPoints += Math.floor(this.character.level / 4);
-    return powerPoints;
-  }
-
-  getAdrenalinePoints(): number {
-    return this.character.themePoints.getAdrenalinePoints();
-  }
-
-  getBloodiedValue(): number {
-    return Math.floor(this.getHitPointsValue() / 2);
-  }
-
-  getAuras(): string[] {
-    return null;
-  }
-
-
-  getActiveDefenseValue(): number {
-    let ad = this.character.physicalDefense.getActiveDefensiveValue();
-    ad += this.character.attributes.getBonus(
-      AttributeBonus.ArmorBonus,
-      this.character.physicalDefense.armor);
-    return ad;
-  }
-
-  getPassiveDefenseValue(): number {
-    return this.character.physicalDefense.getPassiveDefensiveValue();
-  }
-
-  getMagicDefensiveValue(magicDefenseType: MagicDefenseType): number {
-    let magicDef = this.character.magicDefense[MagicDefenseType[magicDefenseType]].getDefense();
-    if (this.character.magicDefenseBonus === magicDefenseType) {
-      magicDef++;
-    }
-    const themePointBonus = this.character.themePoints.getDefensiveBonus();
-    if (themePointBonus.length === 1 && themePointBonus[0] === magicDefenseType) {
-      magicDef++;
-    }
-    magicDef += this.character.attributes.getBonus(AttributeBonus.MagicDefense, magicDefenseType);
-    return magicDef;
-  }
-
-  assignMagicDefensiveBonus(magicDefenseType: MagicDefenseType, bonusName: string, bonusValue: number) {
-    this.character.magicDefense[MagicDefenseType[magicDefenseType]].addDefenseBonus(bonusName, bonusValue);
-  }
-
-  /**
-   * removes bonus for the given magidDefenseType that has a name matching to the string passed in.  If no string is passed in then all bonuses for the magic defense type are removed.
-   * @param {MagicDefenseType} magicDefenseType
-   * @param {string} bonusName
-   */
-  removeMagicDefensiveBonus(magicDefenseType: MagicDefenseType, bonusName?: string) {
-    this.character.magicDefense[MagicDefenseType[magicDefenseType]].removeDefenseBonus(bonusName);
-  }
-
+  // getRecoveries(): number {
+  //   let recoveries = STARTING_RECOVERIES;
+  //   const talentBonus = 0; // TODO add talents
+  //   recoveries += this.character.attributes.getBonus(AttributeBonus.RecoveryBonus);
+  //   recoveries += talentBonus;
+  //   return recoveries;
+  // }
+  //
+  // // floor(getOOCRV / 1.75)
+  // getRecoveryValue(): number {
+  //   return Math.floor(this.getOutofCombatRecoveryValue() / 1.75);
+  // }
+  //
+  // // 45% of HP + bonus Recovery + if general > 1 then Floor((general+4)/4)
+  // getOutofCombatRecoveryValue(): number {
+  //   let ooc = this.getHitPointsValue() * .45;
+  //   const talentBonus = 0; // TODO add talents
+  //   ooc += talentBonus;
+  //   ooc += this.character.recoveryBonus;
+  //   ooc += this.character.themePoints.getOOCRecoveryValue();
+  //   return Math.floor(ooc);
+  // }
+  //
+  // openModalWindow(modalOptions?) {
+  //   if (!modalOptions) {
+  //     modalOptions = {
+  //       backdrop: "static",
+  //       windowClass: "lg"
+  //     };
+  //   }
+  //   const modalRef = this.modalService.open(SubthemeComponent, modalOptions);
+  //   modalRef.result.then((result) => {
+  //     console.log("modal was closed with result: ", result);
+  //   }, (rejected) => {
+  //     console.log("modal was rejected with: ", rejected);
+  //   });
+  // }
+  //
+  //
+  // getCriticalReductionValue(): number {
+  //   let crv = 0;
+  //   const talentBonus = 0; // TODO add talents
+  //   const subThemeBonus = 0; // TODO add subthemes
+  //   crv += this.character.physicalDefense.armor.getCritReduction();
+  //   crv += talentBonus;
+  //   crv += subThemeBonus;
+  //   return crv;
+  // }
+  //
+  // getPrimaryMagicResistanceValue(): number {
+  //   let pmr = 0;
+  //   const resistanceAsString = this.character.getMechanicalBonus("Elemental Resistance");
+  //   pmr += resistanceAsString ? parseInt(resistanceAsString, 10) : 0;
+  //   return pmr;
+  // }
+  //
+  // getSecondaryMagicRestanceValue(): number {
+  //   return Math.round(this.getPrimaryMagicResistanceValue() * .75);
+  // }
+  //
+  // getPrimaryMagicReistances(): string[] {
+  //   return [];
+  // }
+  //
+  // getPowerPoints(): number {
+  //   let powerPoints = 2;
+  //   const talentBonus = 0; // TODO add talents
+  //   powerPoints += this.character.attributes.getBonus(AttributeBonus.PowerPointBonus);
+  //   powerPoints += this.character.themePoints.getPowerPointBonus();
+  //   powerPoints += this.character.powerPointBonus;
+  //   powerPoints += talentBonus;
+  //   powerPoints += Math.floor(this.character.level / 4);
+  //   return powerPoints;
+  // }
+  //
+  // getAdrenalinePoints(): number {
+  //   return this.character.themePoints.getAdrenalinePoints();
+  // }
+  //
+  // getBloodiedValue(): number {
+  //   return Math.floor(this.getHitPointsValue() / 2);
+  // }
+  //
+  // getAuras(): string[] {
+  //   return null;
+  // }
+  //
+  //
+  // getActiveDefenseValue(): number {
+  //   let ad = this.character.physicalDefense.getActiveDefensiveValue();
+  //   ad += this.character.attributes.getBonus(
+  //     AttributeBonus.ArmorBonus,
+  //     this.character.physicalDefense.armor);
+  //   return ad;
+  // }
+  //
+  // getPassiveDefenseValue(): number {
+  //   return this.character.physicalDefense.getPassiveDefensiveValue();
+  // }
+  //
+  // getMagicDefensiveValue(magicDefenseType: MagicDefenseType): number {
+  //   let magicDef = this.character.magicDefense[MagicDefenseType[magicDefenseType]].getDefense();
+  //   if (this.character.magicDefenseBonus === magicDefenseType) {
+  //     magicDef++;
+  //   }
+  //   const themePointBonus = this.character.themePoints.getDefensiveBonus();
+  //   if (themePointBonus.length === 1 && themePointBonus[0] === magicDefenseType) {
+  //     magicDef++;
+  //   }
+  //   magicDef += this.character.attributes.getBonus(AttributeBonus.MagicDefense, magicDefenseType);
+  //   return magicDef;
+  // }
+  //
+  // assignMagicDefensiveBonus(magicDefenseType: MagicDefenseType, bonusName: string, bonusValue: number) {
+  //   this.character.magicDefense[MagicDefenseType[magicDefenseType]].addDefenseBonus(bonusName, bonusValue);
+  // }
+  //
+  // /**
+  //  * removes bonus for the given magidDefenseType that has a name matching to the string passed in.  If no string is passed in then all bonuses for the magic defense type are removed.
+  //  * @param {MagicDefenseType} magicDefenseType
+  //  * @param {string} bonusName
+  //  */
+  // removeMagicDefensiveBonus(magicDefenseType: MagicDefenseType, bonusName?: string) {
+  //   this.character.magicDefense[MagicDefenseType[magicDefenseType]].removeDefenseBonus(bonusName);
+  // }
+  //
   /**
    * Called anytime a change to a character is made to update the UI.
    * @param {boolean} makeNewSubtheme, trigger a call to force a new subtheme to be created rather than passing in the same one.
    * @returns {CharacterFactoryService}
    */
   cloneCharacter(makeNewSubtheme?: boolean) {
-    const subThemes = makeNewSubtheme ? undefined : this.character.subthemes;
-    const char = new CharacterFactoryService(
+    const subThemes = makeNewSubtheme ? undefined : this.character.subThemes;
+    const char = this.characterService.getNewCharacter(
       this.character.name,
-      this.character.raceType,
+      this.character.race.raceType,
       this.character.level,
-      this.character.racialSubType,
+      this.character.race.racialSubType,
       this.character.themePoints,
       subThemes,
       this.character.physicalDefense,

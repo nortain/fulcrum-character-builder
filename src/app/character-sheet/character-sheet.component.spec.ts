@@ -22,6 +22,7 @@ import {CharacterFactoryService} from "../shared/character/character-factory.ser
 describe('CharacterSheetComponent', () => {
   let component: CharacterSheetComponent;
   let fixture: ComponentFixture<CharacterSheetComponent>;
+  let characterService: CharacterFactoryService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,6 +36,7 @@ describe('CharacterSheetComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CharacterSheetComponent);
     component = fixture.componentInstance;
+    characterService = TestBed.inject(CharacterFactoryService);
     fixture.detectChanges();
   });
 
@@ -49,7 +51,7 @@ describe('CharacterSheetComponent', () => {
     component.reloadCharacter("level", Level.Two);
     expect(component.character).not.toEqual(mockCharacter());
     expect(component.character.name).toBe("Bob");
-    expect(component.character.raceType).toEqual(RaceType.Burman);
+    expect(component.character.race.raceType).toEqual(RaceType.Burman);
     expect(component.character.level).toEqual(2);
   });
   //

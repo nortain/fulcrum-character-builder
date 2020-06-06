@@ -15,6 +15,7 @@ import {RaceFactoryService} from "./race/race-factory.service";
 import {RaceModel} from "./race/race-model";
 import {CharacterModel} from "./character-model";
 import {AttributeBonus} from "../attribute/character-attribute/attribute-bonus.enum";
+import {AttributeModel} from "../attribute/attribute-model";
 
 export class CharacterFactoryService {
 
@@ -33,11 +34,13 @@ export class CharacterFactoryService {
                   subthemes = new SubthemeContainer(themePoints),
                   physicalDefense = new PhysicalDefense(),
                   weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
-                  magicDefense = new StartingCharacterMagicDefense()): CharacterModel {
+                  magicDefense = new StartingCharacterMagicDefense(),
+                  attributes?: Array<AttributeModel>): CharacterModel {
     const model: CharacterModel = {
       ...new CharacterModel(),
+      name: name,
       race: this.raceFactoryService.getNewRace(raceType, level, subRace),
-      attributes: this.attributeFactoryService.initializeAllAttributes(),
+      attributes: attributes ? attributes : this.attributeFactoryService.initializeAllAttributes(),
       level: level,
     };
     for (const attribute of model.attributes) { // loop through all attributes to apply racial bonuses if any.

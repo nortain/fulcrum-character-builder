@@ -11,11 +11,13 @@ import {Armor} from "../armor/armor";
 import {SkillModel} from "../skill/skill-model";
 import {Spell} from "../spells/spell";
 import {RaceModel} from "./race/race-model";
+import {StartingCharacterMagicDefense} from "../constants/constants";
 
 export class CharacterModel {
   attributes: Array<AttributeModel>;
 
   level: Level;
+  name: string;
 
   race: RaceModel; // holds recial passive and active abilities, applies modifiers and determines vision
   themePoints: ThemePointsContainer;
@@ -47,9 +49,8 @@ export class CharacterModel {
 
 
   // defenses
-  fortitude: MagicDefense;
-  reflex: MagicDefense;
-  will: MagicDefense;
+
+  magicDefense: StartingCharacterMagicDefense;
   physicalDefense: PhysicalDefense;
 
 

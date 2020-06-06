@@ -1,4 +1,4 @@
-import { CharacterFactoryService } from './characterFactoryService';
+
 import {RaceType} from "./race/race-type.enum";
 import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
 import {ArmorType} from "../armor/armor-type.enum";

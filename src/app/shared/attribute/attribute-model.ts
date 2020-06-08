@@ -19,7 +19,7 @@ export class AttributeModel {
     typeOfPick: Array<BrawnAttributePicks | AgilityAttributePicks | PresenceAttributePicks | ReasoningAttributePicks>;
   };
 
-  choosenBonusPicks: Array<BrawnSelections | AgilitySelections | PresenceSelections | ReasoningSelections>;
+  chosenBonusPicks: Array<BrawnSelections | AgilitySelections | PresenceSelections | ReasoningSelections>;
 
   // Magic Defense Bonus
   bonusToFortitude: Array<number>;

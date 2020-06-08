@@ -361,12 +361,12 @@ export const ATTRIBUTE = {
           ...new ReasoningAttributePicks(),
           requiredHybridAttributeStrength: [
             {
-              numberOfPicks: 1
-            }, {
               attributeName: AttributeName.Presence,
               attributeStrength: AttributeStrength.Heroic,
               category: WeaponCategory.Hybrid,
               numberOfPicks: 2
+            }, {
+              numberOfPicks: 1
             }
           ],
           selections: {
@@ -443,7 +443,7 @@ export const ATTRIBUTE = {
           ...new PresenceAttributePicks(),
           requiredHybridAttributeStrength: [
             {
-              attributeName: AttributeName.Presence,
+              attributeName: AttributeName.Reasoning,
               attributeStrength: AttributeStrength.Champion,
               category: WeaponCategory.Hybrid,
               numberOfPicks: 1
@@ -475,15 +475,15 @@ export const ATTRIBUTE = {
           ...new PresenceAttributePicks(),
           requiredHybridAttributeStrength: [
             {
-              attributeName: AttributeName.Presence,
-              attributeStrength: AttributeStrength.Heroic,
-              category: WeaponCategory.Hybrid,
-              numberOfPicks: 2
-            }, {
-              attributeName: AttributeName.Presence,
+              attributeName: AttributeName.Reasoning,
               attributeStrength: AttributeStrength.Champion,
               category: WeaponCategory.Hybrid,
               numberOfPicks: 3
+            }, {
+              attributeName: AttributeName.Reasoning,
+              attributeStrength: AttributeStrength.Heroic,
+              category: WeaponCategory.Hybrid,
+              numberOfPicks: 2
             }
           ],
           selections: {

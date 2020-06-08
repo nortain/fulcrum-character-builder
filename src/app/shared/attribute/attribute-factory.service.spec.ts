@@ -14,6 +14,7 @@ import {INITATIVE_TEXT, PRESS_TEXT} from "./attribute-constants/attribute-consta
 describe('AttributeFactoryService', () => {
   let service: AttributeFactoryService;
   let bra: AttributeModel, vit: AttributeModel, rea: AttributeModel, sd: AttributeModel, int: AttributeModel, attribute: AttributeModel, qu: AttributeModel, agi: AttributeModel, pre: AttributeModel;
+  let attributeMap: Map<AttributeName, AttributeModel>;
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AttributeFactoryService]
@@ -29,6 +30,7 @@ describe('AttributeFactoryService', () => {
     qu = makeAttribute(AttributeName.Quickness);
     agi = makeAttribute(AttributeName.Agility);
     pre = makeAttribute(AttributeName.Presence);
+    attributeMap = service.initializeAllAttributes();
   });
 
 
@@ -108,7 +110,7 @@ describe('AttributeFactoryService', () => {
   });
 
   it('should be able to get damage for legendary presence with a choosen penalty to attack damage', () => {
-    pre.choosenBonusPicks = [{convertAttackDamageIntoGlobal: pre.selectableBonusPicks.typeOfPick[4].selections["convertAttackDamageIntoGlobal"]} as PresenceSelections];
+    pre.chosenBonusPicks = [{convertAttackDamageIntoGlobal: pre.selectableBonusPicks.typeOfPick[4].selections["convertAttackDamageIntoGlobal"]} as PresenceSelections];
     expect(service.getAttackDamageBonus(pre, WeaponCategory.Presence, Level.One).printRoll()).toEqual("3");
     expect(service.getAttackDamageBonus(pre, WeaponCategory.Presence, Level.Ten).modifierOfDice.value()).toEqual(7);
   });
@@ -123,10 +125,10 @@ describe('AttributeFactoryService', () => {
 
   it('should show bonus critical possible brawn Selections', () => {
     expect(service.getCriticalBonus(bra, Level.One)).toEqual(0);
-    bra.choosenBonusPicks = [{bonusToEmpoweredAndCritical: bra.selectableBonusPicks.typeOfPick[4].selections["bonusToEmpoweredAndCritical"]} as BrawnSelections];
+    bra.chosenBonusPicks = [{bonusToEmpoweredAndCritical: bra.selectableBonusPicks.typeOfPick[4].selections["bonusToEmpoweredAndCritical"]} as BrawnSelections];
     expect(service.getCriticalBonus(bra, Level.One)).toEqual(1);
     expect(service.getCriticalBonus(bra, Level.Seven)).toEqual(2);
-    bra.choosenBonusPicks.push({bonusToCriticalAndAggressivePress: bra.selectableBonusPicks.typeOfPick[2].selections["bonusToCriticalAndAggressivePress"]} as BrawnSelections);
+    bra.chosenBonusPicks.push({bonusToCriticalAndAggressivePress: bra.selectableBonusPicks.typeOfPick[2].selections["bonusToCriticalAndAggressivePress"]} as BrawnSelections);
     expect(service.getCriticalBonus(bra, Level.One)).toEqual(2);
   });
 
@@ -140,26 +142,26 @@ describe('AttributeFactoryService', () => {
 
   it('should show critical bonus for possible AgilitySelections', () => {
     expect(service.getCriticalBonus(agi, Level.One)).toEqual(0);
-    agi.choosenBonusPicks = [{bonusToCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToCritical"]} as AgilitySelections];
+    agi.chosenBonusPicks = [{bonusToCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToCritical"]} as AgilitySelections];
     expect(service.getCriticalBonus(agi, Level.One)).toEqual(3);
     expect(service.getCriticalBonus(agi, Level.Nine)).toEqual(7);
-    agi.choosenBonusPicks.push({bonusToSpeedAndCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToSpeedAndCritical"]} as AgilitySelections);
+    agi.chosenBonusPicks.push({bonusToSpeedAndCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToSpeedAndCritical"]} as AgilitySelections);
     expect(service.getCriticalBonus(agi, Level.One)).toEqual(4);
   });
 
   it('should show critical bonus or lack thereof for possible PresenceSelections', () => {
     expect(service.getCriticalBonus(pre, Level.One)).toEqual(0);
-    pre.choosenBonusPicks = [{bonusToGlobalDamageAndPenaltyToCritical: pre.selectableBonusPicks.typeOfPick[4].selections["bonusToGlobalDamageAndPenaltyToCritical"]} as PresenceSelections];
+    pre.chosenBonusPicks = [{bonusToGlobalDamageAndPenaltyToCritical: pre.selectableBonusPicks.typeOfPick[4].selections["bonusToGlobalDamageAndPenaltyToCritical"]} as PresenceSelections];
     expect(service.getCriticalBonus(pre, Level.One)).toEqual(-1);
     expect(service.getCriticalBonus(pre, Level.Ten)).toEqual(-3);
   });
 
   it('should be able to show selected critical bonuses for possible ReasoningSelections', () => {
     expect(service.getCriticalBonus(rea, Level.One)).toEqual(0);
-    rea.choosenBonusPicks = [{bonusToCritical: rea.selectableBonusPicks.typeOfPick[4].selections["bonusToCritical"]} as ReasoningSelections];
+    rea.chosenBonusPicks = [{bonusToCritical: rea.selectableBonusPicks.typeOfPick[4].selections["bonusToCritical"]} as ReasoningSelections];
     expect(service.getCriticalBonus(rea, Level.One)).toEqual(3);
     expect(service.getCriticalBonus(rea, Level.Ten)).toEqual(8);
-    rea.choosenBonusPicks.push({bonusToEmpoweredAndCritical: rea.selectableBonusPicks.typeOfPick[3].selections["bonusToEmpoweredAndCritical"]} as ReasoningSelections);
+    rea.chosenBonusPicks.push({bonusToEmpoweredAndCritical: rea.selectableBonusPicks.typeOfPick[3].selections["bonusToEmpoweredAndCritical"]} as ReasoningSelections);
     expect(service.getCriticalBonus(rea, Level.One)).toEqual(4);
     expect(service.getCriticalBonus(rea, Level.Ten)).toEqual(11);
   });
@@ -211,9 +213,9 @@ describe('AttributeFactoryService', () => {
 
   it('should be able to get speed bonus', () => {
     expect(service.getSpeedBonus(agi)).toEqual(0);
-    agi.choosenBonusPicks = [{bonusToSpeedAndCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToSpeedAndCritical"]} as AgilitySelections];
+    agi.chosenBonusPicks = [{bonusToSpeedAndCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToSpeedAndCritical"]} as AgilitySelections];
     expect(service.getSpeedBonus(agi)).toEqual(1);
-    agi.choosenBonusPicks.push({bonusToSpeedAndCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToSpeedAndCritical"]} as AgilitySelections);
+    agi.chosenBonusPicks.push({bonusToSpeedAndCritical: agi.selectableBonusPicks.typeOfPick[4].selections["bonusToSpeedAndCritical"]} as AgilitySelections);
     expect(service.getSpeedBonus(agi)).toEqual(2);
     expect(service.getSpeedBonus(bra)).toEqual(0);
 
@@ -270,7 +272,7 @@ describe('AttributeFactoryService', () => {
 
   it('should be able to get special text', () => {
     expect(service.getSpecialText(qu)).toBe(INITATIVE_TEXT);
-    bra.choosenBonusPicks = [{bonusToCriticalAndAggressivePress: bra.selectableBonusPicks.typeOfPick[2].selections["bonusToCriticalAndAggressivePress"]} as BrawnSelections];
+    bra.chosenBonusPicks = [{bonusToCriticalAndAggressivePress: bra.selectableBonusPicks.typeOfPick[2].selections["bonusToCriticalAndAggressivePress"]} as BrawnSelections];
     expect(service.getSpecialText(bra)).toBe(PRESS_TEXT);
     qu.attributeStrength = AttributeStrength.Champion;
     expect(service.getSpecialText(qu)).toBe("");
@@ -278,19 +280,96 @@ describe('AttributeFactoryService', () => {
   });
 
   it('should be able to initalize all attributes', () => {
-    const newArray = service.initializeAllAttributes();
-    expect(newArray[0].attributeName).toEqual(AttributeName.Brawn);
-    expect(newArray[1].attributeName).toEqual(AttributeName.Vitality);
-    expect(newArray[2].attributeName).toEqual(AttributeName.Agility);
-    expect(newArray[3].attributeName).toEqual(AttributeName.Quickness);
-    expect(newArray[4].attributeName).toEqual(AttributeName.Reasoning);
-    expect(newArray[5].attributeName).toEqual(AttributeName.Presence);
-    expect(newArray[6].attributeName).toEqual(AttributeName.SelfDiscipline);
-    expect(newArray[7].attributeName).toEqual(AttributeName.Intuition);
+    const newMap = service.initializeAllAttributes();
+    expect(newMap[0].attributeName).toEqual(AttributeName.Brawn);
+    expect(newMap[1].attributeName).toEqual(AttributeName.Vitality);
+    expect(newMap[2].attributeName).toEqual(AttributeName.Agility);
+    expect(newMap[3].attributeName).toEqual(AttributeName.Quickness);
+    expect(newMap[4].attributeName).toEqual(AttributeName.Reasoning);
+    expect(newMap[5].attributeName).toEqual(AttributeName.Presence);
+    expect(newMap[6].attributeName).toEqual(AttributeName.SelfDiscipline);
+    expect(newMap[7].attributeName).toEqual(AttributeName.Intuition);
+  });
 
+  it('should be able to get initalized attributes by name', () => {
+    const newMap = service.initializeAllAttributes();
+    const testAttribute = newMap.get(AttributeName.Vitality);
+    expect(testAttribute.attributeName).toEqual(AttributeName.Vitality);
+  });
+
+  it('should be able to determine if requiredAttributeIsStrongEnough', () => {
+    bra.attributeStrength = AttributeStrength.Heroic;
+    agi.attributeStrength = AttributeStrength.Champion;
+    attributeMap.set(AttributeName.Brawn, bra);
+    const result = service.isRequiredAttributeStrongEnough(
+      agi.selectableBonusPicks.typeOfPick[agi.attributeStrength].requiredHybridAttributeStrength[0],
+      attributeMap,
+      WeaponCategory.Balanced);
+    expect(result).toBeTruthy();
+  });
+
+  it('should be able to determine if required attribute is strong enough when there is no required attribute', () => {
+    attributeMap.set(AttributeName.Agility, agi);
+    const result = service.isRequiredAttributeStrongEnough(
+      agi.selectableBonusPicks.typeOfPick[agi.attributeStrength].requiredHybridAttributeStrength[0],
+      attributeMap,
+      WeaponCategory.Agile);
+    expect(result).toBeTruthy();
+  });
+
+  it('should be able to match to the first matching required strength when multiples exist', () => {
+    rea.attributeStrength = AttributeStrength.Epic;
+    let result = service.isRequiredAttributeStrongEnough(
+      rea.selectableBonusPicks.typeOfPick[rea.attributeStrength].requiredHybridAttributeStrength[0],
+      attributeMap,
+      WeaponCategory.Hybrid);
+    expect(result).toBeFalsy();
+
+    result = service.isRequiredAttributeStrongEnough(
+      rea.selectableBonusPicks.typeOfPick[rea.attributeStrength].requiredHybridAttributeStrength[1],
+      attributeMap,
+      WeaponCategory.Hybrid);
+    expect(result).toBeTruthy();
+
+    attributeMap.set(AttributeName.Presence, pre);
+    result = service.isRequiredAttributeStrongEnough(
+      rea.selectableBonusPicks.typeOfPick[rea.attributeStrength].requiredHybridAttributeStrength[0],
+      attributeMap,
+      WeaponCategory.Hybrid);
+    expect(result).toBeTruthy();
+  });
+
+  it('should be able to present choices for presence if legendary strength', () => {
+    attributeMap.set(AttributeName.Presence, pre);
+    const selection = service.presentChoices(AttributeName.Presence, attributeMap, WeaponCategory.Presence);
+    expect(selection.numberOfPicks).toEqual(6);
+    expect(selection.selections["forcedMovement"].bonusTo).toEqual(1);
+  });
+
+  it('should find the first present choice for champ/hero pre/rea', () => {
+    pre.attributeStrength = AttributeStrength.Champion;
+    rea.attributeStrength = AttributeStrength.Heroic;
+    attributeMap.set(AttributeName.Presence, pre);
+    attributeMap.set(AttributeName.Reasoning, rea);
+    let selection = service.presentChoices(AttributeName.Presence, attributeMap, WeaponCategory.Hybrid);
+    expect(selection.numberOfPicks).toEqual(2);
+    expect(selection.selections["forcedMovement"].maxPicks).toEqual(2);
+
+    rea.attributeStrength = AttributeStrength.Champion;
+    attributeMap.set(AttributeName.Reasoning, rea);
+    selection = service.presentChoices(AttributeName.Presence, attributeMap, WeaponCategory.Hybrid);
+    expect(selection.numberOfPicks).toEqual(3);
+  });
+
+  it('should be able to select a bonus', () => {
 
   });
 
+
+  /**
+   * HELPER function that makes a legendary attribute given an attribute name
+   * @param name
+   */
   function makeAttribute(name?: AttributeName): AttributeModel {
     if (!name) {
       name = AttributeName.Brawn;

@@ -12,9 +12,10 @@ import {SkillModel} from "../skill/skill-model";
 import {Spell} from "../spells/spell";
 import {RaceModel} from "./race/race-model";
 import {StartingCharacterMagicDefense} from "../constants/constants";
+import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 
 export class CharacterModel {
-  attributes: Array<AttributeModel>;
+  attributes: Map<AttributeName, AttributeModel>;
 
   level: Level;
   name: string;

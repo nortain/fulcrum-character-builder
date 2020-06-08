@@ -1,43 +1,50 @@
-
 import {RaceType} from "./race/race-type.enum";
 import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
 import {ArmorType} from "../armor/armor-type.enum";
 import {Armor} from "../armor/armor";
-import {STARTING_INITIATIVE, STARTING_MOVEMENT} from "../constants/constants";
-import {ThemeStrength} from "../theme-points/theme-strength.enum";
-import {Weapon} from "../weapon/weapon";
-import {WeaponClass} from "../weapon/weapon-class.enum";
-import {WeaponCategory} from "../weapon/weapon-category.enum";
-import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
+import {STARTING_MOVEMENT} from "../constants/constants";
+import {CharacterFactoryService} from "./character-factory.service";
+import {TestBed} from "@angular/core/testing";
+import {CharacterModel} from "./character-model";
+import {AttributeFactoryService} from "../attribute/attribute-factory.service";
+import {AttributeService} from "../attribute/attribute.service";
 
 // TODO when character factory service is done
 describe('Character', () => {
-  // let bob: CharacterFactoryService;
-  //
-  // beforeEach(() => {
-  //   bob = new CharacterFactoryService("Bob", RaceType.HighOrc);
-  // });
-  //
-  // it('should create an instance', () => {
-  //   expect(new CharacterFactoryService("Bob", RaceType.HighOrc)).toBeTruthy();
-  // });
-  //
-  // it('should be able to get default movement of 6', function () {
-  //   expect(bob.getSpeed()).toEqual(STARTING_MOVEMENT);
-  // });
-  //
+  let characterFactoryService: CharacterFactoryService;
+  let attributeService: AttributeFactoryService;
+  let bob: CharacterModel;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [CharacterFactoryService, AttributeFactoryService]
+    });
+    characterFactoryService = TestBed.inject<CharacterFactoryService>(CharacterFactoryService);
+    attributeService = TestBed.inject<AttributeFactoryService>(AttributeFactoryService);
+    bob = characterFactoryService.getNewCharacter("Bob", RaceType.HighOrc);
+  });
+
+  it('should create an instance', () => {
+    expect(bob).toBeTruthy();
+  });
+
+  it('should be able to get default movement of 6', function () {
+    expect(characterFactoryService.getSpeed(bob)).toEqual(STARTING_MOVEMENT);
+  });
+
   // it('should recognize that a characters movement is increased if they have epic agility', function () {
-  //     bob.attributes.Agility.strength = AttributeStrength.Epic;
-  //     expect(bob.getSpeed()).toEqual(7);
-  // });
+  //   bob.attributes.["Agility"].strength = AttributeStrength.Epic;
   //
+  //   expect(characterFactoryService.getSpeed(bob)).toEqual(7);
+  // });
+
   // it('should reduce a characters speed when they are wearing really heavy ass armor', () => {
-  //   bob.physicalDefense.armor = new Armor(ArmorType.HeavyArmor, "Platemail");
-  //   expect(bob.getSpeed()).toEqual(5);
+  //   characterFactoryService.physicalDefense.armor = new Armor(ArmorType.HeavyArmor, "Platemail");
+  //   expect(characterFactoryService.getSpeed()).toEqual(5);
   // });
   //
   // it('should be able to get the starting initiative for a character', () => {
-  //   expect(bob.getInitiative()).toEqual(5);
+  //   expect(characterFactoryService.getInitiative()).toEqual(5);
   // });
   //
   // it('should be get modified initiative when attributes are modified', () => {
@@ -106,9 +113,6 @@ describe('Character', () => {
   //   moe.assignAttributeStrength(AttributeStrength.Epic, AttributeName.Agility);
   //   expect(moe.availableAttributePoints).toEqual(0);
   // });
-
-
-
 
 
 });

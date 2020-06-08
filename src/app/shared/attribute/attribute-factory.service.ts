@@ -10,7 +10,7 @@ import {DiceSize} from "../character/dice/dice-size.enum";
 import {Dice} from "../character/dice/dice";
 import {AttributeStrength} from "./attribute-enums/attribute-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
-import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
+import {AgilitySelections, AttributePick, AttributeSelectionsAlias, AttributeSelectionWithPicks, BrawnSelections, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
 
 @Injectable({
@@ -21,10 +21,10 @@ export class AttributeFactoryService {
   constructor(private diceService: DiceService) {
   }
 
-  initializeAllAttributes(): Array<AttributeModel> {
-    const attributesArray = new Array<AttributeModel>();
+  initializeAllAttributes(): Map<AttributeName, AttributeModel> {
+    const attributesArray = new Map<AttributeName, AttributeModel>();
     for (const name of Object.keys(AttributeName)) {
-      attributesArray.push(this.getNewAttribute(AttributeName[name]));
+      attributesArray.set(AttributeName[name], this.getNewAttribute(AttributeName[name]));
     }
     return attributesArray;
   }
@@ -51,7 +51,7 @@ export class AttributeFactoryService {
         if (attackDamage.category === category) {
           let damageRange = attackDamage.range[attribute.attributeStrength];
           if (attribute.attributeName === AttributeName.Presence) {
-            const picks: Array<PresenceSelections> = attribute.choosenBonusPicks as Array<PresenceSelections>;
+            const picks: Array<PresenceSelections> = attribute.chosenBonusPicks as Array<PresenceSelections>;
             damageRange = this.applyPresenceAttackPenaltyToDamageRange(damageRange, picks);
           }
           const array = this.diceService.getDiceArrayFromDamageRange(damageRange.minBonus, damageRange.maxBonus, LevelRange.TEN, DiceSize.None);
@@ -62,6 +62,11 @@ export class AttributeFactoryService {
     return new Dice();
   }
 
+  /**
+   * given a value range and an array of presence selections determine if any should reduce the damage of the value range and return it back.
+   * @param damageRange
+   * @param presenceSelections
+   */
   applyPresenceAttackPenaltyToDamageRange(damageRange: ValueRange, presenceSelections: Array<PresenceSelections>): ValueRange {
     const newRange: ValueRange = {...damageRange};
     if (presenceSelections) {
@@ -101,8 +106,8 @@ export class AttributeFactoryService {
       return attribute.epicText;
     } else if (attribute && attribute.legendaryText && attribute.attributeStrength === AttributeStrength.Legendary) {
       return attribute.legendaryText;
-    } else if (attribute && attribute.attributeName === AttributeName.Brawn && attribute.choosenBonusPicks) {
-      for (const pick of attribute.choosenBonusPicks) {
+    } else if (attribute && attribute.attributeName === AttributeName.Brawn && attribute.chosenBonusPicks) {
+      for (const pick of attribute.chosenBonusPicks) {
         if ((pick as BrawnSelections).bonusToCriticalAndAggressivePress) {
           return (pick as BrawnSelections).bonusToCriticalAndAggressivePress.pressText;
         } else if ((pick as BrawnSelections).bonusToEmpoweredAndAggressivePress) {
@@ -143,11 +148,12 @@ export class AttributeFactoryService {
    * Given an attribute and a level this will return a dice object with the critical bonus provided by the attribute.  If the attribute doesn't provide any kind of critical bonus then the dice object will be an empty instance.  Fetches values for bonusToCritical, bonusToSpeedAndCritical, bonusToCriticalAndAggressivePress, bonusToEmpoweredAndCritical and bonusToBaseCritical
    * @param attribute
    * @param level
+   * @param weaponCategory
    */
   getCriticalBonus(attribute: AttributeModel, level: Level, weaponCategory?: WeaponCategory): number {
     let bonus = 0;
-    if (attribute.choosenBonusPicks) {
-      for (const att of attribute.choosenBonusPicks) {
+    if (attribute.chosenBonusPicks) {
+      for (const att of attribute.chosenBonusPicks) {
         if (attribute.attributeName === AttributeName.Brawn) {
           if ((att as BrawnSelections).bonusToCriticalAndAggressivePress) {
             const range = (att as BrawnSelections).bonusToCriticalAndAggressivePress.criticalBonus;
@@ -197,8 +203,8 @@ export class AttributeFactoryService {
 
   getSpeedBonus(attribute: AttributeModel): number {
     let speedBonus = 0;
-    if (attribute && attribute.choosenBonusPicks) {
-      for (const pick of attribute.choosenBonusPicks) {
+    if (attribute && attribute.chosenBonusPicks) {
+      for (const pick of attribute.chosenBonusPicks) {
         if ((pick as AgilitySelections).bonusToSpeedAndCritical) {
           speedBonus += (pick as AgilitySelections).bonusToSpeedAndCritical.bonusToSpeed;
         }
@@ -260,6 +266,44 @@ export class AttributeFactoryService {
       return this.extractNumberFromValueRange(range, level);
     }
     return 0;
+  }
+
+  presentChoices(attributeType: AttributeName, attributes: Map<AttributeName, AttributeModel>, category: WeaponCategory): AttributeSelectionWithPicks {
+    const attributeWithPicks = new AttributeSelectionWithPicks();
+    const attribute: AttributeModel = attributes.get(attributeType);
+    if (attribute && attribute.selectableBonusPicks) {
+      const typeOfPick = attribute.selectableBonusPicks.typeOfPick[attribute.attributeStrength].requiredHybridAttributeStrength;
+      if (typeOfPick && typeOfPick.length > 0) {
+        for (const pick of typeOfPick) {
+          if (this.isRequiredAttributeStrongEnough(pick, attributes, category)) {
+            attributeWithPicks.numberOfPicks = pick.numberOfPicks;
+            attributeWithPicks.selections = attribute.selectableBonusPicks.typeOfPick[attribute.attributeStrength].selections;
+            break;
+          }
+        }
+      }
+
+    }
+    return attributeWithPicks;
+  }
+
+  /**
+   * given a required hybrid attribute, a map of all other attributes and a weapon category, determine if the required attribute is strong enough for a selection.  If so, it returned try, if not return false.  If the required attribute has no name than always return true because any given selections are then strong enough.
+   * @param requiredHybridAttribute
+   * @param attributes
+   * @param category
+   */
+  isRequiredAttributeStrongEnough(requiredHybridAttribute: AttributePick, attributes: Map<AttributeName, AttributeModel>, category: WeaponCategory): boolean {
+    const hybridAttribute = attributes.get(requiredHybridAttribute.attributeName);
+    if (!hybridAttribute) {
+      return true;
+    }
+    return hybridAttribute.attributeStrength >= requiredHybridAttribute.attributeStrength && requiredHybridAttribute.category === category;
+  }
+
+  // TODO implement me so you can easily select a bonus
+  selectBonus(attribute: AttributeModel) {
+
   }
 
 

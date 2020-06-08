@@ -35,7 +35,7 @@ export class CharacterFactoryService {
                   physicalDefense = new PhysicalDefense(),
                   weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
                   magicDefense = new StartingCharacterMagicDefense(),
-                  attributes?: Array<AttributeModel>): CharacterModel {
+                  attributes?: Map<AttributeName, AttributeModel>): CharacterModel {
     const model: CharacterModel = {
       ...new CharacterModel(),
       name: name,
@@ -43,7 +43,7 @@ export class CharacterFactoryService {
       attributes: attributes ? attributes : this.attributeFactoryService.initializeAllAttributes(),
       level: level,
     };
-    for (const attribute of model.attributes) { // loop through all attributes to apply racial bonuses if any.
+    for (const attribute of model.attributes.values()) { // loop through all attributes to apply racial bonuses if any.
       this.assignAttributeStrength(model, attribute.attributeName, AttributeStrength.Normal);
     }
     return model;
@@ -78,7 +78,7 @@ export class CharacterFactoryService {
    */
   getWeaponDamage(character: CharacterModel, index: number): string {
     let attributeBonus = 0;
-    for (const attribute of character.attributes) {
+    for (const attribute of character.attributes.values()) {
       attributeBonus += this.attributeFactoryService.getAttackDamageBonus(attribute, character.weapons[index].baseValues.category, character.level).modifierOfDice.value();
     }
     character.weapons[index].baseValues.damage.modifierOfDice.addVal['attributes'] = attributeBonus;

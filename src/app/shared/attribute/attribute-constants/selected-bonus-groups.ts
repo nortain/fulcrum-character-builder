@@ -1,9 +1,23 @@
-
 import {AttributeStrength} from "../attribute-enums/attribute-strength.enum";
 import {AttributeName} from "../attribute-enums/attribute-name.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ValueRange} from "./attribute-constants";
 
+export type AttributeSelectionsAlias = PresenceSelections | AgilitySelections | ReasoningSelections | BrawnSelections;
+
+export type AttributePicksAlias = PresenceAttributePicks | BrawnAttributePicks | AgilityAttributePicks | ReasoningAttributePicks;
+
+export class AttributeSelectionWithPicks {
+  selections: AttributeSelectionsAlias;
+  numberOfPicks: number;
+}
+
+export class AttributePick {
+  category: WeaponCategory;
+  attributeStrength: AttributeStrength;
+  attributeName: AttributeName;
+  numberOfPicks: number;
+}
 
 export class CriticalAndEmpoweredBonus {
   bonusToCritical: ValueRange;
@@ -69,39 +83,22 @@ export class AgilitySelections {
 
 
 export class PresenceAttributePicks {
-  requiredHybridAttributeStrength: Array<{
-    category: WeaponCategory,
-    attributeStrength: AttributeStrength, attributeName: AttributeName,
-    numberOfPicks: number;
-  }>;
+  requiredHybridAttributeStrength: Array<AttributePick>;
   selections: PresenceSelections;
 }
 
 export class ReasoningAttributePicks {
-  requiredHybridAttributeStrength: Array<{
-    category: WeaponCategory,
-    attributeStrength: AttributeStrength, attributeName: AttributeName,
-    numberOfPicks: number;
-  }>;
+  requiredHybridAttributeStrength: Array<AttributePick>;
   selections: ReasoningSelections;
 }
 
 export class BrawnAttributePicks {
-  requiredHybridAttributeStrength: Array<{
-    category: WeaponCategory,
-    attributeStrength: AttributeStrength, attributeName: AttributeName,
-    numberOfPicks: number;
-  }>;
+  requiredHybridAttributeStrength: Array<AttributePick>;
   selections: BrawnSelections;
 }
 
 export class AgilityAttributePicks {
-  requiredHybridAttributeStrength: Array<{
-    category: WeaponCategory,
-    attributeStrength: AttributeStrength,
-    attributeName: AttributeName,
-    numberOfPicks: number;
-  }>;
+  requiredHybridAttributeStrength: Array<AttributePick>;
   selections: AgilitySelections;
 }
 

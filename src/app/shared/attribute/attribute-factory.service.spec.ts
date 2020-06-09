@@ -365,6 +365,10 @@ describe('AttributeFactoryService', () => {
 
   });
 
+  it('should be able to determine if a bonus has Used its maximum number of picks yet', () => {
+
+  });
+
 
   /**
    * HELPER function that makes a legendary attribute given an attribute name

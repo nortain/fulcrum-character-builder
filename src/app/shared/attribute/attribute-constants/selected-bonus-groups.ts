@@ -3,9 +3,19 @@ import {AttributeName} from "../attribute-enums/attribute-name.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ValueRange} from "./attribute-constants";
 
+export enum SelectionNames {
+  "PresenceSelections" = "PresenceSelections",
+  "ReasoningSelections" = "ReasoningSelections",
+  "BrawnSelections" = "BrawnSelections",
+  "AgilitySelections" = "AgilitySelections",
+
+}
+
 export type AttributeSelectionsAlias = PresenceSelections | AgilitySelections | ReasoningSelections | BrawnSelections;
 
 export type AttributePicksAlias = PresenceAttributePicks | BrawnAttributePicks | AgilityAttributePicks | ReasoningAttributePicks;
+
+export type AttributeBonusAlias = CriticalAndEmpoweredBonus | AttributeBonus | GlobalDamageAndPenaltyToAttack | GlobalDamageAndPenaltyToCritical | NonScalingAttributeBonus;
 
 export class AttributeSelectionWithPicks {
   selections: AttributeSelectionsAlias;
@@ -53,6 +63,7 @@ export class NonScalingAttributeBonus {
 }
 
 export class PresenceSelections {
+  name: SelectionNames.PresenceSelections;
   forcedMovement: NonScalingAttributeBonus;
   friendlyMovement: NonScalingAttributeBonus;
   bonusToHitWithEnvironmentAttacks: NonScalingAttributeBonus;
@@ -61,12 +72,14 @@ export class PresenceSelections {
 }
 
 export class ReasoningSelections {
+  name: SelectionNames.ReasoningSelections;
   bonusToCritical: AttributeBonus;
   bonusToEmpowered: AttributeBonus;
   bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
 }
 
 export class BrawnSelections {
+  name: SelectionNames.BrawnSelections;
   bonusToCriticalAndAggressivePress: { criticalBonus: ValueRange, pressText: string, pickValue: number };
   bonusToEmpoweredAndAggressivePress: { empoweredBonus: ValueRange, pressText: string, pickValue: number };
   bonusToEmpowered: AttributeBonus;
@@ -75,6 +88,7 @@ export class BrawnSelections {
 }
 
 export class AgilitySelections {
+  name: SelectionNames.AgilitySelections;
   bonusToCritical: AttributeBonus;
   bonusToSpeedAndCritical: { maxPicks: number, bonusToSpeed: number, bonusToCritical: ValueRange };
   bonusToDualist: AttributeBonus;

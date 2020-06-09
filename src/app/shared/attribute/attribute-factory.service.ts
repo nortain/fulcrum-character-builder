@@ -10,7 +10,17 @@ import {DiceSize} from "../character/dice/dice-size.enum";
 import {Dice} from "../character/dice/dice";
 import {AttributeStrength} from "./attribute-enums/attribute-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
-import {AgilitySelections, AttributePick, AttributeSelectionsAlias, AttributeSelectionWithPicks, BrawnSelections, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
+import {
+  AgilitySelections,
+  AttributeBonusAlias,
+  AttributePick,
+  AttributeSelectionsAlias,
+  AttributeSelectionWithPicks,
+  BrawnSelections,
+  PresenceSelections,
+  ReasoningSelections,
+  SelectionNames
+} from "./attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
 
 @Injectable({
@@ -302,8 +312,54 @@ export class AttributeFactoryService {
   }
 
   // TODO implement me so you can easily select a bonus
-  selectBonus(attribute: AttributeModel) {
+  selectBonus<K extends keyof AttributeSelectionsAlias>(attributes: Map<AttributeName, AttributeModel>, selection: AttributeSelectionWithPicks, propertyName: K) {
+    const choice = this.getProperty(selection.selections, propertyName);
+    let attribute: AttributeModel;
+    switch (selection.selections.name) {
+      case SelectionNames.PresenceSelections: {
+        attribute = attributes.get(AttributeName.Presence);
+        let picksUsed = 0;
+        for (const pick of attribute.chosenBonusPicks) {
+          if (pick.name === selection.selections.name) {
+            for (const selectionName of Object.keys(pick)) {
 
+            }
+          }
+        }
+
+      }
+        break;
+      case SelectionNames.ReasoningSelections: {
+      }
+        break;
+      case SelectionNames.BrawnSelections: {
+      }
+        break;
+      case SelectionNames.AgilitySelections: {
+      }
+        break;
+
+      default:
+    }
+  }
+
+  /** //TODO make tests for me
+   * given a selection which is a key of an AttributeSelectionAlias and an array of such alias, go through and see if the any
+   * match the passed in selection.  For each match where there is a maxPicks listed increment the count and set maxPicks to
+   * whatever the max number of picks are for that selection.  Return false if the count is lower than max number of picks.  This means that we have not reached the max number of picks.  If this returns true, then all possible picks have been used and no further ones can be used.
+   * @param selection
+   * @param usedPicks
+   */
+  hasUsedMaxPicks<K extends keyof AttributeSelectionsAlias>(selection: K, usedPicks: Array<AttributeSelectionsAlias>): boolean {
+    let count = 0;
+    let maxPicks = 100;
+    for (const pick of usedPicks) {
+      if (selection !== "name" && pick[selection] && pick[selection]["maxPicks"] > 0) {
+        count++;
+        maxPicks = pick[selection]["maxPicks"];
+      }
+    }
+    return count >= maxPicks;
   }
 
 
@@ -318,6 +374,15 @@ export class AttributeFactoryService {
   extractNumberFromValueRange(range: ValueRange, level: Level, diceSize = DiceSize.None): number {
     const array = this.diceService.getDiceArrayFromDamageRange(range.minBonus, range.maxBonus, LevelRange.TEN, diceSize);
     return parseInt(array[level - 1].modifierOfDice.value(), 10);
+  }
+
+  /**
+   * Crazy wizardry that lets you access properties of an object by passing in the object and a property name
+   * @param o
+   * @param propertyName
+   */
+  getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
+    return o[propertyName];
   }
 }
 

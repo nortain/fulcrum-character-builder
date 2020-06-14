@@ -4,7 +4,7 @@ import {AttributeName} from "./attribute-enums/attribute-name.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";
 import {AttributeModel} from "./attribute-model";
-import {ATTRIBUTE, AttributeAttackDamage, ValueRange} from "./attribute-constants/attribute-constants";
+import {AttributeAttackDamage, getAttributeObject, ValueRange} from "./attribute-constants/attribute-constants";
 import {LevelRange} from "../spells/enums/level-range.enum";
 import {DiceSize} from "../character/dice/dice-size.enum";
 import {Dice} from "../character/dice/dice";
@@ -12,14 +12,12 @@ import {AttributeStrength} from "./attribute-enums/attribute-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {
   AgilitySelections,
-  AttributeBonusAlias,
   AttributePick,
   AttributeSelectionsAlias,
   AttributeSelectionWithPicks,
   BrawnSelections,
   PresenceSelections,
   ReasoningSelections,
-  SelectionNames
 } from "./attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
 
@@ -49,7 +47,7 @@ export class AttributeFactoryService {
 
   getNewAttribute(name: AttributeName, strength = AttributeStrength.Normal): AttributeModel {
     const attribute: AttributeModel = {
-      ...ATTRIBUTE[name],
+      ...getAttributeObject()[name],
     };
     attribute.attributeStrength = strength;
     return attribute;
@@ -63,7 +61,7 @@ export class AttributeFactoryService {
    * @param level
    */
   getAttackDamageBonus(attribute: AttributeModel, category: WeaponCategory, level: Level): Dice {
-    const attackDamages: Array<AttributeAttackDamage> = ATTRIBUTE[attribute.attributeName].bonusToAttackDamage;
+    const attackDamages: Array<AttributeAttackDamage> = attribute.bonusToAttackDamage;
     if (attackDamages) {
       for (const attackDamage of attackDamages) {
         if (attackDamage.category === category) {
@@ -170,7 +168,7 @@ export class AttributeFactoryService {
    */
   getCriticalBonus(attribute: AttributeModel, level: Level, weaponCategory?: WeaponCategory): number {
     let bonus = 0;
-    if (attribute.chosenBonusPicks) {
+    if (attribute.chosenBonusPicks && attribute.chosenBonusPicks.length > 0) {
       for (const att of attribute.chosenBonusPicks) {
         if (attribute.attributeName === AttributeName.Brawn) {
           if ((att as BrawnSelections).bonusToCriticalAndAggressivePress) {
@@ -375,23 +373,23 @@ export class AttributeFactoryService {
     return false;
   }
 
-  /** //TODO make tests for me but first test can bonusPickBeAssigned cause shit that probably does it better and right and more
-   * given a selection which is a key of an AttributeSelectionAlias and an array of such alias, go through and see if the any
-   * match the passed in selection.  For each match where there is a maxPicks listed increment the count and set maxPicks to
-   * whatever the max number of picks are for that selection.  Return false if the count is lower than max number of picks.  This means that we have not reached the max number of picks.  If this returns true, then all possible picks have been used and no further ones can be used.
-   * @param selection
-   * @param usedPicks
+  /**
+   * Given an attribute
+   * @param attribute
    */
-  hasUsedMaxPicks<K extends keyof AttributeSelectionsAlias>(selection: K, usedPicks: Array<AttributeSelectionsAlias>): boolean {
-    let count = 0;
-    let maxPicks = 100;
-    for (const pick of usedPicks) {
-      if (selection !== "name" && pick[selection] && pick[selection]["maxPicks"] > 0) {
-        count++;
-        maxPicks = pick[selection]["maxPicks"];
+  getNumberOfBonusAttributePointsSpent<K extends keyof AttributeSelectionsAlias>(attribute: AttributeModel): number {
+    let totalPicksUsed = 0;
+    if (attribute && attribute.chosenBonusPicks) {
+      for (const pick of attribute.chosenBonusPicks) { // for each chosenPick
+        for (const selectionName of Object.keys(pick)) { // check that selection
+          if (selectionName !== "name") {
+            const pickValue = pick[selectionName].pickValue ? pick[selectionName].pickValue : 1;
+            totalPicksUsed += pickValue;
+          }
+        }
       }
     }
-    return count >= maxPicks;
+    return totalPicksUsed;
   }
 
 

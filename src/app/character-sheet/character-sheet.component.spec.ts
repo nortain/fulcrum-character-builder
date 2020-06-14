@@ -17,6 +17,7 @@ import {ArmorType} from "../shared/armor/armor-type.enum";
 import {Armor} from "../shared/armor/armor";
 import {ThemePointsContainer} from "../shared/theme-points/theme-points-container";
 import {CharacterFactoryService} from "../shared/character/character-factory.service";
+import {CharacterFactoryServiceStub} from "../shared/constants/testing-stub-classes";
 
 
 describe('CharacterSheetComponent', () => {
@@ -28,7 +29,9 @@ describe('CharacterSheetComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule, NgbModule, CharacterSheetModule],
       declarations: [],
-      providers: [NgbDropdownConfig, NgbModal, CharacterFactoryService]
+      providers: [NgbDropdownConfig, NgbModal,
+        {provide: CharacterFactoryService, useClass: CharacterFactoryServiceStub}
+      ]
     })
       .compileComponents();
   }));

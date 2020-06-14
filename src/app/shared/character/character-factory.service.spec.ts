@@ -8,18 +8,27 @@ import {TestBed} from "@angular/core/testing";
 import {CharacterModel} from "./character-model";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {AttributeService} from "../attribute/attribute.service";
+import {AttributeFactoryServiceStub, CharacterFactoryServiceStub} from "../constants/testing-stub-classes";
+import {RaceFactoryService} from "./race/race-factory.service";
 
 // TODO when character factory service is done
 describe('Character', () => {
   let characterFactoryService: CharacterFactoryService;
+  let raceService: RaceFactoryService;
   let attributeService: AttributeFactoryService;
   let bob: CharacterModel;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CharacterFactoryService, AttributeFactoryService]
+      providers: [
+        CharacterFactoryService, {
+          provide: AttributeFactoryService, useClass: AttributeFactoryServiceStub
+        }, {
+          provide: RaceFactoryService, useClass: RaceFactoryService
+        }]
     });
     characterFactoryService = TestBed.inject<CharacterFactoryService>(CharacterFactoryService);
+    raceService = TestBed.inject<RaceFactoryService>(RaceFactoryService);
     attributeService = TestBed.inject<AttributeFactoryService>(AttributeFactoryService);
     bob = characterFactoryService.getNewCharacter("Bob", RaceType.HighOrc);
   });

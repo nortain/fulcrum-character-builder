@@ -8,7 +8,7 @@ import {Level} from "../character/level.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {AgilitySelections, AttributeBonusAlias, AttributeSelectionWithPicks, BrawnSelections, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
-import {INITATIVE_TEXT, PRESS_TEXT} from "./attribute-constants/attribute-constants";
+import {INITIATIVE_TEXT, PRESS_TEXT} from "./attribute-constants/attribute-constants";
 
 
 describe('AttributeFactoryService', () => {
@@ -109,7 +109,7 @@ describe('AttributeFactoryService', () => {
     expect(service.getAttackDamageBonus(pre, WeaponCategory.Hybrid, Level.Six).printRoll()).toEqual("6");
   });
 
-  it('should be able to get damage for legendary presence with a choosen penalty to attack damage', () => {
+  it('should be able to get damage for legendary presence with a chosen penalty to attack damage', () => {
     pre.chosenBonusPicks = [{convertAttackDamageIntoGlobal: pre.selectableBonusPicks.typeOfPick[4].selections["convertAttackDamageIntoGlobal"]} as PresenceSelections];
     expect(service.getAttackDamageBonus(pre, WeaponCategory.Presence, Level.One).printRoll()).toEqual("3");
     expect(service.getAttackDamageBonus(pre, WeaponCategory.Presence, Level.Ten).modifierOfDice.value()).toEqual(7);
@@ -157,6 +157,7 @@ describe('AttributeFactoryService', () => {
   });
 
   it('should be able to show selected critical bonuses for possible ReasoningSelections', () => {
+    rea = makeAttribute(AttributeName.Reasoning);
     expect(service.getCriticalBonus(rea, Level.One)).toEqual(0);
     rea.chosenBonusPicks = [{bonusToCritical: rea.selectableBonusPicks.typeOfPick[4].selections["bonusToCritical"]} as ReasoningSelections];
     expect(service.getCriticalBonus(rea, Level.One)).toEqual(3);
@@ -167,10 +168,11 @@ describe('AttributeFactoryService', () => {
   });
 
   it('should show critical bonuses for basecrit from hybrid builds but not from non-hybrids', () => {
+    pre = makeAttribute(AttributeName.Presence);
     expect(service.getCriticalBonus(pre, Level.One, WeaponCategory.Hybrid)).toEqual(0);
     pre.attributeStrength = AttributeStrength.Epic;
     expect(service.getCriticalBonus(pre, Level.One, WeaponCategory.Hybrid)).toEqual(1);
-
+    rea = makeAttribute(AttributeName.Reasoning);
     expect(service.getCriticalBonus(rea, Level.One, WeaponCategory.Hybrid)).toEqual(0);
     rea.attributeStrength = AttributeStrength.Epic;
     expect(service.getCriticalBonus(rea, Level.One, WeaponCategory.Hybrid)).toEqual(1);
@@ -271,24 +273,36 @@ describe('AttributeFactoryService', () => {
   });
 
   it('should be able to get special text', () => {
-    expect(service.getSpecialText(qu)).toBe(INITATIVE_TEXT);
+    expect(service.getSpecialText(qu)).toBe(INITIATIVE_TEXT);
     bra.chosenBonusPicks = [{bonusToCriticalAndAggressivePress: bra.selectableBonusPicks.typeOfPick[2].selections["bonusToCriticalAndAggressivePress"]} as BrawnSelections];
     expect(service.getSpecialText(bra)).toBe(PRESS_TEXT);
+    qu.attributeStrength = AttributeStrength.Epic;
+    expect(service.getSpecialText(qu)).toBe(INITIATIVE_TEXT);
     qu.attributeStrength = AttributeStrength.Champion;
     expect(service.getSpecialText(qu)).toBe("");
     expect(service.getSpecialText(agi)).toBe("");
   });
 
+  it('should be able to get special text for epic brawn', () => {
+    bra.attributeStrength = AttributeStrength.Epic;
+    const newMap = service.initializeAllAttributes();
+    newMap.set(AttributeName.Brawn, bra);
+    const selection = service.presentChoices(AttributeName.Brawn, newMap, WeaponCategory.Heavy);
+    const type = "bonusToEmpoweredAndAggressivePress" as keyof AttributeBonusAlias;
+    service.selectBonus(newMap, selection, type);
+    expect(service.getSpecialText(bra)).toBe(PRESS_TEXT);
+  });
+
   it('should be able to initalize all attributes', () => {
     const newMap = service.initializeAllAttributes();
-    expect(newMap[0].attributeName).toEqual(AttributeName.Brawn);
-    expect(newMap[1].attributeName).toEqual(AttributeName.Vitality);
-    expect(newMap[2].attributeName).toEqual(AttributeName.Agility);
-    expect(newMap[3].attributeName).toEqual(AttributeName.Quickness);
-    expect(newMap[4].attributeName).toEqual(AttributeName.Reasoning);
-    expect(newMap[5].attributeName).toEqual(AttributeName.Presence);
-    expect(newMap[6].attributeName).toEqual(AttributeName.SelfDiscipline);
-    expect(newMap[7].attributeName).toEqual(AttributeName.Intuition);
+    expect(newMap.get(AttributeName.Brawn).attributeName).toEqual(AttributeName.Brawn);
+    expect(newMap.get(AttributeName.Vitality).attributeName).toEqual(AttributeName.Vitality);
+    expect(newMap.get(AttributeName.Agility).attributeName).toEqual(AttributeName.Agility);
+    expect(newMap.get(AttributeName.Quickness).attributeName).toEqual(AttributeName.Quickness);
+    expect(newMap.get(AttributeName.Reasoning).attributeName).toEqual(AttributeName.Reasoning);
+    expect(newMap.get(AttributeName.Presence).attributeName).toEqual(AttributeName.Presence);
+    expect(newMap.get(AttributeName.SelfDiscipline).attributeName).toEqual(AttributeName.SelfDiscipline);
+    expect(newMap.get(AttributeName.Intuition).attributeName).toEqual(AttributeName.Intuition);
   });
 
   it('should be able to get initalized attributes by name', () => {
@@ -402,6 +416,24 @@ describe('AttributeFactoryService', () => {
     expect(pre.chosenBonusPicks.find(item => item["convertAttackDamageIntoGlobal"])).toBeTruthy();
   });
 
+  it('should be able to get how many bonusAttributePoints have been spent per attribute', () => {
+    let result = service.getNumberOfBonusAttributePointsSpent(bra);
+    expect(result).toEqual(0);
+    const newMap = service.initializeAllAttributes();
+    newMap.set(AttributeName.Brawn, bra);
+    const selection = makeAttributeSelection(bra);
+    const type = "bonusToEmpoweredAndAggressivePress" as keyof AttributeBonusAlias;
+    service.selectBonus(newMap, selection, type);
+    result = service.getNumberOfBonusAttributePointsSpent(newMap.get(AttributeName.Brawn));
+    expect(result).toEqual(2);
+    result = service.getNumberOfBonusAttributePointsSpent(bra);
+    expect(result).toEqual(2);
+  });
+
+  it('should be able to ', () => {
+
+  });
+
 
   /**
    * HELPER function that makes a legendary attribute given an attribute name
@@ -414,6 +446,7 @@ describe('AttributeFactoryService', () => {
     return service.getNewAttribute(name, AttributeStrength.Legendary);
   }
 
+  /*Dumb helper function*/
   function makeAttributeSelection(attType: AttributeModel): AttributeSelectionWithPicks {
     const legendaryAttributeChoice = attType.selectableBonusPicks.typeOfPick[attType.attributeStrength];
     const name = attType.attributeName.toString() + "Selection";

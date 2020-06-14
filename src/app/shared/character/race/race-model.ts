@@ -21,6 +21,7 @@ export class RaceModel {
   talentBonus: Array<ThemeType>;
   startingAttributes: Array<AttributeName>;
   optionalStartingAttributes: Array<AttributeName>;
+  selectedOptionalStartingAttribute: AttributeName;
   powerPointBonus: number;
   skillPointBonus: number;
   recoveryBonus: number;

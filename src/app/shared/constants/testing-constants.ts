@@ -32,6 +32,7 @@ export function mockDropdownData() {
   ] as DropdownValueObject[];
 }
 
+
 export function mockCharacter(name = "Bob", raceType = RaceType.Altwani) {
   const character = new CharacterModel();
   return character;

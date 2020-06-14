@@ -8,7 +8,6 @@ export enum SelectionNames {
   "ReasoningSelections" = "ReasoningSelections",
   "BrawnSelections" = "BrawnSelections",
   "AgilitySelections" = "AgilitySelections",
-
 }
 
 export type AttributeSelectionsAlias = PresenceSelections | AgilitySelections | ReasoningSelections | BrawnSelections;
@@ -115,23 +114,23 @@ export class AgilitySelections {
 
 
 export class PresenceAttributePicks {
-  requiredHybridAttributeStrength: Array<AttributePick>;
-  selections: PresenceSelections;
+  requiredHybridAttributeStrength: Array<AttributePick> = new Array<AttributePick>();
+  selections: PresenceSelections = new PresenceSelections();
 }
 
 export class ReasoningAttributePicks {
-  requiredHybridAttributeStrength: Array<AttributePick>;
-  selections: ReasoningSelections;
+  requiredHybridAttributeStrength: Array<AttributePick> = new Array<AttributePick>();
+  selections: ReasoningSelections = new ReasoningSelections();
 }
 
 export class BrawnAttributePicks {
-  requiredHybridAttributeStrength: Array<AttributePick>;
-  selections: BrawnSelections;
+  requiredHybridAttributeStrength: Array<AttributePick> = new Array<AttributePick>();
+  selections: BrawnSelections = new BrawnSelections();
 }
 
 export class AgilityAttributePicks {
-  requiredHybridAttributeStrength: Array<AttributePick>;
-  selections: AgilitySelections;
+  requiredHybridAttributeStrength: Array<AttributePick> = new Array<AttributePick>();
+  selections: AgilitySelections = new AgilitySelections();
 }
 
 

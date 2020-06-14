@@ -10,6 +10,7 @@ import {DiceService} from "../dice/dice.service";
 import {ValueRange} from "../../attribute/attribute-constants/attribute-constants";
 import {DiceSize} from "../dice/dice-size.enum";
 import {LevelRange} from "../../spells/enums/level-range.enum";
+import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +37,26 @@ export class RaceFactoryService {
       startingAttributes: STARTING_PLAYER_RACES[raceType].startingAttributes,
       powerPointBonus: STARTING_PLAYER_RACES[raceType].powerPointBonus ? STARTING_PLAYER_RACES[raceType].powerPointBonus : 0,
       skillPointBonus: STARTING_PLAYER_RACES[raceType].skillPointBonus ? STARTING_PLAYER_RACES[raceType].skillPointBonus : 0,
-      racialRestriction: STARTING_PLAYER_RACES[raceType].racialRestriction ? STARTING_PLAYER_RACES[raceType].racialRestriction : ""
+      racialRestriction: STARTING_PLAYER_RACES[raceType].racialRestriction ? STARTING_PLAYER_RACES[raceType].racialRestriction : "",
+      optionalStartingAttributes: STARTING_PLAYER_RACES[raceType].optionalStartingAttributes ? STARTING_PLAYER_RACES[raceType].optionalStartingAttributes : new Array<AttributeName>()
     };
     model.recoveryBonus = this.getRecoveryBonus(model);
     return model;
+  }
+
+  /**
+   * given a raceModel and attributeName assign that attribute as a selected Optional Attribute if it exists
+   * as an option.  Otherwise clear out the selectedOptionalStartingAttribute by setting it to undefined.
+   * @param race
+   * @param selectedStartingAttribute
+   */
+  selectOptionalStartingAttribute(race: RaceModel, selectedStartingAttribute: AttributeName): RaceModel {
+    if (race.optionalStartingAttributes && race.optionalStartingAttributes.find(item => item === selectedStartingAttribute)) {
+      race.selectedOptionalStartingAttribute = selectedStartingAttribute;
+    } else {
+      race.selectedOptionalStartingAttribute = undefined;
+    }
+    return race;
   }
 
   formatText(race: RaceModel, text: string): string {
@@ -52,7 +69,7 @@ export class RaceFactoryService {
       for (let i = 1; i <= chunk.length; i += 2) {
         if (chunk[i - 1]) {
           result = result.concat(chunk[i - 1]);
-          const valueText = this.formatText(race, <string> this.getMechanicalBonus(race, chunk[i]));
+          const valueText = this.formatText(race, <string>this.getMechanicalBonus(race, chunk[i]));
           if (valueText !== undefined) {
             result = result.concat(valueText);
           }
@@ -63,9 +80,6 @@ export class RaceFactoryService {
     }
     return result;
   }
-
-
-
 
 
   /** In the constants file there are a number of default values for races.

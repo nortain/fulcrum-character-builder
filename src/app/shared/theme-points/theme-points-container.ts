@@ -26,7 +26,7 @@ export class ThemePointsContainer {
 
   getHitPointBonus(level: Level): number {
     let bonus = 3;
-    bonus += Math.floor((3 + level) * 5 + this.combat.getStrength() * .5 + this.stealth.getStrength() * .25);
+    bonus += Math.floor((3 + level) * (5 + this.combat.getStrength() * .5 + this.stealth.getStrength() * .25));
     return bonus;
   }
 

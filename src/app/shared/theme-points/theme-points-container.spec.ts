@@ -4,7 +4,7 @@ import {ThemeStrength} from "./theme-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {Level} from "../character/level.enum";
 
-describe('', () => {
+describe('ThemePointsContainer', () => {
   let thc: ThemePointsContainer;
   beforeEach(() => {
     thc = new ThemePointsContainer();

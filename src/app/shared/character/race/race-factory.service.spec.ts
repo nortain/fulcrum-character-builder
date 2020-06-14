@@ -8,9 +8,11 @@ import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum
 import {RaceFactoryService} from "./race-factory.service";
 import {TestBed} from "@angular/core/testing";
 import {Level} from "../level.enum";
+import {RaceModel} from "./race-model";
 
 describe('Race', () => {
-  let elf, human, dwarf, prim, fey, halfling, orc, elder;
+  let elf: RaceModel, human: RaceModel, dwarf: RaceModel, prim: RaceModel, fey: RaceModel,
+    halfling: RaceModel, orc: RaceModel, elder: RaceModel;
   let service: RaceFactoryService;
 
   beforeEach(() => {
@@ -134,5 +136,17 @@ describe('Race', () => {
     expect(dwarf.availableAttributePoints).toBe(4);
     expect(human.startingAttributes.length).toEqual(0);
     expect(human.availableAttributePoints).toBe(6);
+  });
+
+  it('should have optionalStartingAttributes', () => {
+    expect(fey.optionalStartingAttributes.length).toEqual(2);
+    expect(fey.selectedOptionalStartingAttribute).toBeFalsy();
+    service.selectOptionalStartingAttribute(fey, AttributeName.Reasoning);
+    expect(fey.selectedOptionalStartingAttribute).toEqual(AttributeName.Reasoning);
+    service.selectOptionalStartingAttribute(fey, AttributeName.Brawn);
+    expect(fey.selectedOptionalStartingAttribute).toBeFalsy();
+    service.selectOptionalStartingAttribute(fey, null);
+    expect(fey.selectedOptionalStartingAttribute).toBeFalsy();
+
   });
 });

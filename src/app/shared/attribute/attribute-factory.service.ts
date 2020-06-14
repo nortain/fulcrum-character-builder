@@ -28,6 +28,14 @@ import {ArmorType} from "../armor/armor-type.enum";
 })
 export class AttributeFactoryService {
 
+  bonusSelectionConstructor =
+    {
+      PresenceSelections: PresenceSelections,
+      AgilitySelections: AgilitySelections,
+      ReasoningSelections: ReasoningSelections,
+      BrawnSelections: BrawnSelections
+    };
+
   constructor(private diceService: DiceService) {
   }
 
@@ -155,7 +163,7 @@ export class AttributeFactoryService {
   }
 
   /**
-   * Given an attribute and a level this will return a dice object with the critical bonus provided by the attribute.  If the attribute doesn't provide any kind of critical bonus then the dice object will be an empty instance.  Fetches values for bonusToCritical, bonusToSpeedAndCritical, bonusToCriticalAndAggressivePress, bonusToEmpoweredAndCritical and bonusToBaseCritical
+   * Given an attribute and a level this will return a dice object with the critical bonus provided by the attribute.  If the attribute doesn't provide any kind of critical bonus then the dice object will be an empty instance.  Fetches values for bonusToCritical, bonusToSpeedAndCritical, bonusToCriticalAndAggressivePress, bonusToCriticalAndEmpowered and bonusToBaseCritical
    * @param attribute
    * @param level
    * @param weaponCategory
@@ -168,8 +176,8 @@ export class AttributeFactoryService {
           if ((att as BrawnSelections).bonusToCriticalAndAggressivePress) {
             const range = (att as BrawnSelections).bonusToCriticalAndAggressivePress.criticalBonus;
             bonus += this.extractNumberFromValueRange(range, level);
-          } else if ((att as BrawnSelections).bonusToEmpoweredAndCritical) {
-            const range = (att as BrawnSelections).bonusToEmpoweredAndCritical.bonusToCritical;
+          } else if ((att as BrawnSelections).bonusToCriticalAndEmpowered) {
+            const range = (att as BrawnSelections).bonusToCriticalAndEmpowered.bonusToCritical;
             bonus += this.extractNumberFromValueRange(range, level);
           }
         } else if (attribute.attributeName === AttributeName.Agility) {
@@ -189,8 +197,8 @@ export class AttributeFactoryService {
           if ((att as ReasoningSelections).bonusToCritical) {
             const range = (att as ReasoningSelections).bonusToCritical.bonusTo;
             bonus += this.extractNumberFromValueRange(range, level);
-          } else if ((att as ReasoningSelections).bonusToEmpoweredAndCritical) {
-            const range = (att as ReasoningSelections).bonusToEmpoweredAndCritical.bonusToCritical;
+          } else if ((att as ReasoningSelections).bonusToCriticalAndEmpowered) {
+            const range = (att as ReasoningSelections).bonusToCriticalAndEmpowered.bonusToCritical;
             bonus += this.extractNumberFromValueRange(range, level);
           }
         }
@@ -278,6 +286,17 @@ export class AttributeFactoryService {
     return 0;
   }
 
+  /**
+   * Given an attribute name, a map of attributes and a weapon cateogry return an attribute selection with picks.
+   * If an attributeName has selectable bonus picks and enough attributeStrength has been assigned to said attribute (using the passed in map) get the requiredHybridAttributeStrength
+   * Each requiredHybridAttributeStrength is a requirement of how strong certain other attributes must be if their weaponCategory matches the category passed in.
+   * For Ex. if an Agility attribute is passed in with a weaponCategory of balanced then Brawn must be of at with least an attributeStrength of Heroic to present options.
+   * If the requiredAttribute is Strong Enough then that inner function returns true and we assign the number of picks of that selection that can be made along with all possible selections
+   * that can be made.
+   * @param attributeType
+   * @param attributes
+   * @param category
+   */
   presentChoices(attributeType: AttributeName, attributes: Map<AttributeName, AttributeModel>, category: WeaponCategory): AttributeSelectionWithPicks {
     const attributeWithPicks = new AttributeSelectionWithPicks();
     const attribute: AttributeModel = attributes.get(attributeType);
@@ -298,7 +317,7 @@ export class AttributeFactoryService {
   }
 
   /**
-   * given a required hybrid attribute, a map of all other attributes and a weapon category, determine if the required attribute is strong enough for a selection.  If so, it returned try, if not return false.  If the required attribute has no name than always return true because any given selections are then strong enough.
+   * given a required hybrid attribute, a map of all attributes and a weapon category, determine if the required attribute is strong enough for a selection.  If so, it returns true, if not return false.  If the required attribute has no name than always return true because any given selections are then strong enough.
    * @param requiredHybridAttribute
    * @param attributes
    * @param category
@@ -311,39 +330,52 @@ export class AttributeFactoryService {
     return hybridAttribute.attributeStrength >= requiredHybridAttribute.attributeStrength && requiredHybridAttribute.category === category;
   }
 
-  // TODO implement me so you can easily select a bonus
-  selectBonus<K extends keyof AttributeSelectionsAlias>(attributes: Map<AttributeName, AttributeModel>, selection: AttributeSelectionWithPicks, propertyName: K) {
-    const choice = this.getProperty(selection.selections, propertyName);
-    let attribute: AttributeModel;
-    switch (selection.selections.name) {
-      case SelectionNames.PresenceSelections: {
-        attribute = attributes.get(AttributeName.Presence);
-        let picksUsed = 0;
-        for (const pick of attribute.chosenBonusPicks) {
-          if (pick.name === selection.selections.name) {
-            for (const selectionName of Object.keys(pick)) {
 
-            }
+  canBonusPickBeAssigned<K extends keyof AttributeSelectionsAlias>(attribute: AttributeModel, selection: AttributeSelectionWithPicks, propertyName: K, choice: AttributeSelectionsAlias[K]): boolean {
+    let namedPicksUsed = 0;
+    let totalPicksUsed = choice["pickValue"] && choice["maxPicks"] > 0 ? choice["pickValue"] : 1; // if we have a pick value greater than 1 use that otherwise default to 1
+    const maxPicks = choice["maxPicks"] ? choice["maxPicks"] : Number.MAX_SAFE_INTEGER; // if we have max picks use them otherwise assume an unlimited number of picks
+    if (attribute && attribute.chosenBonusPicks) {
+      for (const pick of attribute.chosenBonusPicks) { // for each chosenPick
+        for (const selectionName of Object.keys(pick)) { // check that selection
+          if (selection.selections[selectionName] && propertyName === selectionName) { // if the selection exists and it's name matches the property name
+            namedPicksUsed++;
+          }
+          if (selection.selections[selectionName] && selectionName !== "name") {
+            const pickValue = selection.selections[selectionName].pickValue ? selection.selections[selectionName].pickValue : 1;
+            totalPicksUsed += pickValue;
           }
         }
-
       }
-        break;
-      case SelectionNames.ReasoningSelections: {
-      }
-        break;
-      case SelectionNames.BrawnSelections: {
-      }
-        break;
-      case SelectionNames.AgilitySelections: {
-      }
-        break;
-
-      default:
     }
+    return (namedPicksUsed < maxPicks && totalPicksUsed <= selection.numberOfPicks);
   }
 
-  /** //TODO make tests for me
+  /**
+   * Given the properties we want to try and determine if the propertyName K can be selected given the map of attributes and a AttributeSelectionWithPicks.  If a selection can be made
+   * return true, otherwise return false.  Cases that would prevent a selection from being made is if the propertyName K has already been selected a max number of times or if there are
+   * not enough selection points left to make the selection.
+   * @param attributes - map of all 8 attributes a character has
+   * @param selection - a fully populated (i.e. selectedableBonusPicks in attribute-constant) selection object of the type of strength that matches attribute strength in the attribute Map
+   * @param propertyName The name of the property for the given selection's selection property.  You could also say K extends keyof selection.selections
+   */
+  selectBonus<K extends keyof AttributeSelectionsAlias>(attributes: Map<AttributeName, AttributeModel>, selection: AttributeSelectionWithPicks, propertyName: K): boolean {
+    const choice = this.getProperty(selection.selections, propertyName);
+    let attribute: AttributeModel;
+    const type = selection.selections.name.toString().replace("Selections", ""); // risky unchecked way of finding the attribute but i'm tired and test should help ensure it works.
+    attribute = attributes.get(AttributeName[type]);
+    if (this.canBonusPickBeAssigned(attribute, selection, propertyName, choice)) {
+      const newSelection: AttributeSelectionsAlias = {
+        ...new this.bonusSelectionConstructor[selection.selections.name](),
+        [propertyName]: choice
+      };
+      attribute.chosenBonusPicks.push(newSelection);
+      return true;
+    }
+    return false;
+  }
+
+  /** //TODO make tests for me but first test can bonusPickBeAssigned cause shit that probably does it better and right and more
    * given a selection which is a key of an AttributeSelectionAlias and an array of such alias, go through and see if the any
    * match the passed in selection.  For each match where there is a maxPicks listed increment the count and set maxPicks to
    * whatever the max number of picks are for that selection.  Return false if the count is lower than max number of picks.  This means that we have not reached the max number of picks.  If this returns true, then all possible picks have been used and no further ones can be used.

@@ -6,7 +6,7 @@ import {AttributeModel} from "./attribute-model";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
-import {AgilitySelections, BrawnSelections, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
+import {AgilitySelections, AttributeBonusAlias, AttributeSelectionWithPicks, BrawnSelections, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
 import {INITATIVE_TEXT, PRESS_TEXT} from "./attribute-constants/attribute-constants";
 
@@ -125,7 +125,7 @@ describe('AttributeFactoryService', () => {
 
   it('should show bonus critical possible brawn Selections', () => {
     expect(service.getCriticalBonus(bra, Level.One)).toEqual(0);
-    bra.chosenBonusPicks = [{bonusToEmpoweredAndCritical: bra.selectableBonusPicks.typeOfPick[4].selections["bonusToEmpoweredAndCritical"]} as BrawnSelections];
+    bra.chosenBonusPicks = [{bonusToCriticalAndEmpowered: bra.selectableBonusPicks.typeOfPick[4].selections["bonusToCriticalAndEmpowered"]} as BrawnSelections];
     expect(service.getCriticalBonus(bra, Level.One)).toEqual(1);
     expect(service.getCriticalBonus(bra, Level.Seven)).toEqual(2);
     bra.chosenBonusPicks.push({bonusToCriticalAndAggressivePress: bra.selectableBonusPicks.typeOfPick[2].selections["bonusToCriticalAndAggressivePress"]} as BrawnSelections);
@@ -161,7 +161,7 @@ describe('AttributeFactoryService', () => {
     rea.chosenBonusPicks = [{bonusToCritical: rea.selectableBonusPicks.typeOfPick[4].selections["bonusToCritical"]} as ReasoningSelections];
     expect(service.getCriticalBonus(rea, Level.One)).toEqual(3);
     expect(service.getCriticalBonus(rea, Level.Ten)).toEqual(8);
-    rea.chosenBonusPicks.push({bonusToEmpoweredAndCritical: rea.selectableBonusPicks.typeOfPick[3].selections["bonusToEmpoweredAndCritical"]} as ReasoningSelections);
+    rea.chosenBonusPicks.push({bonusToCriticalAndEmpowered: rea.selectableBonusPicks.typeOfPick[3].selections["bonusToCriticalAndEmpowered"]} as ReasoningSelections);
     expect(service.getCriticalBonus(rea, Level.One)).toEqual(4);
     expect(service.getCriticalBonus(rea, Level.Ten)).toEqual(11);
   });
@@ -362,11 +362,44 @@ describe('AttributeFactoryService', () => {
   });
 
   it('should be able to select a bonus', () => {
-
+    const newMap = service.initializeAllAttributes();
+    newMap.set(AttributeName.Reasoning, rea);
+    const selection = makeAttributeSelection(rea);
+    const type = "bonusToCritical" as keyof AttributeBonusAlias;
+    const result = service.selectBonus(newMap, selection, type);
+    expect(result).toBeTruthy();
+    const reasoning = newMap.get(AttributeName.Reasoning);
+    expect(reasoning.chosenBonusPicks.length).toEqual(1);
+    expect((reasoning.chosenBonusPicks[0] as ReasoningSelections).bonusToCritical).toBeTruthy();
+    expect((reasoning.chosenBonusPicks[0] as ReasoningSelections).bonusToCriticalAndEmpowered).toBeFalsy();
+    expect((reasoning.chosenBonusPicks[0] as ReasoningSelections).bonusToEmpowered).toBeFalsy();
   });
 
   it('should be able to determine if a bonus has Used its maximum number of picks yet', () => {
-
+    const newMap = service.initializeAllAttributes();
+    newMap.set(AttributeName.Presence, pre);
+    const selection = makeAttributeSelection(pre);
+    let type = "bonusToGlobalDamageAndPenaltyToCritical" as keyof AttributeBonusAlias;
+    let result = service.selectBonus(newMap, selection, type);
+    expect(result).toBeTruthy();
+    result = service.selectBonus(newMap, selection, type);
+    expect(result).toBeFalsy();
+    type = "forcedMovement" as keyof AttributeBonusAlias;
+    result = service.selectBonus(newMap, selection, type);
+    expect(result).toBeTruthy();
+    type = "convertAttackDamageIntoGlobal" as keyof AttributeBonusAlias;
+    service.selectBonus(newMap, selection, type);
+    service.selectBonus(newMap, selection, type);
+    result = service.selectBonus(newMap, selection, type);
+    expect(result).toBeTruthy();
+    result = service.selectBonus(newMap, selection, type);
+    expect(result).toBeFalsy();
+    pre = newMap.get(AttributeName.Presence);
+    expect(pre.chosenBonusPicks.length).toEqual(5);
+    expect(pre.chosenBonusPicks.find(item => item["bonusToGlobalDamageAndPenaltyToCritical"])).toBeTruthy();
+    expect(pre.chosenBonusPicks.find(item => item["friendlyMovement"])).toBeFalsy();
+    expect(pre.chosenBonusPicks.find(item => item["forcedMovement"])).toBeTruthy();
+    expect(pre.chosenBonusPicks.find(item => item["convertAttackDamageIntoGlobal"])).toBeTruthy();
   });
 
 
@@ -379,5 +412,15 @@ describe('AttributeFactoryService', () => {
       name = AttributeName.Brawn;
     }
     return service.getNewAttribute(name, AttributeStrength.Legendary);
+  }
+
+  function makeAttributeSelection(attType: AttributeModel): AttributeSelectionWithPicks {
+    const legendaryAttributeChoice = attType.selectableBonusPicks.typeOfPick[attType.attributeStrength];
+    const name = attType.attributeName.toString() + "Selection";
+    const selection: AttributeSelectionWithPicks = {
+      selections: legendaryAttributeChoice.selections,
+      numberOfPicks: legendaryAttributeChoice.requiredHybridAttributeStrength[0].numberOfPicks
+    };
+    return selection;
   }
 });

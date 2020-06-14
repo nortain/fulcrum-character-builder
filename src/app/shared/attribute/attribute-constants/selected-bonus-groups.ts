@@ -15,8 +15,11 @@ export type AttributeSelectionsAlias = PresenceSelections | AgilitySelections | 
 
 export type AttributePicksAlias = PresenceAttributePicks | BrawnAttributePicks | AgilityAttributePicks | ReasoningAttributePicks;
 
-export type AttributeBonusAlias = CriticalAndEmpoweredBonus | AttributeBonus | GlobalDamageAndPenaltyToAttack | GlobalDamageAndPenaltyToCritical | NonScalingAttributeBonus;
+export type AttributeBonusAlias = CriticalAndEmpoweredBonus | AttributeBonus | GlobalDamageAndPenaltyToAttack | GlobalDamageAndPenaltyToCritical | NonScalingAttributeBonus |AttributeBonusWithText | AttributeBonusWithSpeed | SelectionNames;
 
+/**
+ * A holder for one of the attributeSelection alias along with a total number of available picks that can be made.  This class is essentally holding what possible selections are available to a player and how many picks they have to allocate to those selections.
+ */
 export class AttributeSelectionWithPicks {
   selections: AttributeSelectionsAlias;
   numberOfPicks: number;
@@ -62,8 +65,23 @@ export class NonScalingAttributeBonus {
   pickValue: number;
 }
 
+export class AttributeBonusWithText {
+  criticalBonus: ValueRange;
+  empoweredBonus: ValueRange;
+  pressText: string;
+  pickValue: number;
+  maxPicks: 1;
+}
+
+export class AttributeBonusWithSpeed {
+  bonusToSpeed: number;
+  bonusToCritical: ValueRange;
+  maxPicks: number;
+  pickValue: number;
+}
+
 export class PresenceSelections {
-  name: SelectionNames.PresenceSelections;
+  name: SelectionNames = SelectionNames.PresenceSelections;
   forcedMovement: NonScalingAttributeBonus;
   friendlyMovement: NonScalingAttributeBonus;
   bonusToHitWithEnvironmentAttacks: NonScalingAttributeBonus;
@@ -72,25 +90,25 @@ export class PresenceSelections {
 }
 
 export class ReasoningSelections {
-  name: SelectionNames.ReasoningSelections;
+  name: SelectionNames = SelectionNames.ReasoningSelections;
   bonusToCritical: AttributeBonus;
   bonusToEmpowered: AttributeBonus;
-  bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
+  bonusToCriticalAndEmpowered: CriticalAndEmpoweredBonus;
 }
 
 export class BrawnSelections {
-  name: SelectionNames.BrawnSelections;
-  bonusToCriticalAndAggressivePress: { criticalBonus: ValueRange, pressText: string, pickValue: number };
-  bonusToEmpoweredAndAggressivePress: { empoweredBonus: ValueRange, pressText: string, pickValue: number };
+  name: SelectionNames = SelectionNames.BrawnSelections;
+  bonusToCriticalAndAggressivePress: AttributeBonusWithText;
+  bonusToEmpoweredAndAggressivePress: AttributeBonusWithText;
   bonusToEmpowered: AttributeBonus;
   bonusToProtectorAura: AttributeBonus;
-  bonusToEmpoweredAndCritical: CriticalAndEmpoweredBonus;
+  bonusToCriticalAndEmpowered: CriticalAndEmpoweredBonus;
 }
 
 export class AgilitySelections {
-  name: SelectionNames.AgilitySelections;
+  name: SelectionNames = SelectionNames.AgilitySelections;
   bonusToCritical: AttributeBonus;
-  bonusToSpeedAndCritical: { maxPicks: number, bonusToSpeed: number, bonusToCritical: ValueRange };
+  bonusToSpeedAndCritical: AttributeBonusWithSpeed;
   bonusToDualist: AttributeBonus;
   bonusToFindWeakness: AttributeBonus;
 }

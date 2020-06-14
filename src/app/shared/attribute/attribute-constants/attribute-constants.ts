@@ -1,7 +1,7 @@
 import {AttributeModel} from "../attribute-model";
 import {AttributeName} from "../attribute-enums/attribute-name.enum";
 
-import {AgilityAttributePicks, AttributeBonus, BrawnAttributePicks, PresenceAttributePicks, ReasoningAttributePicks} from "./selected-bonus-groups";
+import {AgilityAttributePicks, AgilitySelections, AttributeBonus, BrawnAttributePicks, BrawnSelections, PresenceAttributePicks, PresenceSelections, ReasoningAttributePicks, ReasoningSelections} from "./selected-bonus-groups";
 import {AttributeStrength} from "../attribute-enums/attribute-strength.enum";
 import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ArmorType} from "../../armor/armor-type.enum";
@@ -75,6 +75,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new BrawnSelections(),
             bonusToCriticalAndAggressivePress: {
               criticalBonus: {
                 minBonus: 1,
@@ -83,7 +84,7 @@ export const ATTRIBUTE = {
               pressText: PRESS_TEXT,
               pickValue: 1
             },
-            bonusToEmpoweredAndCritical: {
+            bonusToCriticalAndEmpowered: {
               bonusToCritical: {minBonus: 1, maxBonus: 3},
               bonusToEmpowered: {minBonus: 1, maxBonus: 3},
               pickValue: 1,
@@ -93,7 +94,7 @@ export const ATTRIBUTE = {
               bonusTo: {minBonus: 4, maxBonus: 10},
               maxPicks: 0, pickValue: 1
             }
-          }
+          } as BrawnSelections
         } as BrawnAttributePicks, {
           ...new BrawnAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -102,6 +103,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new BrawnSelections(),
             bonusToEmpoweredAndAggressivePress: {
               empoweredBonus: {
                 minBonus: 2, maxBonus: 5
@@ -117,7 +119,7 @@ export const ATTRIBUTE = {
               },
               maxPicks: 1
             } as AttributeBonus,
-            bonusToEmpoweredAndCritical: {
+            bonusToCriticalAndEmpowered: {
               bonusToCritical: {minBonus: 1, maxBonus: 3},
               bonusToEmpowered: {minBonus: 1, maxBonus: 3},
               pickValue: 1,
@@ -127,7 +129,7 @@ export const ATTRIBUTE = {
               bonusTo: {minBonus: 4, maxBonus: 10},
               maxPicks: 0, pickValue: 1
             }
-          }
+          } as BrawnSelections
         } as BrawnAttributePicks, {
           ...new BrawnAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -136,6 +138,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new BrawnSelections(),
             bonusToEmpoweredAndAggressivePress: {
               empoweredBonus: {minBonus: 2, maxBonus: 5},
               pressText: PRESS_TEXT,
@@ -149,7 +152,7 @@ export const ATTRIBUTE = {
               },
               maxPicks: 3
             },
-            bonusToEmpoweredAndCritical: {
+            bonusToCriticalAndEmpowered: {
               bonusToCritical: {minBonus: 1, maxBonus: 2},
               bonusToEmpowered: {minBonus: 1, maxBonus: 3},
               pickValue: 1,
@@ -159,7 +162,7 @@ export const ATTRIBUTE = {
               bonusTo: {minBonus: 4, maxBonus: 10},
               maxPicks: 0, pickValue: 1
             }
-          }
+          } as BrawnSelections
         } as BrawnAttributePicks
       ] as Array<BrawnAttributePicks>
     }
@@ -206,6 +209,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new AgilitySelections(),
             bonusToCritical: {
               bonusTo: {minBonus: 3, maxBonus: 8},
               maxPicks: 0, pickValue: 1
@@ -226,7 +230,7 @@ export const ATTRIBUTE = {
               bonusTo: {minBonus: 2, maxBonus: 5},
               maxPicks: 0, pickValue: 1
             }
-          }
+          } as AgilitySelections
         } as AgilityAttributePicks, {
           ...new AgilityAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -235,6 +239,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new AgilitySelections(),
             bonusToCritical: {
               bonusTo: {minBonus: 3, maxBonus: 8},
               maxPicks: 0, pickValue: 1
@@ -255,7 +260,7 @@ export const ATTRIBUTE = {
               bonusTo: {minBonus: 2, maxBonus: 5},
               maxPicks: 0, pickValue: 1
             }
-          }
+          } as AgilitySelections
         } as AgilityAttributePicks, {
           ...new AgilityAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -264,6 +269,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new AgilitySelections(),
             bonusToCritical: {
               bonusTo: {minBonus: 3, maxBonus: 8},
               maxPicks: 0, pickValue: 1
@@ -284,7 +290,7 @@ export const ATTRIBUTE = {
               bonusTo: {minBonus: 2, maxBonus: 5},
               maxPicks: 0, pickValue: 1
             }
-          }
+          } as AgilitySelections
         } as AgilityAttributePicks
       ] as Array<AgilityAttributePicks>
     } // end agility
@@ -340,9 +346,10 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new ReasoningSelections(),
             bonusToCritical: {bonusTo: {minBonus: 2, maxBonus: 5}},
             bonusToEmpowered: {bonusTo: {minBonus: 1, maxBonus: 2.5}}
-          }
+          } as ReasoningSelections
         } as ReasoningAttributePicks, { // champion
           ...new ReasoningAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -354,9 +361,10 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new ReasoningSelections(),
             bonusToCritical: {bonusTo: {minBonus: 2, maxBonus: 5}},
             bonusToEmpowered: {bonusTo: {minBonus: 1, maxBonus: 2.5}}
-          }
+          } as ReasoningSelections
         } as ReasoningAttributePicks, { // EPIC
           ...new ReasoningAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -370,7 +378,8 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
-            bonusToEmpoweredAndCritical: {
+            ...new ReasoningSelections(),
+            bonusToCriticalAndEmpowered: {
               bonusToCritical: {
                 minBonus: 1,
                 maxBonus: 2.5,
@@ -379,7 +388,7 @@ export const ATTRIBUTE = {
               pickValue: 1
             },
             bonusToCritical: {bonusTo: {minBonus: 3, maxBonus: 7.5}}
-          }
+          } as ReasoningSelections
         } as ReasoningAttributePicks, { // legendary
           ...new ReasoningAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -388,13 +397,14 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new ReasoningSelections(),
             bonusToCritical: {
               bonusTo: {minBonus: 3, maxBonus: 7.5},
-            },
+            } as AttributeBonus,
             bonusToEmpowered: {
               bonusTo: {minBonus: 1, maxBonus: 2.5}
-            }
-          }
+            } as AttributeBonus
+          } as ReasoningSelections
         } as ReasoningAttributePicks
       ] as Array<ReasoningAttributePicks>
     }
@@ -450,6 +460,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new PresenceSelections(),
             forcedMovement: {
               bonusTo: 1,
               maxPicks: 2,
@@ -470,7 +481,7 @@ export const ATTRIBUTE = {
               bonusToAttack: {minBonus: -1, maxBonus: -3},
               maxPicks: 4, pickValue: 1
             }
-          }
+          } as PresenceSelections
         } as PresenceAttributePicks, { // champion
           ...new PresenceAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -487,6 +498,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new PresenceSelections(),
             forcedMovement: {
               bonusTo: 1, maxPicks: 2
             },
@@ -501,7 +513,7 @@ export const ATTRIBUTE = {
               bonusToAttack: {minBonus: -1, maxBonus: -3},
               maxPicks: 4, pickValue: 1
             }
-          }
+          } as PresenceSelections
         } as PresenceAttributePicks, { // EPIC
           ...new PresenceAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -510,6 +522,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new PresenceSelections(),
             forcedMovement: {
               bonusTo: 1, maxPicks: 2
             },
@@ -529,7 +542,7 @@ export const ATTRIBUTE = {
               bonusToCritical: {minBonus: -1, maxBonus: -2.5},
               pickValue: 2, maxPicks: 1
             }
-          }
+          } as PresenceSelections
         } as PresenceAttributePicks, { // legendary
           ...new PresenceAttributePicks(),
           requiredHybridAttributeStrength: [
@@ -538,6 +551,7 @@ export const ATTRIBUTE = {
             }
           ],
           selections: {
+            ...new PresenceSelections(),
             forcedMovement: {
               bonusTo: 1, maxPicks: 2
             },
@@ -557,7 +571,7 @@ export const ATTRIBUTE = {
               bonusToCritical: {minBonus: -1, maxBonus: -2.5},
               pickValue: 2, maxPicks: 1
             }
-          }
+          } as PresenceSelections
         } as PresenceAttributePicks
       ] as Array<PresenceAttributePicks>
     }

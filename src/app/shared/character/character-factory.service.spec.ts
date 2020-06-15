@@ -77,7 +77,7 @@ describe('Character Service Factory', () => {
     expect(bob.physicalDefense.armor.getActiveDefense()).toEqual(14);
   });
 
-  it('should reduce a characters speed when they are wearing really heavy ass armor', () => {
+  it('should reduce a characters movement when they are wearing really heavy ass armor', () => {
     characterFactoryService.assignArmor(bob, new Armor(ArmorType.HeavyArmor, "Demonic Plate"));
     expect(characterFactoryService.getSpeed(bob)).toEqual(5);
   });
@@ -98,71 +98,150 @@ describe('Character Service Factory', () => {
 
   // TODO WORKING HERE
   it('should be get modified initiative when attributes are modified', () => {
-    bob.attributes.Quickness.strength = AttributeStrength.Heroic;
-    expect(bob.getInitiative()).toEqual(5, "heroic qu gives init 5");
-    bob.attributes.Quickness.strength = AttributeStrength.Champion;
-    expect(bob.getInitiative()).toEqual(8, "champion qu gives init 8");
-    bob.attributes.Quickness.strength = AttributeStrength.Epic;
-    expect(bob.getInitiative()).toEqual(9, "epic qu gives init 9");
-    bob.attributes.Quickness.strength = AttributeStrength.Legendary;
-    expect(bob.getInitiative()).toEqual(10, "legendary qu gives init 10");
-    bob.attributes.Intuition.strength = AttributeStrength.Champion;
-    expect(bob.getInitiative()).toEqual(14);
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Quickness, AttributeStrength.Champion);
+    expect(characterFactoryService.getInitiative(bob)).toEqual(10, "champion qu gives init 10");
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Intuition, AttributeStrength.Champion);
+    expect(characterFactoryService.getInitiative(bob)).toEqual(14, "champion qu & intu gives init 14");
   });
-  //
-  // it('should get modified initiative as a result of having theme points in stealth', function () {
-  //   bob.themePoints.stealth.setStrength(ThemeStrength.Minor);
-  //   expect(bob.getInitiative()).toEqual(7);
-  //   bob.themePoints.stealth.setStrength(ThemeStrength.Greater);
-  //   expect(bob.getInitiative()).toEqual(11);
-  // });
-  //
-  // it('should be able to get primary damage of a character', function () {
-  //   bob.attributes.Brawn.strength = AttributeStrength.Normal;
-  //   expect(bob.getWeaponDamage(0)).toBe("2d6+3", "unarmed weapon");
-  //   bob.attributes.Brawn.strength = AttributeStrength.Champion;
-  //   expect(bob.getWeaponDamage(0)).toBe("2d6+7", "unarmed with some brawn");
-  // });
-  //
-  // it('should be able to assign attribute points to a character and follow valid attribute point logic', function () {
-  //   bob.assignAttributeStrength(AttributeStrength.Heroic, AttributeName.Agility);
-  //   expect(bob.attributes.Agility.strength).toEqual(AttributeStrength.Heroic);
-  //   expect(bob.availableAttributePoints).toEqual(3);
-  // });
-  //
-  // it('should be able to prevent negative attribute assignment', function () {
-  //   bob.assignAttributeStrength(AttributeStrength.Normal, AttributeName.Brawn);
-  //   expect(bob.attributes.Brawn.strength).toEqual(AttributeStrength.Heroic);
-  //   expect(bob.availableAttributePoints).toEqual(4);
-  // });
-  //
-  // it('should be able to prevent a character from assigning more attribute points than they have available', function () {
-  //   bob.assignAttributeStrength(AttributeStrength.Legendary, AttributeName.Agility);
-  //   bob.assignAttributeStrength(AttributeStrength.Champion, AttributeName.Vitality);
-  //   expect(bob.availableAttributePoints).toEqual(0);
-  //   expect(bob.attributes.Vitality.strength).toEqual(AttributeStrength.Normal);
-  // });
-  //
-  // it('should be able to see attribute bonus based off of selected race of character', function () {
-  //   expect(bob.raceType).toBe(RaceType.HighOrc);
-  //   expect(bob.attributes.Brawn.strength).toBe(AttributeStrength.Heroic);
-  // });
-  //
-  // it('should be able to assign an attribute', function () {
-  //   bob.assignAttributeStrength(AttributeStrength.Heroic, AttributeName.SelfDiscipline);
-  //   expect(bob.attributes[AttributeName.SelfDiscipline].strength).toEqual(AttributeStrength.Heroic);
-  //   expect(bob.availableAttributePoints).toEqual(3);
-  // });
-  //
-  // it('should allow humans to assign 6 available points', () => {
-  //   const moe = new CharacterFactoryService("Moe", RaceType.Human);
-  //   expect(moe.availableAttributePoints).toEqual(6);
-  //   moe.assignAttributeStrength(AttributeStrength.Epic, AttributeName.Brawn);
-  //   moe.assignAttributeStrength(AttributeStrength.Legendary, AttributeName.Agility);
-  //   expect(moe.availableAttributePoints).toEqual(3);
-  //   moe.assignAttributeStrength(AttributeStrength.Epic, AttributeName.Agility);
-  //   expect(moe.availableAttributePoints).toEqual(0);
-  // });
+
+  it('should be able to get primary damage of a character', function () {
+    const result = characterFactoryService.getWeaponDamage(bob, 0);
+    expect(result).toBe("1d6+2");
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Brawn, AttributeStrength.Normal);
+    expect(characterFactoryService.getWeaponDamage(bob, 0)).toBe("1d6+2", "Brawn is still heroic because bob is a High Orc!");
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Brawn, AttributeStrength.Champion);
+    expect(characterFactoryService.getWeaponDamage(bob, 0)).toBe("1d6+3", "unarmed with some brawn");
+  });
+
+  it('should be able to assign attribute points to a character and follow valid attribute point logic', function () {
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Agility, AttributeStrength.Heroic);
+    expect(bob.attributes.get(AttributeName.Agility).attributeStrength).toEqual(AttributeStrength.Heroic);
+    expect(bob.race.availableAttributePoints).toEqual(3);
+  });
+
+  it('should be able to prevent negative attribute assignment', function () {
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Brawn, AttributeStrength.Normal);
+    expect(bob.attributes.get(AttributeName.Brawn).attributeStrength).toEqual(AttributeStrength.Heroic);
+    expect(bob.race.availableAttributePoints).toEqual(4);
+  });
+
+  it('should be able to prevent a character from assigning more attribute points than they have available', function () {
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Agility, AttributeStrength.Legendary);
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Vitality, AttributeStrength.Champion);
+    expect(bob.race.availableAttributePoints).toEqual(0);
+    expect(bob.attributes.get(AttributeName.Vitality).attributeStrength).toEqual(AttributeStrength.Normal);
+  });
+
+  it('should be able to see attribute bonus based off of selected race of character', function () {
+    expect(bob.race.raceType).toBe(RaceType.HighOrc);
+    expect(bob.attributes.get(AttributeName.Brawn).attributeStrength).toBe(AttributeStrength.Heroic);
+  });
+
+  it('should be able to character hit points', function () {
+    let hp = characterFactoryService.getHitPoints(bob);
+    expect(hp).toEqual(23);
+    characterFactoryService.assignAttributeStrength(bob, AttributeName.Vitality, AttributeStrength.Heroic);
+    hp = characterFactoryService.getHitPoints(bob);
+    expect(hp).toEqual(27);
+    expect(bob.race.availableAttributePoints).toEqual(3);
+    characterFactoryService.assignCharacterLevel(bob, Level.Three);
+    hp = characterFactoryService.getHitPoints(bob);
+    expect(hp).toEqual(38);
+    // TODO include something for talents
+  });
+
+  it('should allow humans to assign 6 available points', () => {
+    const moe = characterFactoryService.getNewCharacter("Moe", RaceType.Human);
+    expect(moe.race.availableAttributePoints).toEqual(6);
+    characterFactoryService.assignAttributeStrength(moe, AttributeName.Brawn, AttributeStrength.Epic);
+    characterFactoryService.assignAttributeStrength(moe, AttributeName.Agility, AttributeStrength.Legendary);
+    expect(moe.race.availableAttributePoints).toEqual(3);
+    characterFactoryService.assignAttributeStrength(moe, AttributeName.Agility, AttributeStrength.Epic);
+    expect(moe.race.availableAttributePoints).toEqual(0);
+  });
+
+  // TODO include more test
+
+  it('should be able to get a characters starting temporary hit points', () => {
+
+  });
+
+  it('should be able to get a characters active bonuses', () => {
+
+  });
+
+  it('should be able to get a characters passive bonuses', () => {
+
+  });
+
+  it('should be able to get recovery points', () => {
+
+  });
+
+  it('should be able to get startingDamageResist', () => {
+
+  });
+
+  it('should be able to get power points', () => {
+
+  });
+
+  it('should be able to get lasting damage resist', () => {
+
+  });
+
+  it('should be able to get critical Resist', () => {
+
+  });
+
+  it('should be able to get features', () => {
+
+  });
+
+  it('should be able to get mana', () => {
+
+  });
+
+  it('should be able to abilities', () => {
+
+  });
+
+  it('should be able to get passives', () => {
+
+  });
+
+  it('should be able to get powers', () => {
+
+  });
+
+  it('should be able to skills', () => {
+
+  });
+
+  it('should be able to get talents', () => {
+
+  });
+
+  it('should be able get magic defenses', () => {
+
+  });
+
+  it('should be able to get what attack types are active defense', () => {
+
+  });
+
+  it('should be able to get what kind of attacks are passive defense', () => {
+
+  });
+
+  it('should be able to equip a shield and make ranged defense be active', () => {
+
+  });
+
+  it('should be able to set a weapon to main hand', () => {
+
+  });
+
 
 
 });

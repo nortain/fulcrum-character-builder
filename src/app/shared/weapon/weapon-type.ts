@@ -11,6 +11,6 @@ export interface WeaponType {
   critical: Dice;
   range: Array<number>;
   specialText: string;
-
-
 }
+
+

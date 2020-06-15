@@ -1,7 +1,4 @@
 import {MaxMovement} from "../armor/max-movement";
-import {WeaponType} from "../weapon/weapon-type";
-import {Dice} from "../character/dice/dice";
-import {DiceSize} from "../character/dice/dice-size.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {Field} from "../field/field";
 import {MagicDefense} from "../character/magic-defense/magic-defense";
@@ -15,7 +12,7 @@ export const NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS = 4;
 
 export const STARTING_MOVEMENT = 6;
 export const STARTING_INITIATIVE = 0;
-export const STARTING_HIT_POINTS = 3;
+export const STARTING_HIT_POINTS = 0;
 export const STARTING_RECOVERIES = 6;
 export const STARTING_THEME_POINTS = 4;
 
@@ -440,109 +437,7 @@ export const SUBTHEME_BONUS = {
 };
 
 
-export const BASE_WEAPON_DAMAGE = {
-  Agile: {
-    Thrown: {
-      damage: new Dice(2, DiceSize.d6, -1),
-      critical: new Dice(1, DiceSize.d8, 1),
-      range: [6, 12, 18]
-    } as WeaponType,
-    Unarmed: {
-      damage: new Dice(2, DiceSize.d6, 0),
-      critical: new Dice(1, DiceSize.d8, 0),
-    } as WeaponType,
-    "Melee 1h": {
-      damage: new Dice(2, DiceSize.d6, 1),
-      critical: new Dice(1, DiceSize.d10, 0),
-    } as WeaponType,
-    "Melee 2h": {
-      damage: new Dice(2, DiceSize.d8, 0),
-      critical: new Dice(1, DiceSize.d12, 0)
-    } as WeaponType,
-    Polearm: {
-      damage: new Dice(2, DiceSize.d6, 1),
-      critical: new Dice(1, DiceSize.d10, 1),
-      range: [2]
-    } as WeaponType,
-    Ranged: {
-      damage: new Dice(2, DiceSize.d6, 1),
-      critical: new Dice(1, DiceSize.d10, 0),
-      range: [12, 25, 50],
-      specialText: "Move action to Reload"
-    } as WeaponType
-  },
-  Balanced: {
-    Thrown: {
-      damage: new Dice(2, DiceSize.d6, 0),
-      critical: new Dice(1, DiceSize.d6, 1),
-      range: [5, 10, 15]
-    } as WeaponType,
-    Unarmed: {
-      damage: new Dice(2, DiceSize.d6, 1),
-      critical: new Dice(1, DiceSize.d6, 0),
-    } as WeaponType,
-    "Melee 1h": {
-      damage: new Dice(2, DiceSize.d8, 0),
-      critical: new Dice(1, DiceSize.d8, 0),
-    } as WeaponType,
-    "Melee 2h": {
-      damage: new Dice(2, DiceSize.d10, 0),
-      critical: new Dice(1, DiceSize.d10, 0)
-    } as WeaponType,
-    Polearm: {
-      damage: new Dice(2, DiceSize.d8, 0),
-      critical: new Dice(1, DiceSize.d8, 1),
-      range: [2]
-    } as WeaponType,
-    Ranged: {
-      damage: new Dice(2, DiceSize.d8, 0),
-      critical: new Dice(1, DiceSize.d8, 0),
-      range: [12, 25, 50],
-      specialText: "Move action to Reload"
-    } as WeaponType
-  },
-  Heavy: {
-    Thrown: {
-      attack: new Dice(2, 12, 2),
-      damage: new Dice(2, DiceSize.d8, 0),
-      critical: new Dice(1, DiceSize.d8, 0),
-      range: [4, 8, 12],
-      specialText: "-1 to hit"
-    } as WeaponType,
-    Unarmed: {
-      attack: new Dice(2, 12, 2),
-      damage: new Dice(2, DiceSize.d8, 1),
-      critical: new Dice(1, DiceSize.d6, 1),
-      specialText: "-1 to hit"
-    } as WeaponType,
-    "Melee 1h": {
-      attack: new Dice(2, 12, 2),
-      damage: new Dice(2, DiceSize.d10, 0),
-      critical: new Dice(1, DiceSize.d8, 1),
-      specialText: "-1 to hit"
-    } as WeaponType,
-    "Melee 2h": {
-      attack: new Dice(2, 12, 2),
-      damage: new Dice(2, DiceSize.d12, 0),
-      critical: new Dice(1, DiceSize.d10, 1),
-      specialText: "-1 to hit"
-    } as WeaponType,
-    Polearm: {
-      attack: new Dice(2, 12, 2),
-      damage: new Dice(2, DiceSize.d10, 0),
-      critical: new Dice(1, DiceSize.d10, 0),
-      range: [2],
-      specialText: "-1 to hit"
-    } as WeaponType,
-    Ranged: {
-      attack: new Dice(2, 12, 2),
-      damage: new Dice(2, DiceSize.d10, 0),
-      critical: new Dice(1, DiceSize.d8, 1),
-      range: [15, 30, 60],
-      specialText: "1- to hit, Move action to Reload"
-    } as WeaponType
-  }
-};
+
 
 export class StartingCharacterMagicDefense {
   Fortitude = new MagicDefense(MagicDefenseType.Fortitude, new Field(10));

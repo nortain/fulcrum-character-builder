@@ -73,7 +73,7 @@ export class CharacterFactoryService {
     const talentBonusHp = 0; // TODO add talents
     hp += character.themePoints.getHitPointBonus(character.level);
     hp += talentBonusHp;
-    hp += this.attributeFactoryService.getHitPointBonus(character.attributes[AttributeName.Vitality].attributeStrength, character.level);
+    hp += this.attributeFactoryService.getHitPointBonus(character.attributes.get(AttributeName.Vitality), character.level);
     return hp;
   }
 
@@ -179,7 +179,7 @@ export class CharacterFactoryService {
     const race = character.race;
     const startingAttributes = this.raceFactoryService.getStartingAttributes(race);
     const isNameAStartingAttribute = startingAttributes.indexOf(name) > -1;
-    const isAttributeStrengthNormal = attribute.attributeStrength === AttributeStrength.Normal;
+    const isAttributeStrengthNormal = strength === AttributeStrength.Normal;
     if (isAttributeStrengthNormal && isNameAStartingAttribute) {
       this.attributeFactoryService.assignStrength(attribute, AttributeStrength.Heroic);
     } else {

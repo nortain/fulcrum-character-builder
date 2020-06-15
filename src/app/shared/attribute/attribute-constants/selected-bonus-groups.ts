@@ -21,7 +21,7 @@ export type AttributeBonusAlias = CriticalAndEmpoweredBonus | AttributeBonus | G
  */
 export class AttributeSelectionWithPicks {
   selections: AttributeSelectionsAlias;
-  numberOfPicks: number;
+  numberOfPicks = 0;
 }
 
 export class AttributePick {

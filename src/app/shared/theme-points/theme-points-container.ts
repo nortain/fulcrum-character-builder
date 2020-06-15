@@ -3,6 +3,7 @@ import {ThemeType} from "./theme-type.enum";
 import {ThemeStrength} from "./theme-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {Level} from "../character/level.enum";
+import {STEALTH_INIT_BONUS} from "../constants/constants";
 
 export class ThemePointsContainer {
 
@@ -28,6 +29,16 @@ export class ThemePointsContainer {
     let bonus = 3;
     bonus += Math.floor((3 + level) * (5 + this.combat.getStrength() * .5 + this.stealth.getStrength() * .25));
     return bonus;
+  }
+
+  assignThemePoint(themeType: ThemeType, themeStrength: ThemeStrength) {
+    const themePoint = (this[ThemeType[themeType].toString().toLocaleLowerCase()] as ThemePoint);
+    if (themePoint) {
+      themePoint.setStrength(themeStrength);
+    } else {
+      this[ThemeType[themeType].toString().toLocaleLowerCase()] = new ThemePoint(themeType, themeStrength);
+    }
+
   }
 
   /**
@@ -82,6 +93,10 @@ export class ThemePointsContainer {
     } else {
       return 0;
     }
+  }
+
+  getInitiativeBonus(): number {
+    return STEALTH_INIT_BONUS[this.stealth.getStrength()];
   }
 
   /**

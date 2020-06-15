@@ -53,6 +53,10 @@ export class AttributeFactoryService {
     return attribute;
   }
 
+  assignStrength(attribute: AttributeModel, strength: AttributeStrength) {
+    attribute.attributeStrength = strength;
+  }
+
   /**
    * Given an attribute, a weapon category and a level this will return the amount of bonus damage
    * that particular attribute provides for the given weapon category and character level.  This is returned in the form as a dice object but the modifier of the dice will be the bonus value.  This can be obtained from the modifer directly or the printroll function
@@ -219,7 +223,7 @@ export class AttributeFactoryService {
 
   getSpeedBonus(attribute: AttributeModel): number {
     let speedBonus = 0;
-    if (attribute && attribute.chosenBonusPicks) {
+    if (attribute && attribute.chosenBonusPicks && attribute.chosenBonusPicks.length > 0) {
       for (const pick of attribute.chosenBonusPicks) {
         if ((pick as AgilitySelections).bonusToSpeedAndCritical) {
           speedBonus += (pick as AgilitySelections).bonusToSpeedAndCritical.bonusToSpeed;

@@ -12,11 +12,19 @@ import {PhysicalDefense} from "./physical-defense/physical-defense";
 import {SubthemeContainer} from "../theme-points/subthemes/subtheme-container";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {RaceFactoryService} from "./race/race-factory.service";
-import {RaceModel} from "./race/race-model";
 import {CharacterModel} from "./character-model";
-import {AttributeBonus} from "../attribute/character-attribute/attribute-bonus.enum";
 import {AttributeModel} from "../attribute/attribute-model";
+import {Injectable} from "@angular/core";
+import {AttributeSelectionsAlias, AttributeSelectionWithPicks} from "../attribute/attribute-constants/selected-bonus-groups";
+import {Armor} from "../armor/armor";
+import {ArmorType} from "../armor/armor-type.enum";
+import {ThemeType} from "../theme-points/theme-type.enum";
+import {ThemeStrength} from "../theme-points/theme-strength.enum";
+import {RaceModel} from "./race/race-model";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class CharacterFactoryService {
 
   constructor(
@@ -35,18 +43,29 @@ export class CharacterFactoryService {
                   physicalDefense = new PhysicalDefense(),
                   weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
                   magicDefense = new StartingCharacterMagicDefense(),
+                  selectedWeaponCategory = WeaponCategory.Balanced,
                   attributes?: Map<AttributeName, AttributeModel>): CharacterModel {
     const model: CharacterModel = {
       ...new CharacterModel(),
       name: name,
       race: this.raceFactoryService.getNewRace(raceType, level, subRace),
-      attributes: attributes ? attributes : this.attributeFactoryService.initializeAllAttributes(),
       level: level,
+      themePoints: themePoints,
+      subThemes: subthemes,
+      physicalDefense: physicalDefense,
+      weapons: weapons,
+      magicDefense: magicDefense,
+      selectedWeaponCategory: selectedWeaponCategory,
+      attributes: attributes ? attributes : this.attributeFactoryService.initializeAllAttributes()
     };
     for (const attribute of model.attributes.values()) { // loop through all attributes to apply racial bonuses if any.
       this.assignAttributeStrength(model, attribute.attributeName, AttributeStrength.Normal);
     }
     return model;
+  }
+
+  assignThemePoint(character: CharacterModel, themeType: ThemeType, themeStrength: ThemeStrength) {
+    character.themePoints.assignThemePoint(themeType, themeStrength);
   }
 
   getHitPoints(character: CharacterModel): number {
@@ -63,10 +82,10 @@ export class CharacterFactoryService {
    * @returns {number}
    */
   getInitiative(character: CharacterModel): number {
-    let init = STARTING_INITIATIVE;
-    init += this.attributeFactoryService.getInitiativeBonus(character.attributes[AttributeName.Quickness]);
-    init += this.attributeFactoryService.getInitiativeBonus(character.attributes[AttributeName.Intuition]);
-    init += STEALTH_INIT_BONUS[character.themePoints.stealth.getStrength()];
+    let init = STARTING_INITIATIVE; // TODO add talents
+    init += this.attributeFactoryService.getInitiativeBonus(character.attributes.get(AttributeName.Quickness));
+    init += this.attributeFactoryService.getInitiativeBonus(character.attributes.get(AttributeName.Intuition));
+    init += character.themePoints.getInitiativeBonus();
     return init;
   }
 
@@ -92,8 +111,8 @@ export class CharacterFactoryService {
    */
   getSpeed(character: CharacterModel): number {
     let result = STARTING_MOVEMENT;
-    result += this.attributeFactoryService.getSpeedBonus(character.attributes[AttributeName.Agility]);
-    result += character.race.movementPenalty;
+    result += this.attributeFactoryService.getSpeedBonus(character.attributes.get(AttributeName.Agility));
+    result += this.raceFactoryService.getSpeed(character.race);
     if (character.physicalDefense.armor) {
       result += character.physicalDefense.armor.getMaxMovement().movementPenalty;
       if (result > character.physicalDefense.armor.getMaxMovement().maxMovement) {
@@ -103,6 +122,51 @@ export class CharacterFactoryService {
     return result;
   }
 
+  presentAttributeSelections(character: CharacterModel, attributeName: AttributeName): AttributeSelectionWithPicks {
+    return this.attributeFactoryService.presentChoices(attributeName, character.attributes, character.selectedWeaponCategory);
+  }
+
+
+  selectAttributeBonus<K extends keyof AttributeSelectionsAlias>(character: CharacterModel, selection: AttributeSelectionWithPicks, propertyName: K): void {
+    if (!this.attributeFactoryService.selectBonus(character.attributes, selection, propertyName)) {
+      throw Error("Cannot select " + propertyName + " from " + selection.selections.name);
+    }
+  }
+
+  /**
+   * assigns an armor to a character
+   * @param character
+   * @param armor
+   */
+  assignArmor(character: CharacterModel, armor: Armor) {
+    character.physicalDefense.equipArmor(armor);
+  }
+
+  /**
+   * TODO implement me
+   * This should look at a characters talents to determine if a character is trained in using heavy armor
+   */
+  isTrainedInHeavyArmor(): boolean {
+    return true;
+  }
+
+
+  assignCharacterRace(character: CharacterModel, race: RaceModel): CharacterModel {
+    if (character.race.raceType !== race.raceType) {
+      character.race = race;
+      character = this.cloneCharacter(character);
+    } else if (character.level !== race.level) {
+      this.assignCharacterLevel(character, race.level);
+    }
+    return character;
+  }
+
+  assignCharacterLevel(character: CharacterModel, level: Level) {
+    character.level = level;
+    character.race.level = level;
+  }
+
+
   /**
    * Given the character model, we want to assign to a strength value to one fo the character's attributes
    * If the character is of a race where they get a bonus and their strength is normal, set it to heroic.  If
@@ -111,19 +175,39 @@ export class CharacterFactoryService {
    * @param strength
    */
   assignAttributeStrength(character: CharacterModel, name: AttributeName, strength: AttributeStrength) {
-    const attribute = character.attributes[name];
+    const attribute = character.attributes.get(name);
     const race = character.race;
-    if (attribute.attributeStrength === AttributeStrength.Normal &&
-      race.startingAttributes.indexOf(name) > -1) {
-      attribute.attributeStrength = AttributeStrength.Heroic;
+    const startingAttributes = this.raceFactoryService.getStartingAttributes(race);
+    const isNameAStartingAttribute = startingAttributes.indexOf(name) > -1;
+    const isAttributeStrengthNormal = attribute.attributeStrength === AttributeStrength.Normal;
+    if (isAttributeStrengthNormal && isNameAStartingAttribute) {
+      this.attributeFactoryService.assignStrength(attribute, AttributeStrength.Heroic);
     } else {
       const strengthDifference = attribute.attributeStrength - strength;
-      if (-strengthDifference <= character.race.availableAttributePoints) {
-        attribute.attributeStrength = strength;
-        race.availableAttributePoints += strengthDifference;
+      const isTheStrengthDifferenceLessThanOrEqualToAvailableAttributePoints = -strengthDifference <= character.race.availableAttributePoints;
+      if (isTheStrengthDifferenceLessThanOrEqualToAvailableAttributePoints) {
+        this.attributeFactoryService.assignStrength(attribute, strength);
+        this.raceFactoryService.assignAvailableAttributePoints(race, strengthDifference);
       }
     }
+  }
 
+  cloneCharacter(character: CharacterModel, makeNewSubtheme?: boolean) {
+    const subThemes = makeNewSubtheme ? undefined : character.subThemes;
+    const char = this.getNewCharacter(
+      character.name,
+      character.race.raceType,
+      character.level,
+      character.race.racialSubType,
+      character.themePoints,
+      subThemes,
+      character.physicalDefense,
+      character.weapons,
+      character.magicDefense,
+      character.selectedWeaponCategory,
+      character.attributes
+    );
+    return char;
   }
 
 }

@@ -13,7 +13,9 @@ export class CharacterFactoryServiceStub {
 }
 
 export class AttributeFactoryServiceStub {
+  initalizeAllAttributes() {
 
+  }
 }
 
 export class RaceFactoryServiceStub {

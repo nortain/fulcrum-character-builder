@@ -13,6 +13,7 @@ import {Spell} from "../spells/spell";
 import {RaceModel} from "./race/race-model";
 import {StartingCharacterMagicDefense} from "../constants/constants";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
+import {WeaponCategory} from "../weapon/weapon-category.enum";
 
 export class CharacterModel {
   attributes: Map<AttributeName, AttributeModel>;
@@ -34,7 +35,6 @@ export class CharacterModel {
   recoveryPoints: Field;
   adrenalinePoints: Field;
   powerPoints: Field;
-  armor: Armor;
   criticalResist: Field;
   startingDamageResist: Field;
   damageResist: Field;
@@ -54,8 +54,7 @@ export class CharacterModel {
   magicDefense: StartingCharacterMagicDefense;
   physicalDefense: PhysicalDefense;
 
-
-
+  selectedWeaponCategory: WeaponCategory;
   weapons: Array<Weapon>;
   spells: Array<Spell>;
 }

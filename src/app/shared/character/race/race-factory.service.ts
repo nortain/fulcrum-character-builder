@@ -82,6 +82,36 @@ export class RaceFactoryService {
   }
 
 
+  getSpeed(race: RaceModel): number {
+    if (race && race.movementPenalty) {
+      return race.movementPenalty;
+    } else {
+      return 0;
+    }
+  }
+
+  getStartingAttributes(race: RaceModel): Array<AttributeName> {
+    if (race.selectedOptionalStartingAttribute) {
+      return [
+        ...race.startingAttributes,
+        race.selectedOptionalStartingAttribute
+      ];
+    } else {
+      return race.startingAttributes;
+    }
+  }
+
+  /**
+   * assigns to a races available attributePoints a difference that is represented
+   * as a difference between a current attribute's strength and that new attributes strength
+   * @param race
+   * @param difference
+   */
+  assignAvailableAttributePoints(race: RaceModel, difference: number) {
+    race.availableAttributePoints += difference;
+  }
+
+
   /** In the constants file there are a number of default values for races.
    * This gets the mechanical text value for those bonus by using the propertyName to match up with predefined values in the constants file.
    * In the mechanicBonus object there is a name matching an active or passive bonus with a key of the same name as the given propertyName.

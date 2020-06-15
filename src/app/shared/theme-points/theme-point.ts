@@ -11,7 +11,7 @@ export class ThemePoint {
   }
 
   getStrength(): ThemeStrength {
-    return this.strength;
+    return this.strength ? this.strength : ThemeStrength.None;
   }
 
   setStrength(strength: ThemeStrength) {

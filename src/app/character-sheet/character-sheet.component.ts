@@ -244,6 +244,7 @@ export class CharacterSheetComponent implements OnInit, OnChanges {
       this.character.physicalDefense,
       this.character.weapons,
       this.character.magicDefense,
+      this.character.selectedWeaponCategory,
       this.character.attributes
     );
     return char;

@@ -31,16 +31,6 @@ export class ThemePointsContainer {
     return bonus;
   }
 
-  assignThemePoint(themeType: ThemeType, themeStrength: ThemeStrength) {
-    const themePoint = (this[ThemeType[themeType].toString().toLocaleLowerCase()] as ThemePoint);
-    if (themePoint) {
-      themePoint.setStrength(themeStrength);
-    } else {
-      this[ThemeType[themeType].toString().toLocaleLowerCase()] = new ThemePoint(themeType, themeStrength);
-    }
-
-  }
-
   /**
    * returns a number to indicate how my theme points are available excluding the theme that was currently passed in
    * @param {string} exluduceCurrentTheme
@@ -99,6 +89,14 @@ export class ThemePointsContainer {
     return STEALTH_INIT_BONUS[this.stealth.getStrength()];
   }
 
+  getStartingTemporaryHitPoints(level: Level): number {
+    let thp = 0;
+    if (this.magic.getStrength() > ThemeStrength.Minor) {
+      thp += Math.floor(this.magic.getStrength() * (3 + level) * .25);
+    }
+    return thp;
+  }
+
   /**
    *
    * @returns {number} returns the amount of bonus theme points a character get
@@ -121,5 +119,15 @@ export class ThemePointsContainer {
     } else {
       return 3;
     }
+  }
+
+  assignThemePoint(themeType: ThemeType, themeStrength: ThemeStrength) {
+    const themePoint = (this[ThemeType[themeType].toString().toLocaleLowerCase()] as ThemePoint);
+    if (themePoint) {
+      themePoint.setStrength(themeStrength);
+    } else {
+      this[ThemeType[themeType].toString().toLocaleLowerCase()] = new ThemePoint(themeType, themeStrength);
+    }
+
   }
 }

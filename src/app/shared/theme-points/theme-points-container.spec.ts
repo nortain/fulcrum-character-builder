@@ -69,4 +69,14 @@ describe('ThemePointsContainer', () => {
     thc.stealth.setStrength(ThemeStrength.Minor);
     expect(thc.getHitPointBonus(Level.One)).toEqual(28);
   });
+
+  it('should be able to get starting temporary hit points', () => {
+    thc.assignThemePoint(ThemeType.Magic, ThemeStrength.Minor);
+    expect(thc.getStartingTemporaryHitPoints(1)).toEqual(0);
+    thc.assignThemePoint(ThemeType.Magic, ThemeStrength.Lesser);
+    expect(thc.getStartingTemporaryHitPoints(1)).toEqual(2);
+    thc.assignThemePoint(ThemeType.Magic, ThemeStrength.Greater);
+    expect(thc.getStartingTemporaryHitPoints(1)).toEqual(3);
+    expect(thc.getStartingTemporaryHitPoints(Level.Five)).toEqual(6);
+  });
 });

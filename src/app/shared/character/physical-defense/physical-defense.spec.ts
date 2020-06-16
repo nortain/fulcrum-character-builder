@@ -1,4 +1,3 @@
-
 import {PhysicalDefenseType} from "./physical-defense-type.enum";
 import {Armor} from "../../armor/armor";
 import {ArmorType} from "../../armor/armor-type.enum";
@@ -62,6 +61,14 @@ describe('Defense', () => {
   it('should be able to change armor types', () => {
     defenses.equipArmor(new Armor(ArmorType.HeavyArmor));
     expect(defenses.getActiveDefensiveValue()).toEqual(14);
+  });
+
+  it('should be able to get starting THP for armor', () => {
+    expect(defenses.getStartingTemporaryHitPoints).toEqual(0);
+    defenses.equipArmor(new Armor(ArmorType.HeavyArmor));
+    expect(defenses.getStartingTemporaryHitPoints).toEqual(3);
+    defenses.equipArmor(new Armor(ArmorType.LightArmor));
+    expect(defenses.getStartingTemporaryHitPoints).toEqual(1);
   });
 });
 

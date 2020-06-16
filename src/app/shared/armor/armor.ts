@@ -54,4 +54,9 @@ export class Armor {
   getMaxMovement(): MaxMovement {
     return MAX_MOVEMENT[this.type];
   }
+
+  getTemporaryHitPoints(): number {
+    const thp = this.type - 1;
+    return thp < 0 ? 0 : thp;
+  }
 }

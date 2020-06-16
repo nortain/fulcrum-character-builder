@@ -92,7 +92,7 @@ describe('Character Service Factory', () => {
     characterFactoryService.assignAttributeStrength(bob, AttributeName.Intuition, AttributeStrength.Heroic);
     expect(characterFactoryService.getInitiative(bob)).toEqual(11);
     characterFactoryService.assignCharacterRace(bob, raceService.getNewRace(RaceType.Human, Level.One));
-    expect(characterFactoryService.getInitiative(bob)).toEqual(4);
+    expect(characterFactoryService.getInitiative(bob)).toEqual(11);
     // TODO add test for talents
   });
 
@@ -164,6 +164,13 @@ describe('Character Service Factory', () => {
 
   it('should be able to get a characters starting temporary hit points', () => {
 
+    expect(characterFactoryService.getStartingTemporaryHitPoints(bob)).toEqual(0);
+    characterFactoryService.assignArmor(bob, new Armor(ArmorType.MediumArmor));
+    expect(characterFactoryService.getStartingTemporaryHitPoints(bob)).toEqual(2);
+    characterFactoryService.assignThemePoint(bob, ThemeType.Magic, ThemeStrength.Lesser);
+    expect(characterFactoryService.getStartingTemporaryHitPoints(bob)).toEqual(4);
+    bob.level = Level.Eight;
+    expect(characterFactoryService.getStartingTemporaryHitPoints(bob)).toEqual(7);
   });
 
   it('should be able to get a characters active bonuses', () => {
@@ -241,7 +248,6 @@ describe('Character Service Factory', () => {
   it('should be able to set a weapon to main hand', () => {
 
   });
-
 
 
 });

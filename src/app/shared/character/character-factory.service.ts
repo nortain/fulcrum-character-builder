@@ -1,5 +1,5 @@
 import {Weapon} from "../weapon/weapon";
-import {STARTING_HIT_POINTS, STARTING_INITIATIVE, STARTING_MOVEMENT, StartingCharacterMagicDefense, STEALTH_INIT_BONUS} from "../constants/constants";
+import {STARTING_HIT_POINTS, STARTING_INITIATIVE, STARTING_MOVEMENT, StartingCharacterMagicDefense} from "../constants/constants";
 import {RaceType} from "./race/race-type.enum";
 import {Level} from "./level.enum";
 import {RacialSubType} from "./race/racial-sub-type.enum";
@@ -17,7 +17,6 @@ import {AttributeModel} from "../attribute/attribute-model";
 import {Injectable} from "@angular/core";
 import {AttributeSelectionsAlias, AttributeSelectionWithPicks} from "../attribute/attribute-constants/selected-bonus-groups";
 import {Armor} from "../armor/armor";
-import {ArmorType} from "../armor/armor-type.enum";
 import {ThemeType} from "../theme-points/theme-type.enum";
 import {ThemeStrength} from "../theme-points/theme-strength.enum";
 import {RaceModel} from "./race/race-model";
@@ -59,13 +58,9 @@ export class CharacterFactoryService {
       attributes: attributes ? attributes : this.attributeFactoryService.initializeAllAttributes()
     };
     for (const attribute of model.attributes.values()) { // loop through all attributes to apply racial bonuses if any.
-      this.assignAttributeStrength(model, attribute.attributeName, AttributeStrength.Normal);
+      this.assignAttributeStrength(model, attribute.attributeName, attribute.attributeStrength);
     }
     return model;
-  }
-
-  assignThemePoint(character: CharacterModel, themeType: ThemeType, themeStrength: ThemeStrength) {
-    character.themePoints.assignThemePoint(themeType, themeStrength);
   }
 
   getHitPoints(character: CharacterModel): number {
@@ -89,10 +84,19 @@ export class CharacterFactoryService {
     return init;
   }
 
+  getStartingTemporaryHitPoints(character: CharacterModel): number {
+    let thp = 0;
+    thp += character.themePoints.getStartingTemporaryHitPoints(character.level);
+    thp += character.physicalDefense.getStartingTemporaryHitPoints();
+    thp += this.attributeFactoryService.getStartingTemporaryHitPoints(character.attributes.get(AttributeName.SelfDiscipline), character.level);
+    thp += 0; // TODO add for talents
+    return thp;
+  }
+
   /**
    * gets the string based representation damage of a weapon given an index of the weapon in the array of weapons the character may have
+   * @param character
    * @param {number} index of the weapon to fetch damage for
-   * @param race
    * @returns {string} based representation of said weapon's damage
    */
   getWeaponDamage(character: CharacterModel, index: number): string {
@@ -126,11 +130,20 @@ export class CharacterFactoryService {
     return this.attributeFactoryService.presentChoices(attributeName, character.attributes, character.selectedWeaponCategory);
   }
 
-
+  /**
+   * Allows a character to select an attribute bonus.  If a selection cannot be made then an error is thrown.
+   * @param character
+   * @param selection
+   * @param propertyName
+   */
   selectAttributeBonus<K extends keyof AttributeSelectionsAlias>(character: CharacterModel, selection: AttributeSelectionWithPicks, propertyName: K): void {
     if (!this.attributeFactoryService.selectBonus(character.attributes, selection, propertyName)) {
       throw Error("Cannot select " + propertyName + " from " + selection.selections.name);
     }
+  }
+
+  assignThemePoint(character: CharacterModel, themeType: ThemeType, themeStrength: ThemeStrength) {
+    character.themePoints.assignThemePoint(themeType, themeStrength);
   }
 
   /**
@@ -192,6 +205,11 @@ export class CharacterFactoryService {
     }
   }
 
+  /**
+   * takes a character to make a new copy of it but will reset all attributes
+   * @param character
+   * @param makeNewSubtheme
+   */
   cloneCharacter(character: CharacterModel, makeNewSubtheme?: boolean) {
     const subThemes = makeNewSubtheme ? undefined : character.subThemes;
     const char = this.getNewCharacter(

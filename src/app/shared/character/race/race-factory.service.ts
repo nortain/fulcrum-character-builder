@@ -11,6 +11,7 @@ import {ValueRange} from "../../attribute/attribute-constants/attribute-constant
 import {DiceSize} from "../dice/dice-size.enum";
 import {LevelRange} from "../../spells/enums/level-range.enum";
 import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum";
+import {AbilityModel} from "../../ability-power/ability-model";
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,11 @@ export class RaceFactoryService {
     };
     model.recoveryBonus = this.getRecoveryBonus(model);
     return model;
+  }
+
+
+  getActiveAbilities(race: RaceModel, level: Level): AbilityModel[] {
+    return [new AbilityModel()];
   }
 
   /**

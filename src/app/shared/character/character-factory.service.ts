@@ -109,6 +109,15 @@ export class CharacterFactoryService {
     return result;
   }
 
+  getCharacterAbilities(character: CharacterModel): string {
+    let description = "";
+    const abilities = this.raceFactoryService.getActiveAbilities(character.race, character.level);
+    for (const ability of abilities) {
+      description += ability.toString();
+    }
+    return description;
+  }
+
   /**
    * Takes a normal characters default speed and should add in bonuses to speed from agility, armor and talents
    * @returns {number} the value that represents the speed of the character

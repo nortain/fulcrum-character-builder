@@ -149,4 +149,12 @@ describe('Race', () => {
     expect(fey.selectedOptionalStartingAttribute).toBeFalsy();
 
   });
+
+  it('should be able to get a characters active racial abilities', () => {
+
+  });
+
+  it('should be able to get a characters passive racial abilities', () => {
+
+  });
 });

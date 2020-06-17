@@ -160,7 +160,6 @@ describe('Character Service Factory', () => {
     expect(moe.race.availableAttributePoints).toEqual(0);
   });
 
-  // TODO include more test
 
   it('should be able to get a characters starting temporary hit points', () => {
 
@@ -173,11 +172,11 @@ describe('Character Service Factory', () => {
     expect(characterFactoryService.getStartingTemporaryHitPoints(bob)).toEqual(7);
   });
 
-  it('should be able to get a characters active bonuses', () => {
+  it('should be able to get a characters active abilities', () => {
 
   });
 
-  it('should be able to get a characters passive bonuses', () => {
+  it('should be able to get a characters passive abilities', () => {
 
   });
 

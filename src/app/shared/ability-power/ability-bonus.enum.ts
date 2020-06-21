@@ -6,7 +6,7 @@ export enum AbilityBonus {
   GlobalDamage = "GlobalDamage",
   EmpoweredDamage = "EmpoweredDamage",
   DamageResist = "DamageResist",
-  CriticalResit = "CriticalResit",
+  CriticalResist = "CriticalResist",
   MissileDefense = "MissileDefense",
   ZoneDefense = "ZoneDefense",
   UnarmedDefense = "UnarmedDefense",
@@ -61,6 +61,7 @@ export enum AbilityBonus {
   Overcast = "Overcast",
 
   /****Action Types****/
+  Passive = "Passive",
   Free = "Free",
   Swift = "Swift",
   Minor = "Minor",
@@ -91,5 +92,12 @@ export enum AbilityBonus {
   Reasoning = "Reasoning",
   Presence = "Presence",
   SelfDiscipline = "SelfDiscipline",
-  Intuition = "Intuition"
+  Intuition = "Intuition",
+
+  /**********Talent Costs********/
+  Combat = "Combat",
+  Stealth = "Stealth",
+  Magic = "Magic",
+  General = "General",
+  Universal = "Universal",
 }

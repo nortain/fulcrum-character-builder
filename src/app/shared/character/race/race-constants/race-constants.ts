@@ -18,7 +18,7 @@ export const STARTING_PLAYER_RACES = {
     passiveBonuses: [
       {
         name: "Catstep",
-        value: "Abilities that allow you to shift and tactical reduce DT by 1. (Movement cannot go below 1)"
+        value: "Ability that allow you to shift and tactical reduce DT by 1. (Movement cannot go below 1)"
       } as Bonus
     ],
     activeBonuses: [

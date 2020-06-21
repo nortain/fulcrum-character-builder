@@ -23,6 +23,7 @@ import {LevelRange} from "../spells/enums/level-range.enum";
 import {AllDefenseType} from "../character/physical-defense/physical-defense-type.enum";
 import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap";
 import {CharacterModel} from "../character/character-model";
+import {DefenseModel} from "../character/physical-defense/defense-model";
 
 export function mockDropdownData() {
   return [
@@ -48,7 +49,7 @@ export function mockSubtheme(subthemeType?: SubthemeType, str?: ThemeStrength): 
 }
 
 export function mockDefense() {
-  return new PhysicalDefense();
+  return new DefenseModel();
 }
 
 export function mockKnack() {

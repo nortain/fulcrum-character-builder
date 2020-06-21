@@ -3,6 +3,7 @@ import {AbilityType} from "./ability-type.enum";
 import {AbilityModel, IAbilityBonus, IAbilityRequirement, IDescription} from "./ability-model";
 import {Level} from "../character/level.enum";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
+import {ActionType} from "../action/action-type.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +13,26 @@ export class AbilityFactoryService {
   constructor(private attributeFactoryService: AttributeFactoryService) {
   }
 
-  getNewAbility(abilityName: string, abilityType: AbilityType, abilityDescription?: IDescription, mechanicalBonus?: Array<IAbilityBonus>, abilityRequirement?: Array<IAbilityRequirement>): AbilityModel {
+  getNewAbility(
+    abilityName: string,
+    abilityType: AbilityType,
+    abilityAction?: ActionType,
+    abilityCost?: Array<IAbilityRequirement>,
+    abilityDescription?: IDescription,
+    mechanicalBonus?: Array<IAbilityBonus>,
+    abilityRequirement?: Array<IAbilityRequirement>,
+    activeAbility?: AbilityModel): AbilityModel {
     const model = {
       ...new AbilityModel(),
       abilityName: abilityName,
       abilityType: abilityType,
+      abilityAction: abilityAction ? abilityAction : ActionType.Passive,
+      abilityCost: abilityCost ? abilityCost :  [] as Array<IAbilityRequirement>,
       abilityDescription: abilityDescription,
       mechanicalBonus: mechanicalBonus ? mechanicalBonus : new Array<IAbilityBonus>(),
-      abilityRequirement: abilityRequirement ? abilityRequirement : new Array<IAbilityRequirement>()
-    };
+      abilityRequirement: abilityRequirement ? abilityRequirement : new Array<IAbilityRequirement>(),
+      activeAbility: activeAbility ? {...new AbilityModel(), ...activeAbility} : {} as AbilityModel
+    } as AbilityModel;
     return model;
   }
 

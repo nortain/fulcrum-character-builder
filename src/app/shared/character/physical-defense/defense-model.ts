@@ -5,7 +5,7 @@ import {Item} from "../../armor/item";
 import {ArmorType} from "../../armor/armor-type.enum";
 
 export class BaseDefenses {
-  activeDefenses = PhysicalDefenseType[] = [];
+  activeDefenses: PhysicalDefenseType[] = [];
   passiveDefenses: PhysicalDefenseType[] = [
     PhysicalDefenseType.Missile,
     PhysicalDefenseType.Unarmed,

@@ -29,6 +29,7 @@ export class CharacterFactoryService {
   constructor(
     private attributeFactoryService: AttributeFactoryService,
     private raceFactoryService: RaceFactoryService,
+    private physicalDefenseFactoryService: PhysicalDefenseFactoryService
   ) {
 
   }
@@ -39,7 +40,7 @@ export class CharacterFactoryService {
                   subRace: RacialSubType = null,
                   themePoints = new ThemePointsContainer(),
                   subthemes = new SubthemeContainer(themePoints),
-                  physicalDefense = new PhysicalDefense(),
+                  physicalDefense = this.physicalDefenseFactoryService.getNewPhysicalDefense(),
                   weapons = [new Weapon('Fist', WeaponClass.Unarmed, WeaponCategory.Balanced)],
                   magicDefense = new StartingCharacterMagicDefense(),
                   selectedWeaponCategory = WeaponCategory.Balanced,
@@ -87,7 +88,7 @@ export class CharacterFactoryService {
   getStartingTemporaryHitPoints(character: CharacterModel): number {
     let thp = 0;
     thp += character.themePoints.getStartingTemporaryHitPoints(character.level);
-    thp += character.physicalDefense.getStartingTemporaryHitPoints();
+    thp += this.physicalDefenseFactoryService.getStartingTemporaryHitPoints(character.physicalDefense);
     thp += this.attributeFactoryService.getStartingTemporaryHitPoints(character.attributes.get(AttributeName.SelfDiscipline), character.level);
     thp += 0; // TODO add for talents
     return thp;
@@ -161,7 +162,7 @@ export class CharacterFactoryService {
    * @param armor
    */
   assignArmor(character: CharacterModel, armor: Armor) {
-    character.physicalDefense.equipArmor(armor);
+    this.physicalDefenseFactoryService.equipArmor(character.physicalDefense, armor);
   }
 
   /**

@@ -17,6 +17,9 @@ export class PhysicalDefenseFactoryService {
   }
 
 
+  /**
+   * Makes new defense models, don't leave home without it
+   */
   getNewPhysicalDefense(): DefenseModel {
     const model = new DefenseModel();
     return model;

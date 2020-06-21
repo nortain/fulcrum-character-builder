@@ -1,9 +1,10 @@
 export enum ActionType {
-  Free,
-  Swift,
-  Minor,
-  Move,
-  Standard,
-  Deliberate,
-  Full
+  Passive = "Passive",
+  Free = "Free",
+  Swift = "Swift",
+  Minor = "Minor",
+  Move = "Move",
+  Standard = "Standard",
+  Deliberate = "Deliberate",
+  Full = "Full",
 }

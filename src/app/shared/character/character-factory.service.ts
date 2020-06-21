@@ -8,7 +8,7 @@ import {WeaponClass} from "../weapon/weapon-class.enum";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
-import {PhysicalDefense} from "./physical-defense/physical-defense";
+import {PhysicalDefenseFactoryService} from "./physical-defense/physical-defense-factory.service";
 import {SubthemeContainer} from "../theme-points/subthemes/subtheme-container";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {RaceFactoryService} from "./race/race-factory.service";

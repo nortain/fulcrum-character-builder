@@ -2,7 +2,7 @@ import {DropdownValueObject} from "../ui/dropdown/dropdown-value-object";
 import {RaceType} from "../character/race/race-type.enum";
 import {ComponentFixture} from "@angular/core/testing";
 import {By} from "@angular/platform-browser";
-import {PhysicalDefense} from "../character/physical-defense/physical-defense";
+import {PhysicalDefenseFactoryService} from "../character/physical-defense/physical-defense-factory.service";
 import {ThemePointsContainer} from "../theme-points/theme-points-container";
 import {ThemeStrength} from "../theme-points/theme-strength.enum";
 import {Subtheme} from "../theme-points/subthemes/subtheme";

@@ -1,11 +1,11 @@
 import {PhysicalDefenseType} from "./physical-defense-type.enum";
 import {Armor} from "../../armor/armor";
 import {ArmorType} from "../../armor/armor-type.enum";
-import {PhysicalDefense} from "./physical-defense";
+import {PhysicalDefenseFactoryService} from "./physical-defense-factory.service";
 
 
 describe('Defense', () => {
-  let defenses: PhysicalDefense;
+  let defenses: PhysicalDefenseFactoryService;
 
   beforeEach(() => {
     defenses = new PhysicalDefense();

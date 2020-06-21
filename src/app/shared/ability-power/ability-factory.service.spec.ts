@@ -7,7 +7,7 @@ import {AbilityBonus} from "./ability-bonus.enum";
 import {AbilityModel} from "./ability-model";
 import {Level} from "../character/level.enum";
 
-describe('AbilityFactoryService', () => {
+fdescribe('AbilityFactoryService', () => {
   let service: AbilityFactoryService;
   let simpleTalent: AbilityModel;
 

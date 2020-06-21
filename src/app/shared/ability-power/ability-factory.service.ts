@@ -28,6 +28,11 @@ export class AbilityFactoryService {
     return ability.abilityDescription.fullDescription;
   }
 
+  /**
+   * Given an ability and level write out a brief description that could go on a character sheet and use level to adjust for values that are scaling.
+   * @param ability
+   * @param level
+   */
   printOutBriefDescription(ability: AbilityModel, level: Level): string {
     let description = ability.abilityDescription.briefDescription;
     if (this.hasReplacementValuesForBriefDescription(ability)) {

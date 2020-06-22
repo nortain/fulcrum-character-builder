@@ -4,6 +4,8 @@ import {AbilityModel, IAbilityBonus, IAbilityRequirement, IDescription} from "./
 import {Level} from "../character/level.enum";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {ActionType} from "../action/action-type.enum";
+import {AbilityBonus} from "./ability-bonus.enum";
+import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +29,7 @@ export class AbilityFactoryService {
       abilityName: abilityName,
       abilityType: abilityType,
       abilityAction: abilityAction ? abilityAction : ActionType.Passive,
-      abilityCost: abilityCost ? abilityCost :  [] as Array<IAbilityRequirement>,
+      abilityCost: abilityCost ? abilityCost : [] as Array<IAbilityRequirement>,
       abilityDescription: abilityDescription,
       mechanicalBonus: mechanicalBonus ? mechanicalBonus : new Array<IAbilityBonus>(),
       abilityRequirement: abilityRequirement ? abilityRequirement : new Array<IAbilityRequirement>(),
@@ -35,6 +37,22 @@ export class AbilityFactoryService {
     } as AbilityModel;
     return model;
   }
+
+  getBonusForAbility(givenAbility: AbilityBonus, abilities: Array<AbilityModel>, level?: Level): AbilityBonus | number {
+    for (const ability of abilities) {
+      for (const bonus of ability.mechanicalBonus) {
+        if (givenAbility === bonus.abilityType) {
+          if (this.isValueRange(bonus.value)) {
+            return this.attributeFactoryService.extractNumberFromValueRange(bonus.value, level, bonus.dieSize);
+          } else {
+            return bonus.value;
+          }
+        }
+      }
+    }
+    return 0;
+  }
+
 
   printOutFullDescription(ability: AbilityModel): string {
     return ability.abilityDescription.fullDescription;
@@ -49,10 +67,16 @@ export class AbilityFactoryService {
     let description = ability.abilityDescription.briefDescription;
     if (this.hasReplacementValuesForBriefDescription(ability)) {
       for (const mechanic of ability.mechanicalBonus) {
-        description = description.replace("$" + mechanic.bonusType, this.attributeFactoryService.extractNumberFromValueRange(mechanic.value, level, mechanic.dieSize).toString());
+        if (this.isValueRange(mechanic.value)) {
+          description = description.replace("$" + mechanic.abilityType, this.attributeFactoryService.extractNumberFromValueRange(mechanic.value, level, mechanic.dieSize).toString());
+        }
       }
     }
     return description;
+  }
+
+  isValueRange(bonusValue: ValueRange | AbilityBonus): bonusValue is ValueRange {
+    return (bonusValue as ValueRange).minBonus !== undefined;
   }
 
 

@@ -400,13 +400,18 @@ export class AttributeFactoryService {
 // ******* HELPER FUNCTIONS BELOW **********
   /**
    * Helper function that will take a value, range and dicesize and pull out the printed roll and return
-   * it as a number,
+   * it as a number.  The level range allows for adjustable arrays that can impact level scaling.  For example passing in a levelRange of 2 would mean that at level 1 it'd use the min value and at all other
+   * levels it'll use the max value.
    * @param range
    * @param level
    * @param diceSize
+   * @param levelRange
    */
-  extractNumberFromValueRange(range: ValueRange, level: Level, diceSize = DiceSize.None): number {
-    const array = this.diceService.getDiceArrayFromDamageRange(range.minBonus, range.maxBonus, LevelRange.TEN, diceSize);
+  extractNumberFromValueRange(range: ValueRange, level: Level, diceSize = DiceSize.None, levelRange = 10): number {
+    const array = this.diceService.getDiceArrayFromDamageRange(range.minBonus, range.maxBonus, levelRange, diceSize);
+    if (level > array.length) {
+      return parseInt(array[array.length - 1].modifierOfDice.value(), 10);
+    }
     return parseInt(array[level - 1].modifierOfDice.value(), 10);
   }
 

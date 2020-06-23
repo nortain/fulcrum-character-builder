@@ -1,23 +1,26 @@
 import {TestBed} from '@angular/core/testing';
 
 import {AbilityFactoryService} from './ability-factory.service';
-import {AbilityType} from "./ability-type.enum";
+
 import {AbilityBonus} from "./ability-bonus.enum";
 import {AbilityModel} from "./ability-model";
 import {Level} from "../character/level.enum";
 import {PhysicalDefenseFactoryService} from "../character/physical-defense/physical-defense-factory.service";
-import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
-import {TalentStrength} from "./talent/talent-strength.enum";
-import {ActionType} from "../action/action-type.enum";
+
+import {TalentName} from "./talent/talent-name.enum";
+import {AbilityType} from "./ability-type.enum";
+import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 
 describe('AbilityFactoryService', () => {
   let service: AbilityFactoryService;
   let defenseService: PhysicalDefenseFactoryService;
+  let attributeService: AttributeFactoryService;
   let simpleTalent: AbilityModel, complexTalent: AbilityModel;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(AbilityFactoryService);
+    attributeService = TestBed.inject(AttributeFactoryService);
     defenseService = TestBed.inject(PhysicalDefenseFactoryService);
     simpleTalent = getSimpleTalent();
     complexTalent = getComplexTalent();
@@ -48,9 +51,9 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should be able to print out the active ability of a complex talent', () => {
-    let result = service.printOutBriefDescription(complexTalent.activeAbility, Level.Five);
+    let result = service.printOutBriefDescription(service.getActiveAbility(complexTalent, AbilityType.Talent), Level.Five);
     expect(result).toBe("Reduce the damage of an attack against AD by 5.  If the attack is a burst or range attack the reduction becomes  7");
-    result = service.printOutBriefDescription(complexTalent.activeAbility, Level.Six);
+    result = service.printOutBriefDescription(service.getActiveAbility(complexTalent, AbilityType.Talent), Level.Six);
     expect(result).toBe("Reduce the damage of an attack against AD by 6.  If the attack is a burst or range attack the reduction becomes  8");
   });
 
@@ -67,53 +70,67 @@ describe('AbilityFactoryService', () => {
     expect(result).toBe(2);
   });
 
+  it('should be able to display a talent using a non-standard scale', () => {
+    const talent = service.getNewAbility(TalentName.EmpoweredStrikes, AbilityType.Talent);
+    let result = service.printOutBriefDescription(talent, Level.One);
+    expect(result).toBe("Gain a +2 to empowered attacks but you have a -1 to critical strikes.");
+    result = service.printOutBriefDescription(talent, Level.Two);
+    expect(result).toBe("Gain a +2 to empowered attacks but you have a 0 to critical strikes.");
+    result = service.printOutBriefDescription(talent, Level.Six);
+    expect(result).toBe("Gain a +3 to empowered attacks but you have a 0 to critical strikes.");
+  });
+
+  it('should be able to get a penalty from a talent using a non-standard scale', () => {
+    const talent = service.getNewAbility(TalentName.EmpoweredStrikes, AbilityType.Talent);
+    let result = service.getBonusForAbility(AbilityBonus.CriticalStrike, [talent], Level.One);
+    expect(result).toBe(-1);
+    result = service.getBonusForAbility(AbilityBonus.CriticalStrike, [talent], Level.Two);
+    expect(result).toBe(0);
+  });
+
+  it('should be able to print a brief description of a non-scaling talent', () => {
+    const talent = service.getNewAbility(TalentName.AcceleratedReflexes, AbilityType.Talent);
+    const result = service.printOutBriefDescription(talent);
+    expect(result).toBe("Gain a +3 to Initiative.");
+    const value = service.getBonusForAbility(AbilityBonus.Initiative, [talent]);
+    expect(value).toEqual(3);
+  });
+
+  it('should be able to print and get values a talent that gives bonus to forced movement', () => {
+
+  });
+
+  it('should be able to assign a talent maybe?', () => {
+
+  });
+
+  it('should be able to get all requirements of a particular talent', () => {
+
+  });
+
+  it('should have certain talents as not being selectable such as sub talents that belong to greater talents that cannot be chosen individually', () => {
+
+  });
+
+  it('should be able to choose sub-options of a greater talent like charge mastery', () => {
+
+  });
+
+  it('should have some way to prevent the same talents from being selected/assigned', () => {
+
+  });
+
+  it('should have some way to prevent related mutually exclusive talents from being selected', () => {
+
+  });
+
+  /**Stupid Helper functions**/
 
   function getSimpleTalent(): AbilityModel {
-    return service.getNewAbility("Healing Specialization", AbilityType.Talent,
-      ActionType.Passive,
-      [{requirementType: AbilityBonus.Universal, requirementValue: TalentStrength.Lesser}], {
-        briefDescription: "Increase the amount of Healing granted by actions with the healing keyword by $Healing.",
-        fullDescription: "Increase the amount of Healing granted by actions with the healing keyword by 1.  Increase by 1 at level 6."
-      }, [{abilityType: AbilityBonus.Healing, value: {minBonus: 1, maxBonus: 2}}]);
+    return service.getNewAbility(TalentName.HealingSpecialization, AbilityType.Talent);
   }
 
   function getComplexTalent(): AbilityModel {
-    const activeAbility =
-      {
-        ...new AbilityModel(),
-        name: "Deflection",
-        abilityType: AbilityType.Ability,
-        abilityAction: ActionType.Free,
-        abilityCost: null,
-        abilityDescription: {
-          briefDescription: "Reduce the damage of an attack against AD by $DamageResist.  If the attack is a burst or range attack the reduction becomes  $DamageResist",
-          fullDescription: "Reduce the damage of an attack against AD by 4 + level / 3.  If the attack is a burst or range attack the reduction becomes  5 + level / 2"
-        },
-        mechanicalBonus: [
-          {abilityType: AbilityBonus.DamageResist, value: {minBonus: 4, maxBonus: 7}},
-          {abilityType: AbilityBonus.DamageResist, value: {minBonus: 5, maxBonus: 10}}
-        ]
-      } as AbilityModel;
-
-
-    const complexAbility = service.getNewAbility(
-      "Missile Parry",
-      AbilityType.Talent,
-      ActionType.Passive,
-      [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}],
-      {
-        briefDescription: "Your Missile Defense becomes your Active Defense. Increase your critical resistance by $CriticalResist.  Gain the ability Deflection",
-        fullDescription: "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Increase this bonus to 2 at level 6.  Gain the ability Deflection.\n" +
-          "Deflection (Lesser Ability):  Free.  Reduce the damage of an attack against AD by 4 + level / 3.  If the attack is a burst or range attack the reduction becomes  5 + level / 2."
-      },
-      [
-        {abilityType: AbilityBonus.MissileDefense, value: AbilityBonus.ActiveDefense},
-        {abilityType: AbilityBonus.CriticalResist, value: {minBonus: 1, maxBonus: 2}}
-        ],
-      [{requirementType: AbilityBonus.Agility, requirementValue: AttributeStrength.Heroic}],
-      activeAbility
-    );
-
-    return complexAbility;
+    return service.getNewAbility(TalentName.MissileParry, AbilityType.Talent);
   }
 });

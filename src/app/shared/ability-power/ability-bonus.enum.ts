@@ -1,5 +1,6 @@
 export enum AbilityBonus {
   HitPoints = "HitPoints",
+  StartingTemporaryHitPoints = "StartingTemporaryHitPoints",
   ActiveDefense = "ActiveDefense",
   PassiveDefense = "PassiveDefense",
   AttackDamage = "AttackDamage",

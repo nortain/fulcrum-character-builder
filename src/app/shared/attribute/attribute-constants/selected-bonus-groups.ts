@@ -4,17 +4,17 @@ import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {ValueRange} from "./attribute-constants";
 
 export enum SelectionNames {
-  "PresenceSelections" = "PresenceSelections",
-  "ReasoningSelections" = "ReasoningSelections",
-  "BrawnSelections" = "BrawnSelections",
-  "AgilitySelections" = "AgilitySelections",
+  PresenceSelections = "PresenceSelections",
+  ReasoningSelections = "ReasoningSelections",
+  BrawnSelections = "BrawnSelections",
+  AgilitySelections = "AgilitySelections",
 }
 
 export type AttributeSelectionsAlias = PresenceSelections | AgilitySelections | ReasoningSelections | BrawnSelections;
 
 export type AttributePicksAlias = PresenceAttributePicks | BrawnAttributePicks | AgilityAttributePicks | ReasoningAttributePicks;
 
-export type AttributeBonusAlias = CriticalAndEmpoweredBonus | AttributeBonus | GlobalDamageAndPenaltyToAttack | GlobalDamageAndPenaltyToCritical | NonScalingAttributeBonus |AttributeBonusWithText | AttributeBonusWithSpeed | SelectionNames;
+export type AttributeBonusAlias = CriticalAndEmpoweredBonus | AttributeBonus | GlobalDamageAndPenaltyToAttack | GlobalDamageAndPenaltyToCritical | NonScalingAttributeBonus | AttributeBonusWithText | AttributeBonusWithSpeed | SelectionNames;
 
 /**
  * A holder for one of the attributeSelection alias along with a total number of available picks that can be made.  This class is essentally holding what possible selections are available to a player and how many picks they have to allocate to those selections.

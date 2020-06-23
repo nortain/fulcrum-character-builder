@@ -1,15 +1,17 @@
-import {AbilityType} from "./ability-type.enum";
+import {AbilityName, AbilityType} from "./ability-type.enum";
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {AbilityBonus} from "./ability-bonus.enum";
 import {DiceSize} from "../character/dice/dice-size.enum";
 import {ActionType} from "../action/action-type.enum";
+import {LevelRange} from "../spells/enums/level-range.enum";
+import {Level} from "../character/level.enum";
 
 export class AbilityModel {
-  abilityName: string;
+  abilityName: AbilityName;
   abilityType: AbilityType;
   abilityAction: ActionType;
   abilityCost: Array<IAbilityRequirement>; // This list multiple costs, but only one needs to be paid
-  activeAbility: AbilityModel;
+  activeAbility: AbilityName;
   abilityDescription: IDescription;
   mechanicalBonus: Array<IAbilityBonus>;
   abilityRequirement: Array<IAbilityRequirement>; // This lists all requirements that must be met to get the ability
@@ -28,6 +30,7 @@ export interface IAbilityBonus {
   abilityType: AbilityBonus;
   value: ValueRange | AbilityBonus;
   dieSize?: DiceSize;
+  adjustLevel?: Level;
 }
 
 /**

@@ -177,7 +177,13 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should not be able to select a greater talent and then choose its less power', () => {
-
+    const talent = service.getNewAbility(TalentName.AdvancedWeaponTrainingRanged, AbilityType.Talent);
+    const talent2 = service.getNewAbility(TalentName.SureShot, AbilityType.Talent);
+    const talent3 = service.getNewAbility(TalentName.FollowUpAttack, AbilityType.Talent);
+    let result = service.canAbilityBeSelected(talent, [talent2]);
+    expect(result).toBeFalsy();
+    result = service.canAbilityBeSelected(talent, [talent3]);
+    expect(result).toBeTruthy();
   });
 
   it('should not be able to choose a lesser power and then choose that powers greater talent', () => {

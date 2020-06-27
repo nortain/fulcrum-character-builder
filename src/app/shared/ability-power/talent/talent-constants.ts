@@ -72,6 +72,22 @@ export function getTalentObject() {
         {abilityType: AbilityBonus.Healing, value: {minBonus: 1, maxBonus: 2}}
       ]
     } as AbilityModel,
+    ImprovedController: {
+      abilityName: TalentName.ImprovedController,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: AbilityBonus.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription: "Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1.  Gain a +1 bonus to critical strikes.",
+        fullDescription:
+          "Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1.  Gain a +1 bonus to critical strikes."
+      }
+      ,
+      mechanicalBonus: [
+        {abilityType: AbilityBonus.CriticalStrike, value: {minBonus: 1, maxBonus: 1}},
+        {abilityType: AbilityBonus.ForcedMovement, value: {minBonus: 1, maxBonus: 1}}
+      ]
+    } as AbilityModel,
     ImprovedVitality: {
       ...new AbilityModel(),
       abilityName: TalentName.ImprovedVitality,

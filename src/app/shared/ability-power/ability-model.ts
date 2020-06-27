@@ -20,7 +20,7 @@ export class AbilityModel {
 /**
  * Full descriptions would include all text that an abilty offers while a brief description is something that would go on a particular character sheet and are level dependent for values that
  * scale
- */  // TODO look at possibly dropping this to just being a string and use some kind of global replacement to hide full description text
+ */
 export interface IDescription {
   fullDescription: string;
   briefDescription: string;

@@ -6,6 +6,7 @@ export enum TalentName {
   Deflection = "Deflection",
   EmpoweredStrikes = "EmpoweredStrikes",
   HealingSpecialization = "HealingSpecialization",
+  ImprovedController = "ImprovedController",
   ImprovedVitality = "ImprovedVitality",
   MissileParry = "MissileParry"
 }

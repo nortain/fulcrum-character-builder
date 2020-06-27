@@ -2,11 +2,15 @@
  * try to keep this in some kind of order like alphabetical to make life easier
  */
 export enum TalentName {
-  AcceleratedReflexes= "AcceleratedReflexes",
+  AcceleratedReflexes = "AcceleratedReflexes",
+  AdvancedWeaponTrainingRanged = "AdvancedWeaponTrainingRanged",
+  AdvancedWeaponTrainingTwoWeaponFighting = "AdvancedWeaponTrainingTwoWeaponFighting",
   Deflection = "Deflection",
   EmpoweredStrikes = "EmpoweredStrikes",
+  FollowUpAttack = "FollowUpAttack",
   HealingSpecialization = "HealingSpecialization",
   ImprovedController = "ImprovedController",
   ImprovedVitality = "ImprovedVitality",
-  MissileParry = "MissileParry"
+  MissileParry = "MissileParry",
+  SureShot = "SureShot"
 }

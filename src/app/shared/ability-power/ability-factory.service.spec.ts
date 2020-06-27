@@ -160,6 +160,27 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should have certain talents as not being selectable such as sub talents that belong to greater talents that cannot be chosen individually', () => {
+    const talent = service.getNewAbility(TalentName.AdvancedWeaponTrainingRanged, AbilityType.Talent);
+    const pickedAbilities = [talent];
+    const newTalent = service.getNewAbility(TalentName.EmpoweredStrikes, AbilityType.Talent);
+    let result = service.canAbilityBeSelected(talent, pickedAbilities);
+    expect(result).toBeFalsy();
+    result = service.canAbilityBeSelected(newTalent, pickedAbilities);
+    expect(result).toBeTruthy();
+  });
+
+  it('should not be able to choose two advanced weapon trainings', () => {
+    const talent = service.getNewAbility(TalentName.AdvancedWeaponTrainingRanged, AbilityType.Talent);
+    const talent2 = service.getNewAbility(TalentName.AdvancedWeaponTrainingTwoWeaponFighting, AbilityType.Talent);
+    const result = service.canAbilityBeSelected(talent2, [talent]);
+    expect(result).toBeFalsy();
+  });
+
+  it('should not be able to select a greater talent and then choose its less power', () => {
+
+  });
+
+  it('should not be able to choose a lesser power and then choose that powers greater talent', () => {
 
   });
 

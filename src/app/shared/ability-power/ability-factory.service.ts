@@ -32,9 +32,23 @@ export class AbilityFactoryService {
         break;
       }
     }
-
-
     return model;
+  }
+
+  canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>): boolean {
+    let canBePicked = !currentAbilities.find((name) => name.abilityName === abilityToBeSelected.abilityName);
+    if (canBePicked && abilityToBeSelected.abilityRequirement) {
+      for (const requirement of abilityToBeSelected.abilityRequirement) {
+        currentAbilities.find(abilities => {
+          abilities.abilityRequirement.find(abilityRequirement => {
+            if (abilityRequirement.requirementType === requirement.requirementType) {
+              canBePicked = canBePicked && !!requirement.requirementValue;
+            }
+          });
+        });
+      }
+    }
+    return canBePicked;
   }
 
   /**
@@ -51,6 +65,17 @@ export class AbilityFactoryService {
    */
   getRequirementForAbility(ability: AbilityModel): Array<IAbilityRequirement> {
     return ability.abilityRequirement;
+  }
+
+  /**
+   * Used to determine if a given ability model has an active ability it can activate.  This is most commonly the case with greater passive talents that also give a lesser active power.  The greater talent would be passed in along with the ability type talent and from their, if an active ability property exists on the talent then a new ability of type AbilityType will be returned.  This is assumed to be used by the application to get active talents without necessarily having to store them as complete talents else where.  The same may be true for other abilities.
+   * @param ability
+   * @param abilityType
+   */
+  getActiveAbility(ability: AbilityModel, abilityType: AbilityType) {
+    if (ability.activeAbility) {
+      return this.getNewAbility(ability.activeAbility, abilityType);
+    }
   }
 
 
@@ -124,17 +149,6 @@ export class AbilityFactoryService {
    */
   printOutFullDescription(ability: AbilityModel): string {
     return ability.abilityDescription.fullDescription;
-  }
-
-  /**
-   * Used to determine if a given ability model has an active ability it can activate.  This is most commonly the case with greater passive talents that also give a lesser active power.  The greater talent would be passed in along with the ability type talent and from their, if an active ability property exists on the talent then a new ability of type AbilityType will be returned.  This is assumed to be used by the application to get active talents without necessarily having to store them as complete talents else where.  The same may be true for other abilities.
-   * @param ability
-   * @param abilityType
-   */
-  getActiveAbility(ability: AbilityModel, abilityType: AbilityType) {
-    if (ability.activeAbility) {
-      return this.getNewAbility(ability.activeAbility, abilityType);
-    }
   }
 
   /**

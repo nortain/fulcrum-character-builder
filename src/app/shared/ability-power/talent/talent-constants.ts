@@ -122,6 +122,77 @@ export function getTalentObject() {
       ],
       abilityRequirement: [{requirementType: AbilityBonus.Agility, requirementValue: AttributeStrength.Heroic}],
       activeAbility: TalentName.Deflection
+    } as AbilityModel,
+
+    AdvancedWeaponTrainingRanged: {
+      abilityName: TalentName.AdvancedWeaponTrainingRanged,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription: "Gain the Sure Shot power. \n " +
+          "Melee Archer:  You are able to convert your range attacks into a melee attack with a -1 DC.\n" +
+          "Vulnerable Shots:  Increase Range attack damage by $AttackDamage",
+        fullDescription:
+          "<i>At Most a character can have 1 Advanced Weapon Training Talent</i>" +
+          "The character gains all the following benefits:" +
+          "Sure Shot (Lesser Power):  Gain advantage to a missed ranged weapon attack.  If the attack still misses this power is not expended." +
+          "    Melee Archer:  You are able to convert your range attacks into a melee attack with a -1 DC." +
+          "    Vulnerable Shots:  Increase Range attack damage by +1.  Increase this amount by 1 at level 6."
+      },
+      mechanicalBonus: [
+        {abilityType: AbilityBonus.AttackDamage, value: {minBonus: 1, maxBonus: 2}}
+      ],
+      abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
+      activeAbility: TalentName.SureShot
+    } as AbilityModel,
+
+    AdvancedWeaponTrainingTwoWeaponFighting: {
+      abilityName: TalentName.AdvancedWeaponTrainingTwoWeaponFighting,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription: "Gain the Follow Up Attack power. \n " +
+          "Coordinated Strikes:  Increase your damage bonus for dual wielding attacks by $AttackDamage.",
+        fullDescription:
+          "<i>At Most a character can have 1 Advanced Weapon Training Talent</i>" +
+          "The character gains all the following benefits:" +
+          "        Coordinated Strikes:  Increase your damage bonus for dual wielding attacks by +2.  Increase this bonus by 1 at levels 4 and 8." +
+          "  Follow up attack (Power):  Once per combat you may gain advantage to an attack that has missed its target. If the attack still misses this power is not expended."
+      },
+      mechanicalBonus: [
+        {abilityType: AbilityBonus.AttackDamage, value: {minBonus: 2, maxBonus: 4}}
+      ],
+      abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
+      activeAbility: TalentName.FollowUpAttack
+    } as AbilityModel,
+
+    FollowUpAttack: {
+      abilityName: TalentName.FollowUpAttack,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription: "Gain advantage to an attack that has missed its target. If the attack still misses this power is not expended.",
+        fullDescription:
+          "Gain advantage to an attack that has missed its target. If the attack still misses this power is not expended."
+      },
+      mechanicalBonus: [],
+      abilityRequirement: [{requirementType: TalentName.AdvancedWeaponTrainingTwoWeaponFighting, requirementValue: false}]
+    } as AbilityModel,
+
+    SureShot: {
+      abilityName: TalentName.SureShot,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription: "Gain advantage to a missed ranged weapon attack.  If the attack still misses this power is not expended.",
+        fullDescription:
+          "Gain advantage to a missed ranged weapon attack.  If the attack still misses this power is not expended."
+      },
+      mechanicalBonus: []
     } as AbilityModel
 
   };

@@ -84,6 +84,8 @@ export enum AbilityBonus {
   Arcane = "Arcane",
   Radiant = "Radiant",
 
+  AdvancedWeaponTraining = "AdvancedWeaponTraining",
+
 
   /****Attribute Names***/
   Brawn = "Brawn",

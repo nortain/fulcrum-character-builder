@@ -67,8 +67,7 @@ export class AbilityFactoryService {
         if (givenAbility === bonus.abilityType) {
           if (this.isValueRange(bonus.value)) {
             if (ability.abilityType === AbilityType.Talent && ability.abilityAction === ActionType.Passive) {
-              resultingBonusValue += this.extractNumberFromValueRangeForPassiveTalents(bonus.value, level);
-
+              resultingBonusValue += this.extractNumberFromValueRangeForPassiveTalents(bonus.value, level, bonus.adjustLevel);
             } else {
               resultingBonusValue += this.attributeFactoryService.extractNumberFromValueRange(bonus.value, level, bonus.dieSize, bonus.adjustLevel);
             }
@@ -82,32 +81,37 @@ export class AbilityFactoryService {
   }
 
 
-  extractNumberFromValueRangeForPassiveTalents(bonus: ValueRange, level: Level, numberOfLevelsToGain = 10): number {
+  extractNumberFromValueRangeForPassiveTalents(bonus: ValueRange, level: Level, adjustLevel?: Level): number {
     const delta = (bonus.maxBonus - bonus.minBonus);
+    const numberOfLevelsToGain = 10;
     const valueArray: Array<number> = [];
     for (let i = 0; i < numberOfLevelsToGain; i++) {
       valueArray[i] = bonus.minBonus;
-      switch (delta) {
-        case 1:
-          valueArray[i] += i >= 5 ? 1 : 0;
-          break;
-        case 2:
-          valueArray[i] += i >= 3 ? 1 : 0;
-          valueArray[i] += i >= 7 ? 1 : 0;
-          break;
-        case 3:
-          valueArray[i] += i >= 3 ? 1 : 0;
-          valueArray[i] += i >= 5 ? 1 : 0;
-          valueArray[i] += i >= 7 ? 1 : 0;
-          break;
-        case 4:
-          valueArray[i] += i >= 1 ? 1 : 0;
-          valueArray[i] += i >= 3 ? 1 : 0;
-          valueArray[i] += i >= 5 ? 1 : 0;
-          valueArray[i] += i >= 7 ? 1 : 0;
-          break;
-        default:
-        // do nothing setting min bonus is enough
+      if (adjustLevel && i + 1 >= adjustLevel) {
+        valueArray[i] = bonus.maxBonus;
+      } else {
+        switch (delta) {
+          case 1:
+            valueArray[i] += i >= 5 ? 1 : 0;
+            break;
+          case 2:
+            valueArray[i] += i >= 3 ? 1 : 0;
+            valueArray[i] += i >= 7 ? 1 : 0;
+            break;
+          case 3:
+            valueArray[i] += i >= 3 ? 1 : 0;
+            valueArray[i] += i >= 5 ? 1 : 0;
+            valueArray[i] += i >= 7 ? 1 : 0;
+            break;
+          case 4:
+            valueArray[i] += i >= 1 ? 1 : 0;
+            valueArray[i] += i >= 3 ? 1 : 0;
+            valueArray[i] += i >= 5 ? 1 : 0;
+            valueArray[i] += i >= 7 ? 1 : 0;
+            break;
+          default:
+          // do nothing setting min bonus is enough
+        }
       }
     }
     return valueArray[level - 1];
@@ -145,7 +149,7 @@ export class AbilityFactoryService {
         if (this.isValueRange(mechanic.value)) {
           let numberValue;
           if (ability.abilityType === AbilityType.Talent && ability.abilityAction === ActionType.Passive) {
-            numberValue = this.extractNumberFromValueRangeForPassiveTalents(mechanic.value, level);
+            numberValue = this.extractNumberFromValueRangeForPassiveTalents(mechanic.value, level, mechanic.adjustLevel);
           } else {
             numberValue = this.attributeFactoryService.extractNumberFromValueRange(mechanic.value, level, mechanic.dieSize, mechanic.adjustLevel);
           }

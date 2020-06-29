@@ -193,6 +193,29 @@ export function getTalentObject() {
           "Gain advantage to a missed ranged weapon attack.  If the attack still misses this power is not expended."
       },
       mechanicalBonus: []
+    } as AbilityModel,
+
+    ChargeMastery: {
+      abilityName: TalentName.ChargeMastery,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription: "Gain the following benefits while charging:\n" +
+          "Measured Charge:  You do not grant combat superiority from charging.\n" +
+          "Defensive Charge:  You gain -2 DC against any attacks you incur while charging.\n" +
+          "Accurate Charge:  Gain a +2 bonus to hit when charging (+1 after negating the -1).\n" +
+          "Accelerated Charge:  Increase your speed by 1 when performing a charge.\n" +
+          "Savage Charge:  Gain a $Charging attack damage bonus when charging.",
+        fullDescription:
+          "Gain the following benefits while charging:\n" +
+          "Measured Charge:  You do not grant combat superiority from charging.\n" +
+          "Defensive Charge:  You gain -2 DC against any attacks you incur while charging.\n" +
+          "Accurate Charge:  Gain a +2 bonus to hit when charging (+1 after negating the -1).\n" +
+          "Accelerated Charge:  Increase your speed by 1 when performing a charge.\n" +
+          "Savage Charge:  Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8."
+      },
+      mechanicalBonus: [{abilityType: AbilityBonus.Charging, value: {minBonus: 2, maxBonus: 4}}]
     } as AbilityModel
 
   };

@@ -5,6 +5,7 @@ export enum TalentName {
   AcceleratedReflexes = "AcceleratedReflexes",
   AdvancedWeaponTrainingRanged = "AdvancedWeaponTrainingRanged",
   AdvancedWeaponTrainingTwoWeaponFighting = "AdvancedWeaponTrainingTwoWeaponFighting",
+  ChargeMastery = "ChargeMastery",
   Deflection = "Deflection",
   EmpoweredStrikes = "EmpoweredStrikes",
   FollowUpAttack = "FollowUpAttack",

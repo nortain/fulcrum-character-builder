@@ -187,7 +187,10 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should not be able to choose a lesser power and then choose that powers greater talent', () => {
-
+    const talent = service.getNewAbility(TalentName.AdvancedWeaponTrainingRanged, AbilityType.Talent);
+    const talent2 = service.getNewAbility(TalentName.SureShot, AbilityType.Talent);
+    const result = service.canAbilityBeSelected(talent2, [talent]);
+    expect(result).toBeFalsy();
   });
 
   it('should be able to choose sub-options of a greater talent like charge mastery', () => {

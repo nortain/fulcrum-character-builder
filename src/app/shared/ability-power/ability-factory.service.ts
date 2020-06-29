@@ -7,6 +7,7 @@ import {AbilityBonus} from "./ability-bonus.enum";
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {getTalentObject} from "./talent/talent-constants";
 import {ActionType} from "../action/action-type.enum";
+import {AttributeModel} from "../attribute/attribute-model";
 
 @Injectable({
   providedIn: 'root'
@@ -35,13 +36,8 @@ export class AbilityFactoryService {
     return model;
   }
 
-  canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>): boolean {
-    let canBePicked = !currentAbilities
-      .find((name) => name.abilityName === abilityToBeSelected.abilityName);
-    if (canBePicked) {
-      canBePicked = !currentAbilities
-        .find((activeAbility) => !!activeAbility.activeAbility && activeAbility.activeAbility === abilityToBeSelected.abilityName);
-    }
+  canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes?: Array<AttributeModel>): boolean {
+    let canBePicked = this.hasAbilityAlreadyBeenSelected(abilityToBeSelected, currentAbilities);
     if (canBePicked && abilityToBeSelected.abilityRequirement) {
       for (const requirement of abilityToBeSelected.abilityRequirement) {
         currentAbilities
@@ -61,20 +57,13 @@ export class AbilityFactoryService {
   }
 
   private hasAbilityAlreadyBeenSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>): boolean {
-    let canBePicked = !currentAbilities // has the ability already been assigned
+    const canBePicked = !currentAbilities // has the ability already been assigned
       .find((name) => {
         return name.abilityName === abilityToBeSelected.abilityName
           || name.abilityName === abilityToBeSelected.activeAbility
           || name.activeAbility === abilityToBeSelected.abilityName
-          || name.act;
+          || name.activeAbility === abilityToBeSelected.activeAbility;
       });
-    if (canBePicked) { // has the active ability already been assigned
-      canBePicked = !currentAbilities.find((activeAbility) => {
-        return activeAbility.activeAbility && activeAbility.activeAbility === abilityToBeSelected.abilityName;
-      });
-    }
-
-
     return canBePicked;
   }
 

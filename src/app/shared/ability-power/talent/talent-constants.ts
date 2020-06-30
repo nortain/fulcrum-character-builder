@@ -121,7 +121,7 @@ export function getTalentObject() {
         {abilityType: AbilityBonus.CriticalResist, value: {minBonus: 1, maxBonus: 2}}
       ],
       abilityRequirement: [{requirementType: AbilityBonus.Agility, requirementValue: AttributeStrength.Heroic}],
-      activeAbility: TalentName.Deflection
+      associatedAbilities: [TalentName.Deflection]
     } as AbilityModel,
 
     AdvancedWeaponTrainingRanged: {
@@ -144,7 +144,7 @@ export function getTalentObject() {
         {abilityType: AbilityBonus.AttackDamage, value: {minBonus: 1, maxBonus: 2}}
       ],
       abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
-      activeAbility: TalentName.SureShot
+      associatedAbilities: [TalentName.SureShot]
     } as AbilityModel,
 
     AdvancedWeaponTrainingTwoWeaponFighting: {
@@ -165,7 +165,7 @@ export function getTalentObject() {
         {abilityType: AbilityBonus.AttackDamage, value: {minBonus: 2, maxBonus: 4}}
       ],
       abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
-      activeAbility: TalentName.FollowUpAttack
+      associatedAbilities: [TalentName.FollowUpAttack]
     } as AbilityModel,
 
     FollowUpAttack: {

@@ -10,8 +10,10 @@ export class AbilityModel {
   abilityName: AbilityName;
   abilityType: AbilityType;
   abilityAction: ActionType;
+  selectable = true;
+  pickNumber = 0;
   abilityCost: Array<IAbilityRequirement>; // This list multiple costs, but only one needs to be paid
-  activeAbility: AbilityName;
+  associatedAbilities: Array<AbilityName>;
   abilityDescription: IDescription;
   mechanicalBonus: Array<IAbilityBonus>;
   abilityRequirement: Array<IAbilityRequirement>; // This lists all requirements that must be met to get the ability

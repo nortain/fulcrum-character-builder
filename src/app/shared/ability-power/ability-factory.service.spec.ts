@@ -53,9 +53,9 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should be able to print out the active ability of a complex talent', () => {
-    let result = service.printOutBriefDescription(service.getActiveAbility(complexTalent, AbilityType.Talent), Level.Five);
+    let result = service.printOutBriefDescription(service.getAssociatedAbilities(complexTalent, AbilityType.Talent)[0], Level.Five);
     expect(result).toBe("Reduce the damage of an attack against AD by 5.  If the attack is a burst or range attack the reduction becomes  7");
-    result = service.printOutBriefDescription(service.getActiveAbility(complexTalent, AbilityType.Talent), Level.Six);
+    result = service.printOutBriefDescription(service.getAssociatedAbilities(complexTalent, AbilityType.Talent)[0], Level.Six);
     expect(result).toBe("Reduce the damage of an attack against AD by 6.  If the attack is a burst or range attack the reduction becomes  8");
   });
 

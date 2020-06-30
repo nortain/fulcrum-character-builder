@@ -57,13 +57,13 @@ export class AbilityFactoryService {
   }
 
   private hasAbilityAlreadyBeenSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>): boolean {
-    const canBePicked = !currentAbilities // has the ability already been assigned
-      .find((name) => {
-        return name.abilityName === abilityToBeSelected.abilityName
-          || name.abilityName === abilityToBeSelected.activeAbility
-          || name.activeAbility === abilityToBeSelected.abilityName
-          || name.activeAbility === abilityToBeSelected.activeAbility;
-      });
+    let canBePicked = !(currentAbilities // has the ability already been assigned
+      .find((name) => abilityToBeSelected.abilityName === name.abilityName
+        || (name.associatedAbilities && name.associatedAbilities.find((currentAbilityAssociations) => abilityToBeSelected.abilityName === currentAbilityAssociations))));
+    if (currentAbilities && abilityToBeSelected.associatedAbilities) {
+      canBePicked = !(abilityToBeSelected.associatedAbilities.find((abilityToBeSelectedAssociations) => currentAbilities.find((currentAbility) => currentAbility.abilityName === abilityToBeSelectedAssociations))
+        || abilityToBeSelected.associatedAbilities.find((abilityToBeSelectedAssociations) => currentAbilities.find((currentAbility) => currentAbility.associatedAbilities && currentAbility.associatedAbilities.find((currentAbilityAssociation) => currentAbilityAssociation === abilityToBeSelectedAssociations))));
+    }
     return canBePicked;
   }
 
@@ -88,10 +88,14 @@ export class AbilityFactoryService {
    * @param ability
    * @param abilityType
    */
-  getActiveAbility(ability: AbilityModel, abilityType: AbilityType) {
-    if (ability.activeAbility) {
-      return this.getNewAbility(ability.activeAbility, abilityType);
+  getAssociatedAbilities(ability: AbilityModel, abilityType: AbilityType): Array<AbilityModel> {
+    const associatedAbilities = new Array<AbilityModel>();
+    if (ability.associatedAbilities && ability.associatedAbilities.length > 0) {
+      ability.associatedAbilities.forEach((associations) => {
+        associatedAbilities.push(this.getNewAbility(associations, AbilityType.Talent));
+      });
     }
+    return associatedAbilities;
   }
 
 

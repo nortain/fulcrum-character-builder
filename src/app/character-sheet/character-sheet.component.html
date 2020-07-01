@@ -8,7 +8,7 @@
       <fulcrum-dropdown id="characterRace" labelName="Race" class="col" [newLineLabelName]="true" [values]="races"
                         (valueChange)="startReloadWithRace($event.value)"></fulcrum-dropdown>
 
-      <fulcrum-dropdown *ngIf="character.raceType === RaceType.Primental" id="characterSubRace" labelName="Sub-Race"
+      <fulcrum-dropdown *ngIf="character.race.raceType === RaceType.Primental" id="characterSubRace" labelName="Sub-Race"
                         [values]="subraces" (valueChange)="updateSubRace($event.value)" class="col"></fulcrum-dropdown>
     </div>
 

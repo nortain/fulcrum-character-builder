@@ -10,9 +10,8 @@ export class AbilityModel {
   abilityName: AbilityName;
   abilityType: AbilityType;
   abilityAction: ActionType;
-  selectable = true;
-  pickNumber = 0;
-  abilityCost: Array<IAbilityRequirement>; // This list multiple costs, but only one needs to be paid
+  pickNumber = 0; // used to determine how many sub talents can be choose
+  abilityCost: Array<IAbilityRequirement>; // This list multiple costs, but only one needs to be paid, no costs are present then the talent cannot be selected
   associatedAbilities: Array<AbilityName>;
   abilityDescription: IDescription;
   mechanicalBonus: Array<IAbilityBonus>;

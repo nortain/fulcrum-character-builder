@@ -8,13 +8,16 @@ import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {getTalentObject} from "./talent/talent-constants";
 import {ActionType} from "../action/action-type.enum";
 import {AttributeModel} from "../attribute/attribute-model";
+import {CastleCasePipe} from "../pipes/castle-case.pipe";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AbilityFactoryService {
+  castleCasePipe: CastleCasePipe;
 
   constructor(private attributeFactoryService: AttributeFactoryService) {
+    this.castleCasePipe = new CastleCasePipe();
   }
 
   /**
@@ -168,7 +171,14 @@ export class AbilityFactoryService {
    * @param ability
    */
   printOutFullDescription(ability: AbilityModel): string {
-    return ability.abilityDescription.fullDescription;
+    let description = ability.abilityDescription.fullDescription;
+    if (ability.associatedAbilities) {
+      ability.associatedAbilities.forEach((association) => {
+        const newAbility = this.getNewAbility(association, ability.abilityType);
+        description += "\n" + this.printOutAssociatedAbility(newAbility, Level.Ten, false);
+      });
+    }
+    return description;
   }
 
   /**
@@ -191,7 +201,34 @@ export class AbilityFactoryService {
         }
       }
     }
+    if (ability.associatedAbilities) {
+      ability.associatedAbilities.forEach((association) => {
+        const newAbility = this.getNewAbility(association, ability.abilityType);
+        description += "\n" + this.printOutAssociatedAbility(newAbility, level, true);
+      });
+
+    }
     return description;
+  }
+
+  /**
+   * Nearly same as printOutBrief or FullDescription but also includes the ability name as it's meant to be
+   * all housed within a higher level talent.  An associated talent will include the following formatting
+   * abilityName: (abilityType) abilityAction. abilityDescription
+   * @param ability
+   * @param level
+   * @param isBriefDescription
+   */
+  printOutAssociatedAbility(ability: AbilityModel, level: Level = Level.Ten, isBriefDescription: boolean): string {
+    let description: string;
+    if (isBriefDescription) {
+      description = this.printOutBriefDescription(ability, level);
+    } else {
+      description = this.printOutFullDescription(ability);
+    }
+    const nonTalentText = ability.abilityType !== AbilityType.Talent ? "(" + ability.abilityType + ")" : "";
+    const nonPassiveText = ability.abilityAction && ability.abilityAction !== ActionType.Passive ? ability.abilityAction + ". " : "";
+    return this.castleCasePipe.transform(ability.abilityName) + ": " + nonTalentText + nonPassiveText + description;
   }
 
   /**

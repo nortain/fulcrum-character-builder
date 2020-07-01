@@ -7,7 +7,10 @@ import {AttributeStrength} from "../../attribute/attribute-enums/attribute-stren
 import {TalentName} from "./talent-name.enum";
 import {Level} from "../../character/level.enum";
 
-export function getTalentObject() {
+export type TalentConstants = { [K in TalentName]: AbilityModel };
+
+export function getTalentObject(): TalentConstants {
+
   return {
     AcceleratedReflexes: {
       ...new AbilityModel(),
@@ -26,12 +29,11 @@ export function getTalentObject() {
     } as AbilityModel,
     Deflection: {
       ...new AbilityModel(),
-      name: TalentName.Deflection,
+      abilityName: TalentName.Deflection,
       abilityType: AbilityType.Ability,
       abilityAction: ActionType.Free,
-      abilityCost: null,
       abilityDescription: {
-        briefDescription: "Reduce the damage of an attack against AD by $DamageResist.  If the attack is a burst or range attack the reduction becomes  $DamageResist",
+        briefDescription: "Reduce the damage of an attack against AD by $DamageResist.  If the attack is a burst or range attack the reduction becomes  $" + AbilityBonus.DamageResist,
         fullDescription: "Reduce the damage of an attack against AD by 4 + level / 3.  If the attack is a burst or range attack the reduction becomes  5 + level / 2"
       },
       mechanicalBonus: [
@@ -110,12 +112,12 @@ export function getTalentObject() {
       abilityAction: ActionType.Passive,
       abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
-        briefDescription: "Your Missile Defense becomes your Active Defense. Increase your critical resistance by $CriticalResist.  Gain the ability Deflection",
+        briefDescription: "Gain the following:\n" +
+          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by $CriticalResist.  Gain the ability Deflection",
         fullDescription:
-          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Increase this bonus to 2 at level 6.  Gain the ability Deflection.\n" +
-          "Deflection (Lesser Ability):  Free.  Reduce the damage of an attack against AD by 4 + level / 3.  If the attack is a burst or range attack the reduction becomes  5 + level / 2."
-      }
-      ,
+          "<i>Requires Heroic Agility</i>\n" +
+          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Increase this bonus to 2 at level 6.  Gain the ability Deflection."
+      },
       mechanicalBonus: [
         {abilityType: AbilityBonus.MissileDefense, value: AbilityBonus.ActiveDefense},
         {abilityType: AbilityBonus.CriticalResist, value: {minBonus: 1, maxBonus: 2}}
@@ -123,29 +125,48 @@ export function getTalentObject() {
       abilityRequirement: [{requirementType: AbilityBonus.Agility, requirementValue: AttributeStrength.Heroic}],
       associatedAbilities: [TalentName.Deflection]
     } as AbilityModel,
-
     AdvancedWeaponTrainingRanged: {
       abilityName: TalentName.AdvancedWeaponTrainingRanged,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
       abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
-        briefDescription: "Gain the Sure Shot power. \n " +
-          "Melee Archer:  You are able to convert your range attacks into a melee attack with a -1 DC.\n" +
-          "Vulnerable Shots:  Increase Range attack damage by $AttackDamage",
+        briefDescription:
+          "The character gains all the following benefits:",
         fullDescription:
           "<i>At Most a character can have 1 Advanced Weapon Training Talent</i>" +
-          "The character gains all the following benefits:" +
-          "Sure Shot (Lesser Power):  Gain advantage to a missed ranged weapon attack.  If the attack still misses this power is not expended." +
-          "    Melee Archer:  You are able to convert your range attacks into a melee attack with a -1 DC." +
-          "    Vulnerable Shots:  Increase Range attack damage by +1.  Increase this amount by 1 at level 6."
+          "The character gains all the following benefits:"
+      },
+      abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
+      associatedAbilities: [TalentName.MeleeArcher, TalentName.VulnerableShots, TalentName.SureShot]
+    } as AbilityModel,
+    MeleeArcher: {
+      abilityName: TalentName.MeleeArcher,
+      abilityType: AbilityType.Passive,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "You are able to convert your range attacks into a melee attack with a -1 DC.",
+        fullDescription:
+          "You are able to convert your range attacks into a melee attack with a -1 DC."
+      }
+    } as AbilityModel,
+    VulnerableShots: {
+      abilityName: TalentName.VulnerableShots,
+      abilityType: AbilityType.Passive,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Increase Range attack damage by $AttackDamage",
+
+        fullDescription:
+          "Increase Range attack damage by +1.  Increase this amount by 1 at level 6."
       },
       mechanicalBonus: [
         {abilityType: AbilityBonus.AttackDamage, value: {minBonus: 1, maxBonus: 2}}
-      ],
-      abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
-      associatedAbilities: [TalentName.SureShot]
+      ]
     } as AbilityModel,
+
 
     AdvancedWeaponTrainingTwoWeaponFighting: {
       abilityName: TalentName.AdvancedWeaponTrainingTwoWeaponFighting,
@@ -153,19 +174,29 @@ export function getTalentObject() {
       abilityAction: ActionType.Passive,
       abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
-        briefDescription: "Gain the Follow Up Attack power. \n " +
-          "Coordinated Strikes:  Increase your damage bonus for dual wielding attacks by $AttackDamage.",
+        briefDescription: "Gain Following benefits.",
+
         fullDescription:
           "<i>At Most a character can have 1 Advanced Weapon Training Talent</i>" +
-          "The character gains all the following benefits:" +
-          "        Coordinated Strikes:  Increase your damage bonus for dual wielding attacks by +2.  Increase this bonus by 1 at levels 4 and 8." +
-          "  Follow up attack (Power):  Once per combat you may gain advantage to an attack that has missed its target. If the attack still misses this power is not expended."
+          "The character gains all the following benefits:"
+      },
+      abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
+      associatedAbilities: [TalentName.CoordinatedStrikes, TalentName.FollowUpAttack]
+    } as AbilityModel,
+
+    CoordinatedStrikes: {
+      abilityName: TalentName.CoordinatedStrikes,
+      abilityType: AbilityType.Passive,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Increase your damage bonus for dual wielding attacks by $AttackDamage.",
+        fullDescription:
+          "Increase your damage bonus for dual wielding attacks by +2.  Increase this bonus by 1 at levels 4 and 8."
       },
       mechanicalBonus: [
         {abilityType: AbilityBonus.AttackDamage, value: {minBonus: 2, maxBonus: 4}}
-      ],
-      abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
-      associatedAbilities: [TalentName.FollowUpAttack]
+      ]
     } as AbilityModel,
 
     FollowUpAttack: {
@@ -201,22 +232,74 @@ export function getTalentObject() {
       abilityAction: ActionType.Passive,
       abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
-        briefDescription: "Gain the following benefits while charging:\n" +
-          "Measured Charge:  You do not grant combat superiority from charging.\n" +
-          "Defensive Charge:  You gain -2 DC against any attacks you incur while charging.\n" +
-          "Accurate Charge:  Gain a +2 bonus to hit when charging (+1 after negating the -1).\n" +
-          "Accelerated Charge:  Increase your speed by 1 when performing a charge.\n" +
-          "Savage Charge:  Gain a $Charging attack damage bonus when charging.",
+        briefDescription:
+          "Gain the following benefits while charging",
         fullDescription:
-          "Gain the following benefits while charging:\n" +
-          "Measured Charge:  You do not grant combat superiority from charging.\n" +
-          "Defensive Charge:  You gain -2 DC against any attacks you incur while charging.\n" +
-          "Accurate Charge:  Gain a +2 bonus to hit when charging (+1 after negating the -1).\n" +
-          "Accelerated Charge:  Increase your speed by 1 when performing a charge.\n" +
-          "Savage Charge:  Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8."
+          "Gain the following benefits while charging:"
+      },
+      associatedAbilities: [TalentName.MeasuredCharge, TalentName.DefensiveCharge, TalentName.AccurateCharge, TalentName.AcceleratedCharge, TalentName.SavageCharge],
+      mechanicalBonus: []
+    } as AbilityModel,
+
+    MeasuredCharge: {
+      abilityName: TalentName.MeasuredCharge,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "You do not grant combat superiority from charging.",
+        fullDescription:
+          "You do not grant combat superiority from charging."
+      },
+      mechanicalBonus: []
+    } as AbilityModel,
+    DefensiveCharge: {
+      abilityName: TalentName.DefensiveCharge,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "You gain -2 DC against any attacks you incur while charging.",
+        fullDescription:
+          "You gain -2 DC against any attacks you incur while charging."
+      },
+      mechanicalBonus: []
+    } as AbilityModel,
+    AccurateCharge: {
+      abilityName: TalentName.AccurateCharge,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Gain a +2 bonus to hit when charging (+1 after negating the -1).",
+        fullDescription:
+          "Gain a +2 bonus to hit when charging (+1 after negating the -1)."
+      },
+      mechanicalBonus: []
+    } as AbilityModel,
+    AcceleratedCharge: {
+      abilityName: TalentName.AcceleratedCharge,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Increase your speed by 1 when performing a charge.",
+        fullDescription:
+          "Increase your speed by 1 when performing a charge."
+      },
+      mechanicalBonus: []
+    } as AbilityModel,
+    SavageCharge: {
+      abilityName: TalentName.SavageCharge,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Gain a $Charging attack damage bonus when charging.",
+        fullDescription:
+          "Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8."
       },
       mechanicalBonus: [{abilityType: AbilityBonus.Charging, value: {minBonus: 2, maxBonus: 4}}]
-    } as AbilityModel
-
+    } as AbilityModel,
   };
 }

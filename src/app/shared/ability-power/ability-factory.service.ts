@@ -39,6 +39,32 @@ export class AbilityFactoryService {
     return model;
   }
 
+  selectAbility<K extends keyof AbilityType>(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, innerSelections = new Array<AbilityName>()): Array<AbilityModel> {
+    let newAbilities = [...currentAbilities];
+    if (abilityToBeSelected.pickNumber > 0) {
+      if (abilityToBeSelected.pickNumber !== innerSelections.length) {
+        const choiceOrChoices = abilityToBeSelected.pickNumber === 1 ? "choice" : "choices";
+        const wasOrWere = innerSelections.length === 1 ? " was given." : " were given.";
+        throw new Error("You must have " + abilityToBeSelected.pickNumber + " inner selection " + choiceOrChoices + " but only " + innerSelections.length + wasOrWere);
+      }
+      innerSelections.forEach((selection: AbilityName) => {
+        if (abilityToBeSelected.associatedAbilities.includes(selection)) {
+          newAbilities = [...newAbilities, this.getNewAbility(selection, abilityToBeSelected.abilityType)];
+        }
+
+      });
+    } else {
+
+    }
+    return newAbilities;
+  }
+
+  /**
+   * Give an ability to be selected, all current abilities and all attributes, determine if the ability is allowed to be selected.  This doesn't consider cost of the talent that a character might have, this is simply comparing data to see if the ability is eligible to be selected.  If so, return true otherwise return false.
+   * @param abilityToBeSelected
+   * @param currentAbilities
+   * @param attributes
+   */
   canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes?: Array<AttributeModel>): boolean {
     let canBePicked = this.hasAbilityAlreadyBeenSelected(abilityToBeSelected, currentAbilities);
     if (canBePicked && abilityToBeSelected.abilityRequirement) {
@@ -226,7 +252,7 @@ export class AbilityFactoryService {
     } else {
       description = this.printOutFullDescription(ability);
     }
-    const nonTalentText = ability.abilityType !== AbilityType.Talent ? "(" + ability.abilityType + ")" : "";
+    const nonTalentText = ability.abilityType !== AbilityType.Talent ? "(" + ability.abilityType + ") " : "";
     const nonPassiveText = ability.abilityAction && ability.abilityAction !== ActionType.Passive ? ability.abilityAction + ". " : "";
     return this.castleCasePipe.transform(ability.abilityName) + ": " + nonTalentText + nonPassiveText + description;
   }

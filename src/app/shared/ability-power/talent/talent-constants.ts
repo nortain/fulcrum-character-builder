@@ -7,10 +7,9 @@ import {AttributeStrength} from "../../attribute/attribute-enums/attribute-stren
 import {TalentName} from "./talent-name.enum";
 import {Level} from "../../character/level.enum";
 
-export type TalentConstants = { [K in TalentName]: AbilityModel };
+export type TalentConstants = {[K in TalentName]: AbilityModel };
 
 export function getTalentObject(): TalentConstants {
-
   return {
     AcceleratedReflexes: {
       ...new AbilityModel(),
@@ -33,8 +32,8 @@ export function getTalentObject(): TalentConstants {
       abilityType: AbilityType.Ability,
       abilityAction: ActionType.Free,
       abilityDescription: {
-        briefDescription: "Reduce the damage of an attack against AD by $DamageResist.  If the attack is a burst or range attack the reduction becomes  $" + AbilityBonus.DamageResist,
-        fullDescription: "Reduce the damage of an attack against AD by 4 + level / 3.  If the attack is a burst or range attack the reduction becomes  5 + level / 2"
+        briefDescription: "Reduce the damage of an attack against AD by $DamageResist. If the attack is a burst or range attack the reduction becomes $" + AbilityBonus.DamageResist,
+        fullDescription: "Reduce the damage of an attack against AD by 4 + level / 3. If the attack is a burst or range attack the reduction becomes 5 + level / 2"
       },
       mechanicalBonus: [
         {abilityType: AbilityBonus.DamageResist, value: {minBonus: 4, maxBonus: 7}},
@@ -113,10 +112,10 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription: "Gain the following:\n" +
-          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by $CriticalResist.  Gain the ability Deflection",
+          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by $CriticalResist. Gain the ability Deflection",
         fullDescription:
           "<i>Requires Heroic Agility</i>\n" +
-          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Increase this bonus to 2 at level 6.  Gain the ability Deflection."
+          "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Increase this bonus to 2 at level 6. Gain the ability Deflection."
       },
       mechanicalBonus: [
         {abilityType: AbilityBonus.MissileDefense, value: AbilityBonus.ActiveDefense},
@@ -219,9 +218,9 @@ export function getTalentObject(): TalentConstants {
       abilityAction: ActionType.Free,
       abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
-        briefDescription: "Gain advantage to a missed ranged weapon attack.  If the attack still misses this power is not expended.",
+        briefDescription: "Gain advantage to a missed ranged weapon attack. If the attack still misses this power is not expended.",
         fullDescription:
-          "Gain advantage to a missed ranged weapon attack.  If the attack still misses this power is not expended."
+          "Gain advantage to a missed ranged weapon attack. If the attack still misses this power is not expended."
       },
       mechanicalBonus: []
     } as AbilityModel,
@@ -233,9 +232,25 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Gain the following benefits while charging",
+          "Gain the following benefits while charging:",
         fullDescription:
           "Gain the following benefits while charging:"
+      },
+      associatedAbilities: [TalentName.MeasuredCharge, TalentName.DefensiveCharge, TalentName.AccurateCharge, TalentName.AcceleratedCharge, TalentName.SavageCharge],
+      mechanicalBonus: []
+    } as AbilityModel,
+
+    ChargeMasteryLesser: {
+      abilityName: TalentName.ChargeMasteryLesser,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      pickNumber: 2,
+      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Pick any of the following 2 benefits to gain while charging:",
+        fullDescription:
+          "Pick any of the following 2 benefits to gain while charging:"
       },
       associatedAbilities: [TalentName.MeasuredCharge, TalentName.DefensiveCharge, TalentName.AccurateCharge, TalentName.AcceleratedCharge, TalentName.SavageCharge],
       mechanicalBonus: []

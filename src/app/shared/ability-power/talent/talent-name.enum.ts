@@ -8,6 +8,7 @@ export enum TalentName {
   AdvancedWeaponTrainingRanged = "AdvancedWeaponTrainingRanged",
   AdvancedWeaponTrainingTwoWeaponFighting = "AdvancedWeaponTrainingTwoWeaponFighting",
   ChargeMastery = "ChargeMastery",
+  ChargeMasteryLesser = "ChargeMasteryLesser",
   CoordinatedStrikes = "CoordinatedStrikes",
   DefensiveCharge = "DefensiveCharge",
   Deflection = "Deflection",

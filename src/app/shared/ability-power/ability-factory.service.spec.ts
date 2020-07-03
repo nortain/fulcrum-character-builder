@@ -47,16 +47,18 @@ describe('AbilityFactoryService', () => {
 
   it('should be able to print out the test for a complex talent', () => {
     let result = service.printOutBriefDescription(complexTalent, Level.Five);
-    expect(result).toBe("Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Gain the ability Deflection");
+    expect(result).toBe("Gain the following:\nYour Missile Defense becomes your Active Defense. Increase your critical resistance by 1. Gain the ability Deflection\n" +
+      "Deflection: (Ability) Free. Reduce the damage of an attack against AD by 5. If the attack is a burst or range attack the reduction becomes 7");
     result = service.printOutBriefDescription(complexTalent, Level.Six);
-    expect(result).toBe("Your Missile Defense becomes your Active Defense. Increase your critical resistance by 2.  Gain the ability Deflection");
+    expect(result).toBe("Gain the following:\nYour Missile Defense becomes your Active Defense. Increase your critical resistance by 2. Gain the ability Deflection\n" +
+      "Deflection: (Ability) Free. Reduce the damage of an attack against AD by 6. If the attack is a burst or range attack the reduction becomes 8");
   });
 
   it('should be able to print out the active ability of a complex talent', () => {
     let result = service.printOutBriefDescription(service.getAssociatedAbilities(complexTalent, AbilityType.Talent)[0], Level.Five);
-    expect(result).toBe("Reduce the damage of an attack against AD by 5.  If the attack is a burst or range attack the reduction becomes  7");
+    expect(result).toBe("Reduce the damage of an attack against AD by 5. If the attack is a burst or range attack the reduction becomes 7");
     result = service.printOutBriefDescription(service.getAssociatedAbilities(complexTalent, AbilityType.Talent)[0], Level.Six);
-    expect(result).toBe("Reduce the damage of an attack against AD by 6.  If the attack is a burst or range attack the reduction becomes  8");
+    expect(result).toBe("Reduce the damage of an attack against AD by 6. If the attack is a burst or range attack the reduction becomes 8");
   });
 
 
@@ -196,21 +198,39 @@ describe('AbilityFactoryService', () => {
   it('should be able to fully print out a brief description of a complex talent', () => {
     const result = service.printOutBriefDescription(complexTalent, Level.One);
     expect(result).toBe("Gain the following:\n" +
-      "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Gain the ability Deflection\n" +
-      "Deflection: (Ability) Free. Reduce the damage of an attack against AD by 4.  If the attack is a burst or range attack the reduction becomes  5");
+      "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1. Gain the ability Deflection\n" +
+      "Deflection: (Ability) Free. Reduce the damage of an attack against AD by 4. If the attack is a burst or range attack the reduction becomes 5");
   });
 
   it('should be able to print out a full description of something crazy like charge mastery', () => {
     const talent = service.getNewAbility(TalentName.ChargeMastery, AbilityType.Talent);
     expect(service.printOutFullDescription(talent)).toBe("Gain the following benefits while charging:\n" +
-    "Measured Charge: You do not grant combat superiority from charging.\n" +
-    "Defensive Charge: You gain -2 DC against any attacks you incur while charging.\n" +
-    "Accurate Charge: Gain a +2 bonus to hit when charging (+1 after negating the -1).\n" +
-    "Accelerated Charge: Increase your speed by 1 when performing a charge.\n" +
-    "Savage Charge: Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8.");
+      "Measured Charge: You do not grant combat superiority from charging.\n" +
+      "Defensive Charge: You gain -2 DC against any attacks you incur while charging.\n" +
+      "Accurate Charge: Gain a +2 bonus to hit when charging (+1 after negating the -1).\n" +
+      "Accelerated Charge: Increase your speed by 1 when performing a charge.\n" +
+      "Savage Charge: Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8.");
   });
 
+  //TODO this needs to change, rather than actually putting in the lesser picks, we need to alter the copy of the chargemasteryLesser talent so it only appears to be associated with those picked talents
   it('should be able to choose sub-options of a lesser version of greater talent like charge mastery', () => {
+    const lesserCharge = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
+    const abilities: Array<AbilityModel> = service.selectAbility(lesserCharge, [], [TalentName.MeasuredCharge, TalentName.SavageCharge]);
+    expect(abilities.length).toEqual(2);
+    expect(abilities.find((ability) => ability.abilityName === TalentName.SavageCharge)).toBeTruthy();
+    expect(abilities.find((ability) => ability.abilityName === TalentName.MeasuredCharge)).toBeTruthy();
+  });
+
+  it('should print out only the picked information for a talent where there exists a pick value.', () => {
+
+  });
+
+  it('should throw an error if try to selected a pick talent without the right number of current abilities', () => {
+    const lesserCharge = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
+    expect(function () {
+      service.selectAbility(lesserCharge, [], [TalentName.MeasuredCharge]);
+    }).toThrowError("You must have 2 inner selection choices but only 1 was given.");
+
 
   });
 

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AbilityName, AbilityType} from "./ability-type.enum";
-import {AbilityModel, IAbilityRequirement} from "./ability-model";
+import {AbilityModel, IAbilityRequirement, ICanBeSelected} from "./ability-model";
 import {Level} from "../character/level.enum";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {AbilityBonus} from "./ability-bonus.enum";
@@ -9,6 +9,8 @@ import {getTalentObject} from "./talent/talent-constants";
 import {ActionType} from "../action/action-type.enum";
 import {AttributeModel} from "../attribute/attribute-model";
 import {CastleCasePipe} from "../pipes/castle-case.pipe";
+import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
+import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -21,17 +23,19 @@ export class AbilityFactoryService {
   }
 
   /**
-   * Factory constructor to make/fetch new abilities given a name and type.
+   * Factory constructor to make/fetch new abilities given a name and type.  InnerSelections is as optional parameter for when fetching a talent that is in a non-new/altered state.  This would be the case when dealing with a talent that has a pickNumber greater than 0.  The pickNumber is how many possible picks from associated abilities the current ability can select.  These selected abilities are stored in the innerSelectedAbilities array.  This will always be an empty array in any ability coming from the getNewAbility constructor.  However if we are wanted to fetch an altered ability then those alterations will be passed in the innerSelections array.
    * @param abilityName
    * @param abilityType
+   * @param innerSelections
    */
-  getNewAbility(abilityName: AbilityName, abilityType: AbilityType): AbilityModel {
+  getNewAbility(abilityName: AbilityName, abilityType: AbilityType, innerSelections = new Array<AbilityName>()): AbilityModel {
     let model: AbilityModel;
     switch (abilityType) {
       case AbilityType.Talent: {
         model = {
           ...new AbilityModel(),
-          ...getTalentObject()[abilityName]
+          ...getTalentObject()[abilityName],
+          innerSelectedAbilities: innerSelections
         };
         break;
       }
@@ -39,22 +43,28 @@ export class AbilityFactoryService {
     return model;
   }
 
-  selectAbility<K extends keyof AbilityType>(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, innerSelections = new Array<AbilityName>()): Array<AbilityModel> {
+  selectAbility<K extends keyof AbilityType>(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>(), innerSelections = new Array<AbilityName>()): Array<AbilityModel> {
     let newAbilities = [...currentAbilities];
     if (abilityToBeSelected.pickNumber > 0) {
       if (abilityToBeSelected.pickNumber !== innerSelections.length) {
         const choiceOrChoices = abilityToBeSelected.pickNumber === 1 ? "choice" : "choices";
         const wasOrWere = innerSelections.length === 1 ? " was given." : " were given.";
         throw new Error("You must have " + abilityToBeSelected.pickNumber + " inner selection " + choiceOrChoices + " but only " + innerSelections.length + wasOrWere);
+      } else {
+        innerSelections.forEach((selection: AbilityName) => {
+          if (!abilityToBeSelected.associatedAbilities.includes(selection)) {
+            throw new Error("An invalid selection: " + selection + " was passed in.  Valid choices are only among: " + abilityToBeSelected.associatedAbilities.toString());
+          }
+        });
+        newAbilities = [...newAbilities, this.getNewAbility(abilityToBeSelected.abilityName, abilityToBeSelected.abilityType, innerSelections)];
       }
-      innerSelections.forEach((selection: AbilityName) => {
-        if (abilityToBeSelected.associatedAbilities.includes(selection)) {
-          newAbilities = [...newAbilities, this.getNewAbility(selection, abilityToBeSelected.abilityType)];
-        }
-
-      });
-    } else {
-
+    } else { // pick number is 0
+      const canBeSelected = this.canAbilityBeSelected(abilityToBeSelected, currentAbilities);
+      if (canBeSelected.isSelectable) {
+        newAbilities = [...newAbilities, this.getNewAbility(abilityToBeSelected.abilityName, abilityToBeSelected.abilityType)];
+      } else {
+        throw new Error("The ability: " + this.castleCasePipe.transform(abilityToBeSelected.abilityName) + " is an invalid selection because " + canBeSelected.reasonItCannotBeSelected);
+      }
     }
     return newAbilities;
   }
@@ -65,8 +75,9 @@ export class AbilityFactoryService {
    * @param currentAbilities
    * @param attributes
    */
-  canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes?: Array<AttributeModel>): boolean {
-    let canBePicked = this.hasAbilityAlreadyBeenSelected(abilityToBeSelected, currentAbilities);
+  canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>()): ICanBeSelected {
+    let reasonItCannotBeSelected: string;
+    let canBePicked = this.hasAbilityNotBeenSelected(abilityToBeSelected, currentAbilities);
     if (canBePicked && abilityToBeSelected.abilityRequirement) {
       for (const requirement of abilityToBeSelected.abilityRequirement) {
         currentAbilities
@@ -76,16 +87,46 @@ export class AbilityFactoryService {
                 .find(abilityRequirement => {
                   if (abilityRequirement.requirementType === requirement.requirementType) {
                     canBePicked = canBePicked && !!requirement.requirementValue;
+                    if (!requirement.requirementValue) {
+                      reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+                    }
                   }
                 });
             }
           });
+        if (requirement.requirementType in AttributeName) {
+          if (!(requirement.requirementType in attributes)) {
+            attributes = [this.attributeFactoryService.getNewAttribute(requirement.requirementType as AttributeName, AttributeStrength.Normal)];
+          }
+          const pickedAttribute = attributes.find(attribute => attribute && requirement.requirementType === attribute.attributeName);
+          const enough = pickedAttribute.attributeStrength >= requirement.requirementValue;
+          canBePicked = canBePicked && enough;
+          if (!enough) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
+        }
       }
     }
-    return canBePicked;
+    return {isSelectable: canBePicked, reasonItCannotBeSelected: reasonItCannotBeSelected};
   }
 
-  private hasAbilityAlreadyBeenSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>): boolean {
+  getReasonWhyAbilityCannotBeSelected(requirement: IAbilityRequirement): string {
+    let haveOrNotHave: string;
+    if (typeof requirement.requirementValue === "number") {
+      haveOrNotHave = "you require at least " + AttributeStrength[requirement.requirementValue] + " " + this.castleCasePipe.transform(requirement.requirementType);
+    } else {
+      haveOrNotHave = requirement.requirementValue ? "you have " : " you do not have";
+      haveOrNotHave += this.castleCasePipe.transform(requirement.requirementType);
+    }
+    return haveOrNotHave;
+  }
+
+  /**
+   * returns true if the ability has not been selected, false if the ability has been selected
+   * @param abilityToBeSelected
+   * @param currentAbilities
+   */
+  private hasAbilityNotBeenSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>): boolean {
     let canBePicked = !(currentAbilities // has the ability already been assigned
       .find((name) => abilityToBeSelected.abilityName === name.abilityName
         || (name.associatedAbilities && name.associatedAbilities.find((currentAbilityAssociations) => abilityToBeSelected.abilityName === currentAbilityAssociations))));
@@ -113,7 +154,7 @@ export class AbilityFactoryService {
   }
 
   /**
-   * Used to determine if a given ability model has an active ability it can activate.  This is most commonly the case with greater passive talents that also give a lesser active power.  The greater talent would be passed in along with the ability type talent and from their, if an active ability property exists on the talent then a new ability of type AbilityType will be returned.  This is assumed to be used by the application to get active talents without necessarily having to store them as complete talents else where.  The same may be true for other abilities.
+   * Used to determine if a given ability model has one or more associated abilities.  This is most commonly the case with greater passive talents that also give a lesser powers.  The greater talent would be passed in along with the ability type talent and from their, if an active ability property exists on the talent then a new ability of type AbilityType will be returned.  This is assumed to be used by the application to get active talents without necessarily having to store them as complete talents else where.  The same may be true for other abilities.
    * @param ability
    * @param abilityType
    */
@@ -227,12 +268,16 @@ export class AbilityFactoryService {
         }
       }
     }
-    if (ability.associatedAbilities) {
+    if (ability.associatedAbilities && ability.pickNumber <= 0) {
       ability.associatedAbilities.forEach((association) => {
         const newAbility = this.getNewAbility(association, ability.abilityType);
         description += "\n" + this.printOutAssociatedAbility(newAbility, level, true);
       });
-
+    } else if (ability.innerSelectedAbilities && ability.pickNumber > 0) {
+      ability.innerSelectedAbilities.forEach((association) => {
+        const newAbility = this.getNewAbility(association, ability.abilityType);
+        description += "\n" + this.printOutAssociatedAbility(newAbility, level, true);
+      });
     }
     return description;
   }

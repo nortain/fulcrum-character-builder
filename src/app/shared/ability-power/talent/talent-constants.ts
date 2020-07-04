@@ -6,6 +6,8 @@ import {TalentStrength} from "./talent-strength.enum";
 import {AttributeStrength} from "../../attribute/attribute-enums/attribute-strength.enum";
 import {TalentName} from "./talent-name.enum";
 import {Level} from "../../character/level.enum";
+import {TalentType} from "./talent-type.enum";
+import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum";
 
 export type TalentConstants = {[K in TalentName]: AbilityModel };
 
@@ -16,7 +18,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.AcceleratedReflexes,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
       abilityDescription:
         {
           briefDescription: "Gain a +3 to Initiative.",
@@ -45,7 +47,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.EmpoweredStrikes,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
       abilityDescription:
         {
           briefDescription: "Gain a +$" + AbilityBonus.EmpoweredDamage + " to empowered attacks but you have a $" + AbilityBonus.CriticalStrike + " to critical strikes.",
@@ -62,7 +64,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.HealingSpecialization,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
       abilityDescription:
         {
           briefDescription: "Increase the amount of Healing granted by actions with the healing keyword by $Healing.",
@@ -77,7 +79,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.ImprovedController,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription: "Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1.  Gain a +1 bonus to critical strikes.",
         fullDescription:
@@ -94,7 +96,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.ImprovedVitality,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
       abilityDescription:
         {
           briefDescription: "Increase your starting THP by $" + AbilityBonus.StartingTemporaryHitPoints + ".",
@@ -109,7 +111,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.MissileParry,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}],
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription: "Gain the following:\n" +
           "Your Missile Defense becomes your Active Defense. Increase your critical resistance by $CriticalResist. Gain the ability Deflection",
@@ -121,14 +123,14 @@ export function getTalentObject(): TalentConstants {
         {abilityType: AbilityBonus.MissileDefense, value: AbilityBonus.ActiveDefense},
         {abilityType: AbilityBonus.CriticalResist, value: {minBonus: 1, maxBonus: 2}}
       ],
-      abilityRequirement: [{requirementType: AbilityBonus.Agility, requirementValue: AttributeStrength.Heroic}],
+      abilityRequirement: [{requirementType: AttributeName.Agility, requirementValue: AttributeStrength.Heroic}],
       associatedAbilities: [TalentName.Deflection]
     } as AbilityModel,
     AdvancedWeaponTrainingRanged: {
       abilityName: TalentName.AdvancedWeaponTrainingRanged,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Greater}, {requirementType: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
           "The character gains all the following benefits:",
@@ -171,7 +173,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.AdvancedWeaponTrainingTwoWeaponFighting,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Greater}, {requirementType: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription: "Gain Following benefits.",
 
@@ -202,7 +204,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.FollowUpAttack,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Free,
-      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription: "Gain advantage to an attack that has missed its target. If the attack still misses this power is not expended.",
         fullDescription:
@@ -216,7 +218,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.SureShot,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Free,
-      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: AbilityBonus.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription: "Gain advantage to a missed ranged weapon attack. If the attack still misses this power is not expended.",
         fullDescription:
@@ -229,7 +231,7 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.ChargeMastery,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Greater}],
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
           "Gain the following benefits while charging:",
@@ -245,15 +247,14 @@ export function getTalentObject(): TalentConstants {
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
       pickNumber: 2,
-      abilityCost: [{requirementType: AbilityBonus.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Pick any of the following 2 benefits to gain while charging:",
+          "Gain the following benefits",
         fullDescription:
           "Pick any of the following 2 benefits to gain while charging:"
       },
       associatedAbilities: [TalentName.MeasuredCharge, TalentName.DefensiveCharge, TalentName.AccurateCharge, TalentName.AcceleratedCharge, TalentName.SavageCharge],
-      mechanicalBonus: []
     } as AbilityModel,
 
     MeasuredCharge: {

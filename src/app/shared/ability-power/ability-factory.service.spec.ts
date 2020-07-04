@@ -12,6 +12,7 @@ import {AbilityType} from "./ability-type.enum";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
+import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 
 describe('AbilityFactoryService', () => {
   let service: AbilityFactoryService;
@@ -122,7 +123,7 @@ describe('AbilityFactoryService', () => {
     const requirements: Array<IAbilityRequirement> = service.getRequirementForAbility(complexTalent);
     expect(requirements
       .find(
-        (requirement) => requirement.requirementType === AbilityBonus.Agility)
+        (requirement) => requirement.requirementType === AttributeName.Agility)
     ).toBeTruthy();
 
     expect(requirements.find(requirement => requirement.requirementValue === AttributeStrength.Heroic)).toBeTruthy();
@@ -212,34 +213,58 @@ describe('AbilityFactoryService', () => {
       "Savage Charge: Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8.");
   });
 
-  //TODO this needs to change, rather than actually putting in the lesser picks, we need to alter the copy of the chargemasteryLesser talent so it only appears to be associated with those picked talents
   it('should be able to choose sub-options of a lesser version of greater talent like charge mastery', () => {
     const lesserCharge = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
-    const abilities: Array<AbilityModel> = service.selectAbility(lesserCharge, [], [TalentName.MeasuredCharge, TalentName.SavageCharge]);
-    expect(abilities.length).toEqual(2);
-    expect(abilities.find((ability) => ability.abilityName === TalentName.SavageCharge)).toBeTruthy();
-    expect(abilities.find((ability) => ability.abilityName === TalentName.MeasuredCharge)).toBeTruthy();
+    const abilities: Array<AbilityModel> = service.selectAbility(lesserCharge, [], null, [TalentName.MeasuredCharge, TalentName.SavageCharge]);
+    expect(abilities.length).toEqual(1);
+    expect(abilities.find((ability) => ability.abilityName === TalentName.ChargeMasteryLesser)).toBeTruthy();
+    expect(abilities[0].innerSelectedAbilities.find((name) => name === TalentName.SavageCharge)).toBeTruthy();
+    expect(abilities[0].innerSelectedAbilities.find((name) => name === TalentName.MeasuredCharge)).toBeTruthy();
   });
 
-  it('should print out only the picked information for a talent where there exists a pick value.', () => {
+  it('should prevent you from choosing charge mastery if you already have lesser charge mastery', () => {
+    const cm = service.getNewAbility(TalentName.ChargeMastery, AbilityType.Talent);
+    const cml = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
+    const result = service.canAbilityBeSelected(cm, [cml]);
+    expect(result).toBeFalsy();
+  });
 
+  it('should prevent you from choosing lesser charge mastery if you already have charge mastery', () => {
+    const cm = service.getNewAbility(TalentName.ChargeMastery, AbilityType.Talent);
+    const cml = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
+    const result = service.canAbilityBeSelected(cml, [cm]);
+    expect(result).toBeFalsy();
+  });
+
+  it('brief information should print out only the picked information for a talent where there exists a pick value.', () => {
+    const cml = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent, [TalentName.MeasuredCharge, TalentName.DefensiveCharge]);
+    const msg = service.printOutBriefDescription(cml);
+    expect(msg).toBe("Gain the following benefits\n" +
+      "Measured Charge: You do not grant combat superiority from charging.\n" +
+      "Defensive Charge: You gain -2 DC against any attacks you incur while charging.");
   });
 
   it('should throw an error if try to selected a pick talent without the right number of current abilities', () => {
     const lesserCharge = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
     expect(function () {
-      service.selectAbility(lesserCharge, [], [TalentName.MeasuredCharge]);
+      service.selectAbility(lesserCharge, [], null, [TalentName.MeasuredCharge]);
     }).toThrowError("You must have 2 inner selection choices but only 1 was given.");
-
-
   });
 
   it('should have some way to prevent the same talents from being selected/assigned', () => {
+    let currentAbilities = new Array<AbilityModel>();
+    let result = service.canAbilityBeSelected(simpleTalent, currentAbilities);
+    expect(result).toBeTruthy();
+    currentAbilities = service.selectAbility(simpleTalent, currentAbilities);
+    result = service.canAbilityBeSelected(simpleTalent, currentAbilities);
+    expect(result).toBeFalsy();
 
   });
 
-  it('should have some way to prevent related mutually exclusive talents from being selected', () => {
-
+  it('should prevent you from selecting a talent if you do not meet the attribute requirement', () => {
+    expect(function () {
+      const result = service.selectAbility(complexTalent, []);
+    }).toThrowError("The ability: Missile Parry is an invalid selection because you require at least Heroic Agility");
   });
 
   /**Stupid Helper functions**/

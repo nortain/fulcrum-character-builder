@@ -60,47 +60,6 @@ export enum AbilityBonus {
   Concentration = "Concentration",
   SpellLevel = "SpellLevel",
   Overcast = "Overcast",
-
-  /****Action Types****/
-  Passive = "Passive",
-  Free = "Free",
-  Swift = "Swift",
-  Minor = "Minor",
-  Move = "Move",
-  Standard = "Standard",
-  Deliberate = "Deliberate",
-  Full = "Full",
-
-  /***Spell damage keywords**/
-  Heat = "Heat",
-  Cold = "Cold",
-  Force = "Force",
-  Lightning = "Lightning",
-  Shadow = "Shadow",
-  Poison = "Poison",
-  Acid = "Acid",
-  Psychic = "Psychic",
-  Wild = "Wild",
-  Arcane = "Arcane",
-  Radiant = "Radiant",
-
   AdvancedWeaponTraining = "AdvancedWeaponTraining",
 
-
-  /****Attribute Names***/
-  Brawn = "Brawn",
-  Vitality = "Vitality",
-  Agility = "Agility",
-  Quickness = "Quickness",
-  Reasoning = "Reasoning",
-  Presence = "Presence",
-  SelfDiscipline = "SelfDiscipline",
-  Intuition = "Intuition",
-
-  /**********Talent Costs********/
-  Combat = "Combat",
-  Stealth = "Stealth",
-  Magic = "Magic",
-  General = "General",
-  Universal = "Universal",
 }

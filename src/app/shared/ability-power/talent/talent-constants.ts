@@ -9,7 +9,7 @@ import {Level} from "../../character/level.enum";
 import {TalentType} from "./talent-type.enum";
 import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum";
 
-export type TalentConstants = {[K in TalentName]: AbilityModel };
+export type TalentConstants = { [K in TalentName]: AbilityModel };
 
 export function getTalentObject(): TalentConstants {
   return {
@@ -25,21 +25,21 @@ export function getTalentObject(): TalentConstants {
           fullDescription: "Gain a +3 to Initiative."
         },
       mechanicalBonus: [
-        {abilityType: AbilityBonus.Initiative, value: {minBonus: 3, maxBonus: 3}}
+        {abilityBonus: AbilityBonus.Initiative, abilityType: AbilityType.Passive, value: {minBonus: 3, maxBonus: 3}}
       ]
     } as AbilityModel,
     Deflection: {
       ...new AbilityModel(),
       abilityName: TalentName.Deflection,
-      abilityType: AbilityType.Ability,
+      abilityType: AbilityType.Talent,
       abilityAction: ActionType.Free,
       abilityDescription: {
         briefDescription: "Reduce the damage of an attack against AD by $DamageResist. If the attack is a burst or range attack the reduction becomes $" + AbilityBonus.DamageResist,
         fullDescription: "Reduce the damage of an attack against AD by 4 + level / 3. If the attack is a burst or range attack the reduction becomes 5 + level / 2"
       },
       mechanicalBonus: [
-        {abilityType: AbilityBonus.DamageResist, value: {minBonus: 4, maxBonus: 7}},
-        {abilityType: AbilityBonus.DamageResist, value: {minBonus: 5, maxBonus: 10}}
+        {abilityBonus: AbilityBonus.DamageResist, abilityType: AbilityType.Ability, value: {minBonus: 4, maxBonus: 7}},
+        {abilityBonus: AbilityBonus.DamageResist, abilityType: AbilityType.Ability, value: {minBonus: 5, maxBonus: 10}}
       ]
     } as AbilityModel,
     EmpoweredStrikes: {
@@ -55,8 +55,8 @@ export function getTalentObject(): TalentConstants {
             "Gain a +2 to empowered attacks but you have a -1 to critical strikes.  At level 2 remove the critical strike penalty.  At level 6 your empowered bonus becomes +3."
         },
       mechanicalBonus: [
-        {abilityType: AbilityBonus.EmpoweredDamage, value: {minBonus: 2, maxBonus: 3}},
-        {abilityType: AbilityBonus.CriticalStrike, value: {minBonus: -1, maxBonus: 0}, adjustLevel: Level.Two}
+        {abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 3}},
+        {abilityBonus: AbilityBonus.CriticalStrike, abilityType: AbilityType.Passive, value: {minBonus: -1, maxBonus: 0}, adjustLevel: Level.Two}
       ]
     } as AbilityModel,
     HealingSpecialization: {
@@ -72,7 +72,7 @@ export function getTalentObject(): TalentConstants {
             "Increase the amount of Healing granted by actions with the healing keyword by 1.  Increase by 1 at level 6."
         },
       mechanicalBonus: [
-        {abilityType: AbilityBonus.Healing, value: {minBonus: 1, maxBonus: 2}}
+        {abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}
       ]
     } as AbilityModel,
     ImprovedController: {
@@ -87,8 +87,8 @@ export function getTalentObject(): TalentConstants {
       }
       ,
       mechanicalBonus: [
-        {abilityType: AbilityBonus.CriticalStrike, value: {minBonus: 1, maxBonus: 1}},
-        {abilityType: AbilityBonus.ForcedMovement, value: {minBonus: 1, maxBonus: 1}}
+        {abilityBonus: AbilityBonus.CriticalStrike, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}},
+        {abilityBonus: AbilityBonus.ForcedMovement, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}
       ]
     } as AbilityModel,
     ImprovedVitality: {
@@ -104,7 +104,7 @@ export function getTalentObject(): TalentConstants {
             "Increase your starting THP by 3. Increase this amount by 1 at levels 3, 6, and 9"
         },
       mechanicalBonus: [
-        {abilityType: AbilityBonus.StartingTemporaryHitPoints, value: {minBonus: 3, maxBonus: 6}}
+        {abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 3, maxBonus: 6}}
       ]
     } as AbilityModel,
     MissileParry: {
@@ -120,8 +120,8 @@ export function getTalentObject(): TalentConstants {
           "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Increase this bonus to 2 at level 6. Gain the ability Deflection."
       },
       mechanicalBonus: [
-        {abilityType: AbilityBonus.MissileDefense, value: AbilityBonus.ActiveDefense},
-        {abilityType: AbilityBonus.CriticalResist, value: {minBonus: 1, maxBonus: 2}}
+        {abilityBonus: AbilityBonus.MissileDefense, abilityType: AbilityType.Passive, value: AbilityBonus.ActiveDefense},
+        {abilityBonus: AbilityBonus.CriticalResist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}
       ],
       abilityRequirement: [{requirementType: AttributeName.Agility, requirementValue: AttributeStrength.Heroic}],
       associatedAbilities: [TalentName.Deflection]
@@ -143,7 +143,7 @@ export function getTalentObject(): TalentConstants {
     } as AbilityModel,
     MeleeArcher: {
       abilityName: TalentName.MeleeArcher,
-      abilityType: AbilityType.Passive,
+      abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
       abilityDescription: {
         briefDescription:
@@ -154,7 +154,7 @@ export function getTalentObject(): TalentConstants {
     } as AbilityModel,
     VulnerableShots: {
       abilityName: TalentName.VulnerableShots,
-      abilityType: AbilityType.Passive,
+      abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
       abilityDescription: {
         briefDescription:
@@ -164,7 +164,7 @@ export function getTalentObject(): TalentConstants {
           "Increase Range attack damage by +1.  Increase this amount by 1 at level 6."
       },
       mechanicalBonus: [
-        {abilityType: AbilityBonus.AttackDamage, value: {minBonus: 1, maxBonus: 2}}
+        {abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}
       ]
     } as AbilityModel,
 
@@ -187,7 +187,7 @@ export function getTalentObject(): TalentConstants {
 
     CoordinatedStrikes: {
       abilityName: TalentName.CoordinatedStrikes,
-      abilityType: AbilityType.Passive,
+      abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
       abilityDescription: {
         briefDescription:
@@ -196,7 +196,7 @@ export function getTalentObject(): TalentConstants {
           "Increase your damage bonus for dual wielding attacks by +2.  Increase this bonus by 1 at levels 4 and 8."
       },
       mechanicalBonus: [
-        {abilityType: AbilityBonus.AttackDamage, value: {minBonus: 2, maxBonus: 4}}
+        {abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}
       ]
     } as AbilityModel,
 
@@ -210,7 +210,6 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Gain advantage to an attack that has missed its target. If the attack still misses this power is not expended."
       },
-      mechanicalBonus: [],
       abilityRequirement: [{requirementType: TalentName.AdvancedWeaponTrainingTwoWeaponFighting, requirementValue: false}]
     } as AbilityModel,
 
@@ -224,7 +223,6 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Gain advantage to a missed ranged weapon attack. If the attack still misses this power is not expended."
       },
-      mechanicalBonus: []
     } as AbilityModel,
 
     ChargeMastery: {
@@ -239,7 +237,6 @@ export function getTalentObject(): TalentConstants {
           "Gain the following benefits while charging:"
       },
       associatedAbilities: [TalentName.MeasuredCharge, TalentName.DefensiveCharge, TalentName.AccurateCharge, TalentName.AcceleratedCharge, TalentName.SavageCharge],
-      mechanicalBonus: []
     } as AbilityModel,
 
     ChargeMasteryLesser: {
@@ -267,7 +264,6 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "You do not grant combat superiority from charging."
       },
-      mechanicalBonus: []
     } as AbilityModel,
     DefensiveCharge: {
       abilityName: TalentName.DefensiveCharge,
@@ -279,7 +275,6 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "You gain -2 DC against any attacks you incur while charging."
       },
-      mechanicalBonus: []
     } as AbilityModel,
     AccurateCharge: {
       abilityName: TalentName.AccurateCharge,
@@ -315,7 +310,119 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8."
       },
-      mechanicalBonus: [{abilityType: AbilityBonus.Charging, value: {minBonus: 2, maxBonus: 4}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Charging, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}]
+    } as AbilityModel,
+
+    FuriousStrikes: {
+      abilityName: TalentName.FuriousStrikes,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain a $AttackDamage to attack damage.",
+        fullDescription:
+          "Gain a +1 to attack damage.  At level 6 this bonus becomes +2."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
+    } as AbilityModel,
+
+    LethalStrikes: {
+      abilityName: TalentName.LethalStrikes,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain a $" + AbilityBonus.CriticalStrike + " to critical strikes.",
+        fullDescription:
+          "Gain a +3 to critical strikes.  Increase this bonus by 1 at levels 4, 6, and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.CriticalStrike, abilityType: AbilityType.Passive, value: {minBonus: 3, maxBonus: 6}}]
+    } as AbilityModel,
+
+    FriendlyController: {
+      abilityName: TalentName.FriendlyController,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Any spell or ability with the Friendly Movement keyword has its tactical move, shift, slide or teleport distance increased by 1 additional square. Increase your starting THP by 1.",
+        fullDescription:
+          "Any spell or ability with the Friendly Movement keyword has its tactical move, shift, slide or teleport distance increased by 1 additional square. Increase your starting THP by 1."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FriendlyMovement, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}},
+        {abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
+    } as AbilityModel,
+
+
+    PowerSource: {
+      abilityName: TalentName.PowerSource,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your total power points by 1. Start combat with 1 additional THP.",
+        fullDescription:
+          "Increase your total power points by 1. Start combat with 1 additional THP."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.PowerPoint, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}},
+        {abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
+    } as AbilityModel,
+
+    Reaper: {
+      abilityName: TalentName.Reaper,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: TalentType.Universal, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss.  Gain a +" + AbilityBonus.EmpoweredDamage + " bonus to empowered attacks",
+        fullDescription:
+          "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss.  Gain a +1 bonus to empowered attacks.  This bonus increases by 1 at level  6."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
+    } as AbilityModel,
+
+    BoilingRage: {
+      abilityName: TalentName.BoilingRage,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "As a minor action, you can increase all damage done until the end of this round by $" + AbilityBonus.GlobalDamage + ". This ability can only be used after being crit or while bloodied.",
+        fullDescription:
+          "<i>Requires Champion Brawn</i>\n" +
+          "As a minor action, you can increase all damage done until the end of this round by 8 + 1.5 * level. This ability can only be used after being crit or while bloodied."
+      },
+      mechanicalBonus: [
+        {abilityBonus: AbilityBonus.GlobalDamage, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 23}}
+      ],
+      abilityRequirement: [{requirementType: AttributeName.Brawn, requirementValue: AttributeStrength.Champion}],
+
+    } as AbilityModel,
+
+    // TODO finish implementing this
+    PrecisionStrikess: {
+      abilityName: TalentName.PrecisionStrike,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "As a minor action, you can increase all damage done until the end of this round by $" + AbilityBonus.GlobalDamage + ". This ability can only be used after being crit or while bloodied.",
+        fullDescription:
+          "<i>Requires Champion Agility</i>\n" +
+          "As a minor action you can increase your hit bonus by +2 and your damage by 4+level bonus to your next attack action made this turn."
+      },
+      mechanicalBonus: [
+        {abilityBonus: AbilityBonus.GlobalDamage, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 23}}
+      ],
+      abilityRequirement: [{requirementType: AttributeName.Brawn, requirementValue: AttributeStrength.Champion}],
+
     } as AbilityModel,
   };
 }

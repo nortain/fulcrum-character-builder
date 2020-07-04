@@ -30,7 +30,8 @@ export interface IDescription {
 }
 
 export interface IAbilityBonus {
-  abilityType: AbilityBonus;
+  abilityBonus: AbilityBonus;
+  abilityType: AbilityType;
   value: ValueRange | AbilityBonus;
   dieSize?: DiceSize;
   adjustLevel?: Level;

@@ -115,7 +115,7 @@ export class AbilityFactoryService {
     if (typeof requirement.requirementValue === "number") {
       haveOrNotHave = "you require at least " + AttributeStrength[requirement.requirementValue] + " " + this.castleCasePipe.transform(requirement.requirementType);
     } else {
-      haveOrNotHave = requirement.requirementValue ? "you have " : " you do not have";
+      haveOrNotHave = requirement.requirementValue ? "you have " : " you do not have ";
       haveOrNotHave += this.castleCasePipe.transform(requirement.requirementType);
     }
     return haveOrNotHave;
@@ -179,12 +179,10 @@ export class AbilityFactoryService {
     let resultingBonusValue = 0;
     for (const ability of abilities) {
       for (const bonus of ability.mechanicalBonus) {
-        if (givenAbility === bonus.abilityType) {
+        if (givenAbility === bonus.abilityBonus) {
           if (this.isValueRange(bonus.value)) {
-            if (ability.abilityType === AbilityType.Talent && ability.abilityAction === ActionType.Passive) {
+            if (ability.abilityType === AbilityType.Talent && bonus.abilityType === AbilityType.Passive) {
               resultingBonusValue += this.extractNumberFromValueRangeForPassiveTalents(bonus.value, level, bonus.adjustLevel);
-            } else {
-              resultingBonusValue += this.attributeFactoryService.extractNumberFromValueRange(bonus.value, level, bonus.dieSize, bonus.adjustLevel);
             }
           } else {
             return bonus.value;
@@ -259,12 +257,12 @@ export class AbilityFactoryService {
       for (const mechanic of ability.mechanicalBonus) {
         if (this.isValueRange(mechanic.value)) {
           let numberValue;
-          if (ability.abilityType === AbilityType.Talent && ability.abilityAction === ActionType.Passive) {
+          if (ability.abilityType === AbilityType.Talent && mechanic.abilityType === AbilityType.Passive) {
             numberValue = this.extractNumberFromValueRangeForPassiveTalents(mechanic.value, level, mechanic.adjustLevel);
           } else {
             numberValue = this.attributeFactoryService.extractNumberFromValueRange(mechanic.value, level, mechanic.dieSize, mechanic.adjustLevel);
           }
-          description = description.replace("$" + mechanic.abilityType, numberValue).toString();
+          description = description.replace("$" + mechanic.abilityBonus, numberValue).toString();
         }
       }
     }
@@ -292,12 +290,19 @@ export class AbilityFactoryService {
    */
   printOutAssociatedAbility(ability: AbilityModel, level: Level = Level.Ten, isBriefDescription: boolean): string {
     let description: string;
+    let unalteredDescription: string;
     if (isBriefDescription) {
       description = this.printOutBriefDescription(ability, level);
+      unalteredDescription = ability.abilityDescription.briefDescription;
     } else {
       description = this.printOutFullDescription(ability);
+      unalteredDescription = ability.abilityDescription.fullDescription;
     }
-    const nonTalentText = ability.abilityType !== AbilityType.Talent ? "(" + ability.abilityType + ") " : "";
+    let nonTalentText = "";
+    if (ability.mechanicalBonus) {
+      const matchingBonus = ability.mechanicalBonus.find(bonus => unalteredDescription.indexOf(bonus.abilityBonus) !== -1);
+      nonTalentText = !!matchingBonus && matchingBonus.abilityType !== AbilityType.Talent ? "(" + matchingBonus.abilityType + ") " : "";
+    }
     const nonPassiveText = ability.abilityAction && ability.abilityAction !== ActionType.Passive ? ability.abilityAction + ". " : "";
     return this.castleCasePipe.transform(ability.abilityName) + ": " + nonTalentText + nonPassiveText + description;
   }

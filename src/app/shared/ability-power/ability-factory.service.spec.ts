@@ -167,16 +167,16 @@ describe('AbilityFactoryService', () => {
     const pickedAbilities = [talent];
     const newTalent = service.getNewAbility(TalentName.EmpoweredStrikes, AbilityType.Talent);
     let result = service.canAbilityBeSelected(talent, pickedAbilities);
-    expect(result).toBeFalsy();
+    expect(result.isSelectable).toBeFalsy();
     result = service.canAbilityBeSelected(newTalent, pickedAbilities);
-    expect(result).toBeTruthy();
+    expect(result.isSelectable).toBeTruthy();
   });
 
   it('should not be able to choose two advanced weapon trainings', () => {
     const talent = service.getNewAbility(TalentName.AdvancedWeaponTrainingRanged, AbilityType.Talent);
     const talent2 = service.getNewAbility(TalentName.AdvancedWeaponTrainingTwoWeaponFighting, AbilityType.Talent);
     const result = service.canAbilityBeSelected(talent2, [talent]);
-    expect(result).toBeFalsy();
+    expect(result.isSelectable).toBeFalsy();
   });
 
   it('should not be able to select a greater talent and then choose its less power', () => {
@@ -184,16 +184,16 @@ describe('AbilityFactoryService', () => {
     const talent2 = service.getNewAbility(TalentName.SureShot, AbilityType.Talent);
     const talent3 = service.getNewAbility(TalentName.FollowUpAttack, AbilityType.Talent);
     let result = service.canAbilityBeSelected(talent, [talent2]);
-    expect(result).toBeFalsy();
+    expect(result.isSelectable).toBeFalsy();
     result = service.canAbilityBeSelected(talent, [talent3]);
-    expect(result).toBeTruthy();
+    expect(result.isSelectable).toBeTruthy();
   });
 
   it('should not be able to choose a lesser power and then choose that powers greater talent', () => {
     const talent = service.getNewAbility(TalentName.AdvancedWeaponTrainingRanged, AbilityType.Talent);
     const talent2 = service.getNewAbility(TalentName.SureShot, AbilityType.Talent);
     const result = service.canAbilityBeSelected(talent2, [talent]);
-    expect(result).toBeFalsy();
+    expect(result.isSelectable).toBeFalsy();
   });
 
   it('should be able to fully print out a brief description of a complex talent', () => {
@@ -226,14 +226,14 @@ describe('AbilityFactoryService', () => {
     const cm = service.getNewAbility(TalentName.ChargeMastery, AbilityType.Talent);
     const cml = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
     const result = service.canAbilityBeSelected(cm, [cml]);
-    expect(result).toBeFalsy();
+    expect(result.isSelectable).toBeFalsy();
   });
 
   it('should prevent you from choosing lesser charge mastery if you already have charge mastery', () => {
     const cm = service.getNewAbility(TalentName.ChargeMastery, AbilityType.Talent);
     const cml = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
     const result = service.canAbilityBeSelected(cml, [cm]);
-    expect(result).toBeFalsy();
+    expect(result.isSelectable).toBeFalsy();
   });
 
   it('brief information should print out only the picked information for a talent where there exists a pick value.', () => {
@@ -257,7 +257,7 @@ describe('AbilityFactoryService', () => {
     expect(result).toBeTruthy();
     currentAbilities = service.selectAbility(simpleTalent, currentAbilities);
     result = service.canAbilityBeSelected(simpleTalent, currentAbilities);
-    expect(result).toBeFalsy();
+    expect(result.isSelectable).toBeFalsy();
 
   });
 
@@ -265,6 +265,16 @@ describe('AbilityFactoryService', () => {
     expect(function () {
       const result = service.selectAbility(complexTalent, []);
     }).toThrowError("The ability: Missile Parry is an invalid selection because you require at least Heroic Agility");
+  });
+
+  it('should only get mechanical bonuses for passive talents because active talents are only active while active', () => {
+    const talent = service.getNewAbility(TalentName.BoilingRage, AbilityType.Talent);
+    const result = service.getBonusForAbility(AbilityBonus.GlobalDamage, [talent], Level.One);
+    expect(result).toEqual(0);
+  });
+
+  it('should be able to determine if an active ability is considered a power or ability or something else', () => {
+
   });
 
   /**Stupid Helper functions**/

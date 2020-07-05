@@ -231,6 +231,29 @@ export class AbilityFactoryService {
   }
 
 
+  printOutRequirements(ability: AbilityModel, currentDescription: string): string {
+    if (ability && ability.abilityRequirement) {
+      let requirementText = "<i>";
+      ability.abilityRequirement.forEach((requirement, index) => {
+        if (typeof requirement.requirementValue === "boolean") {
+          const notText = requirement.requirementValue ? "" : "not ";
+          requirementText += "You must " + notText + "already have " + this.castleCasePipe.transform(requirement.requirementType) + ".";
+        } else if (Object.values(AttributeStrength).includes(requirement.requirementValue as AttributeStrength)) {
+          requirementText += "You require at least " + AttributeStrength[requirement.requirementValue as AttributeStrength] + " " + this.castleCasePipe.transform(requirement.requirementType) + ".";
+        }
+        if (index < ability.abilityRequirement.length - 1) {
+          requirementText += " ";
+        }
+      });
+      requirementText += "</i>\n";
+      return requirementText + currentDescription;
+    } else {
+      return currentDescription;
+    }
+
+  }
+
+
   /**
    * Someday this may do something awesome, for now it's just an accessor
    * @param ability
@@ -240,16 +263,19 @@ export class AbilityFactoryService {
     if (ability.associatedAbilities) {
       ability.associatedAbilities.forEach((association) => {
         const newAbility = this.getNewAbility(association, ability.abilityType);
-        description += "\n" + this.printOutAssociatedAbility(newAbility, Level.Ten, description, description);
+        const associatedDescription = this.printOutFullDescription(newAbility);
+        description += "\n" + associatedDescription;
       });
     }
-    return description;
+    description = this.printOutAssociatedAbility(ability, Level.Ten, false, description);
+    return this.printOutRequirements(ability, description);
   }
 
   /**
    * Given an ability and level write out a brief description that could go on a character sheet and use level to adjust for values that are scaling.
    * @param ability
    * @param level
+   * @param currentAbilities
    */
   printOutBriefDescription(ability: AbilityModel, level: Level = Level.Ten, currentAbilities = new Array<AbilityModel>()): string {
     let description = ability.abilityDescription.briefDescription;
@@ -276,15 +302,17 @@ export class AbilityFactoryService {
     if (ability.associatedAbilities && ability.pickNumber <= 0) {
       ability.associatedAbilities.forEach((association) => {
         const newAbility = this.getNewAbility(association, ability.abilityType);
-        description += "\n" + this.printOutAssociatedAbility(newAbility, level, ability.abilityDescription.briefDescription, description);
+        const associatedDescription = this.printOutBriefDescription(newAbility, level, currentAbilities);
+        description += "\n" + associatedDescription;
       });
     } else if (ability.innerSelectedAbilities && ability.pickNumber > 0) {
       ability.innerSelectedAbilities.forEach((association) => {
         const newAbility = this.getNewAbility(association, ability.abilityType);
-        description += "\n" + this.printOutAssociatedAbility(newAbility, level, ability.abilityDescription.briefDescription, description);
+        const associatedDescription = this.printOutBriefDescription(newAbility, level, currentAbilities);
+        description += "\n" + associatedDescription;
       });
     }
-    return this.printOutAssociatedAbility(ability, level, ability.abilityDescription.briefDescription, description);
+    return this.printOutAssociatedAbility(ability, level, true, description);
   }
 
   /**
@@ -296,11 +324,16 @@ export class AbilityFactoryService {
    * @param unalteredDescription
    * @param alteredDescription
    */
-  printOutAssociatedAbility(ability: AbilityModel, level: Level = Level.Ten, unalteredDescription: string, alteredDescription: string): string {
+  printOutAssociatedAbility(ability: AbilityModel, level: Level = Level.Ten, isBriefDescription: boolean, alteredDescription: string): string {
     let nonTalentText = "";
-    if (ability.mechanicalBonus) {
-      const matchingBonus = ability.mechanicalBonus.find(bonus => unalteredDescription.indexOf(bonus.abilityBonus) !== -1);
+    const description = isBriefDescription ? ability.abilityDescription.briefDescription : ability.abilityDescription.fullDescription;
+    if (ability.mechanicalBonus && isBriefDescription && !ability.briefDescriptionAbilityType) {
+      const matchingBonus = ability.mechanicalBonus.find(bonus => description.indexOf(bonus.abilityBonus) !== -1);
       nonTalentText = !!matchingBonus && matchingBonus.abilityType !== AbilityType.Talent && matchingBonus.abilityType !== AbilityType.Passive ? "(" + matchingBonus.abilityType + ") " : "";
+    } else if (isBriefDescription && ability.briefDescriptionAbilityType) {
+      nonTalentText = "(" + ability.briefDescriptionAbilityType + ") ";
+    } else if (!isBriefDescription && ability.fullDescriptionAbilityType && ability.fullDescriptionAbilityType !== AbilityType.Talent) {
+      nonTalentText = "(" + ability.fullDescriptionAbilityType + ") ";
     }
     const nonPassiveText = ability.abilityAction && ability.abilityAction !== ActionType.Passive ? ability.abilityAction + ". " : "";
     return this.castleCasePipe.transform(ability.abilityName) + ": " + nonTalentText + nonPassiveText + alteredDescription;
@@ -315,7 +348,7 @@ export class AbilityFactoryService {
   }
 
   /**
-   * looks at an ability model and tries to determine if the brief description has text that can potentally be replaced by mechanical bonuses.  It does this simply by checking for the existance of mechanical bonuses in the model and if there is a brief description written.
+   * looks at an ability model and tries to determine if the brief description has text that can potentially be replaced by mechanical bonuses.  It does this simply by checking for the existence of mechanical bonuses in the model and if there is a brief description written.
    * @param ability
    */
   hasReplacementValuesForBriefDescription(ability: AbilityModel): boolean {

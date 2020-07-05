@@ -33,6 +33,8 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.Deflection,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Free,
+      fullDescriptionAbilityType: AbilityType.Ability,
+      briefDescriptionAbilityType: AbilityType.Ability,
       abilityDescription: {
         briefDescription: "Reduce the damage of an attack against AD by $DamageResist. If the attack is a burst or range attack the reduction becomes $" + AbilityBonus.DamageResist,
         fullDescription: "Reduce the damage of an attack against AD by 4 + level / 3. If the attack is a burst or range attack the reduction becomes 5 + level / 2"
@@ -116,7 +118,6 @@ export function getTalentObject(): TalentConstants {
         briefDescription: "Gain the following:\n" +
           "Your Missile Defense becomes your Active Defense. Increase your critical resistance by $CriticalResist. Gain the ability Deflection",
         fullDescription:
-          "<i>Requires Heroic Agility</i>\n" +
           "Your Missile Defense becomes your Active Defense. Increase your critical resistance by 1.  Increase this bonus to 2 at level 6. Gain the ability Deflection."
       },
       mechanicalBonus: [
@@ -135,7 +136,6 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "The character gains all the following benefits:",
         fullDescription:
-          "<i>At Most a character can have 1 Advanced Weapon Training Talent</i>" +
           "The character gains all the following benefits:"
       },
       abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
@@ -175,11 +175,10 @@ export function getTalentObject(): TalentConstants {
       abilityAction: ActionType.Passive,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Greater}, {requirementType: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
-        briefDescription: "Gain Following benefits.",
+        briefDescription: "Gain Following benefits:",
 
         fullDescription:
-          "<i>At Most a character can have 1 Advanced Weapon Training Talent</i>" +
-          "The character gains all the following benefits:"
+          "Gain the following benefits:"
       },
       abilityRequirement: [{requirementType: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
       associatedAbilities: [TalentName.CoordinatedStrikes, TalentName.FollowUpAttack]
@@ -204,6 +203,8 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.FollowUpAttack,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Free,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription: "Gain advantage to an attack that has missed its target. If the attack still misses this power is not expended.",
@@ -217,6 +218,8 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.SureShot,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Free,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementType: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription: "Gain advantage to a missed ranged weapon attack. If the attack still misses this power is not expended.",
@@ -390,12 +393,13 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.BoilingRage,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Minor,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
           "You can increase all damage done until the end of this round by $" + AbilityBonus.GlobalDamage + ". This ability can only be used after being crit or while bloodied.",
         fullDescription:
-          "<i>Requires Champion Brawn</i>\n" +
           "You can increase all damage done until the end of this round by 8 + 1.5 * level. This ability can only be used after being crit or while bloodied."
       },
       mechanicalBonus: [
@@ -410,12 +414,12 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.PrecisionStrike,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Minor,
+      fullDescriptionAbilityType: AbilityType.Power,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
           "You can increase your hit bonus by $" + AbilityBonus.ToHit + " and your attack damage bonus by $" + AbilityBonus.AttackDamage + " to your next attack action made this turn.",
         fullDescription:
-          "<i>Requires Champion Agility</i>\n" +
           "You can increase your hit bonus by 2 and your attack damage bonus by 4 + level to your next attack action made this turn."
       },
       mechanicalBonus: [
@@ -430,13 +434,14 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.UnstoppableMarch,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Move,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
           "Tactically move speed - 3 squares.  You may drag up to three adjacent equal size creatures with you.  You may also choose to spend a recovery.",
         fullDescription:
-          "<i>Requires Heroic Brawn</i>\n" +
-          "Tactically move speed - 3 squares.  You may drag up to three equal size creatures with you.  You may also choose to spend a recovery."
+          "Tactically move speed - 3 squares.  You may drag up to three adjacent equal size creatures with you.  You may also choose to spend a recovery."
       },
       abilityRequirement: [{requirementType: AttributeName.Brawn, requirementValue: AttributeStrength.Heroic}],
 
@@ -446,12 +451,13 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.CounterSwing,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Minor,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
           "You may make a -1 DC attack.",
         fullDescription:
-          "<i>Requires Heroic Brawn</i>\n" +
           "You may make a -1 DC attack."
       },
       abilityRequirement: [{requirementType: AttributeName.Brawn, requirementValue: AttributeStrength.Heroic}],
@@ -462,12 +468,13 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.LightningStrike,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Minor,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
           "You may make a -2 DC attack with a +2 to hit.",
         fullDescription:
-          "<i>Requires Heroic Agility</i>\n" +
           "You may make a -2 DC attack with a +2 to hit."
       },
       abilityRequirement: [{requirementType: AttributeName.Agility, requirementValue: AttributeStrength.Heroic}],
@@ -478,15 +485,15 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.KnightsMove,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Move,
+      fullDescriptionAbilityType: AbilityType.Feature,
+      briefDescriptionAbilityType: AbilityType.Feature,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
           "Two allies within 7 squares are able to tactically move 2 squares.",
         fullDescription:
-          "<i>Requires Champion Reasoning</i>\n" +
           "Two allies within 7 squares are able to tactically move 2 squares."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.Feature, abilityType: AbilityType.Feature, value: {minBonus: 2, maxBonus: 2}} ],
       abilityRequirement: [{requirementType: AttributeName.Reasoning, requirementValue: AttributeStrength.Champion}],
 
     } as AbilityModel,
@@ -500,7 +507,6 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Slide up to 3 allies within 10 squares of you $" + AbilityBonus.FriendlyMovement + " squares each.",
         fullDescription:
-          "<i>Requires Heroic Reasoning</i>\n" +
           "Slide up to 3 allies within 10 squares 4 squares each."
       },
       abilityRequirement: [{requirementType: AttributeName.Reasoning, requirementValue: AttributeStrength.Heroic}],
@@ -509,23 +515,20 @@ export function getTalentObject(): TalentConstants {
       ]
     } as AbilityModel,
 
-    // TODO THIS IS NOT DONE
     CommandingStrike: {
       abilityName: TalentName.CommandingStrike,
       abilityType: AbilityType.Talent,
-      abilityAction: ActionType.Minor,
+      abilityAction: ActionType.Standard,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Slide up to 3 allies within 10 squares of you $" + AbilityBonus.FriendlyMovement + "  squares each.",
+          "Two allies within 10 squares are able to make a basic attack with a +1 to hit.",
         fullDescription:
-          "<i>Requires Heroic Reasoning</i>\n" +
-          "Slide up to 3 allies within 10 squares 4 squares each."
+          "Two allies within 10 squares are able to make a basic attack with a +1 to hit."
       },
       abilityRequirement: [{requirementType: AttributeName.Reasoning, requirementValue: AttributeStrength.Heroic}],
-      mechanicalBonus: [{abilityBonus: AbilityBonus.FriendlyMovement, abilityType: AbilityType.Power, value: AbilityBonus.FriendlyMovement}, // special case
-        {abilityBonus: AbilityBonus.FriendlyMovement, abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 4}}
-      ]
     } as AbilityModel,
   };
 }

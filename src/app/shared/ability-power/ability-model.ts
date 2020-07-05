@@ -11,6 +11,8 @@ export class AbilityModel {
   abilityName: AbilityName;
   abilityType: AbilityType;
   abilityAction: ActionType;
+  fullDescriptionAbilityType: AbilityType; // for full description without replacement test, print non-talent types
+  briefDescriptionAbilityType: AbilityType;
   pickNumber = 0; // used to determine how many sub talents can be choose
   innerSelectedAbilities = new Array<AbilityName>();
   abilityCost: Array<IAbilityRequirement>; // This list multiple costs, but only one needs to be paid, no costs are present then the talent cannot be selected

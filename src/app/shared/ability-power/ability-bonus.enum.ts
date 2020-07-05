@@ -63,5 +63,7 @@ export enum AbilityBonus {
   AdvancedWeaponTraining = "AdvancedWeaponTraining",
   Feature = "Feature",
   Keyword = "Keyword",
+  Power = "Power",
+  Empty = ""
 
 }

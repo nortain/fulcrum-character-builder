@@ -39,7 +39,7 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should be able to print out a value with level range based values', () => {
-    expect(service.printOutFullDescription(simpleTalent)).toEqual(simpleTalent.abilityDescription.fullDescription);
+    expect(service.printOutFullDescription(simpleTalent)).toEqual("Healing Specialization: Increase the amount of Healing granted by actions with the healing keyword by 1.  Increase by 1 at level 6.");
     let result = service.printOutBriefDescription(simpleTalent, Level.Five);
     expect(result).toBe("Healing Specialization: Increase the amount of Healing granted by actions with the healing keyword by 1.");
     result = service.printOutBriefDescription(simpleTalent, Level.Six);
@@ -275,13 +275,43 @@ describe('AbilityFactoryService', () => {
 
   it('should be able to adjust briefDescriptions that are affected by other spell keywords such as friendly movement', () => {
     const talent = service.getNewAbility(TalentName.MasterTactician, AbilityType.Talent);
-    const result = service.printOutBriefDescription(talent);
+    const selectedTalent = service.getNewAbility(TalentName.FriendlyController, AbilityType.Talent);
+    let currentAbilities = [];
+    let result = service.printOutBriefDescription(talent, Level.One, currentAbilities);
+    const attribute = attributeService.getNewAttribute(AttributeName.Reasoning, AttributeStrength.Heroic);
     expect(result).toBe(
       "Master Tactician: (Power) Minor. Slide up to 3 allies within 10 squares of you 4 squares each.");
+
+    currentAbilities = [...service.selectAbility(selectedTalent, currentAbilities, [attribute])];
+    result = service.printOutBriefDescription(talent, Level.One, currentAbilities);
+    expect(result).toBe(
+      "Master Tactician: (Power) Minor. Slide up to 3 allies within 10 squares of you 5 squares each.");
   });
 
-  it('should print out Knights move Correctly', () => {
+  it('should print out Knights move as a full description correctly', () => {
+    const talent = service.getNewAbility(TalentName.KnightsMove, AbilityType.Talent);
+    const text = service.printOutFullDescription(talent);
+    expect(text).toBe("<i>You require at least Champion Reasoning.</i>\n" +
+      "Knights Move: (Feature) Move. Two allies within 7 squares are able to tactically move 2 squares.");
+  });
 
+  it('should print out full description of a talent like Lightning Strike', () => {
+    const talent = service.getNewAbility(TalentName.LightningStrike, AbilityType.Talent);
+    const text = service.printOutFullDescription(talent);
+    expect(text).toBe("<i>You require at least Heroic Agility.</i>\n" +
+      "Lightning Strike: (Power) Minor. You may make a -2 DC attack with a +2 to hit.");
+  });
+
+  it('should print out brief description of a talent like lightning strike', () => {
+    const talent = service.getNewAbility(TalentName.LightningStrike, AbilityType.Talent);
+    const text = service.printOutBriefDescription(talent);
+    expect(text).toBe("Lightning Strike: (Power) Minor. You may make a -2 DC attack with a +2 to hit.");
+  });
+
+  it('should be able to print out the brief description of Commanding Strike', () => {
+      const talent = service.getNewAbility(TalentName.CommandingStrike, AbilityType.Talent);
+      const text = service.printOutBriefDescription(talent);
+      expect(text).toBe("Commanding Strike: (Power) Standard. Two allies within 10 squares are able to make a basic attack with a +1 to hit.");
   });
 
   /**Stupid Helper functions**/

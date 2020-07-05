@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AbilityName, AbilityType} from "./ability-type.enum";
-import {AbilityModel, IAbilityRequirement, ICanBeSelected} from "./ability-model";
+import {AbilityModel, IAbilityBonus, IAbilityRequirement, ICanBeSelected} from "./ability-model";
 import {Level} from "../character/level.enum";
 import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {AbilityBonus} from "./ability-bonus.enum";
@@ -80,18 +80,17 @@ export class AbilityFactoryService {
     let canBePicked = this.hasAbilityNotBeenSelected(abilityToBeSelected, currentAbilities);
     if (canBePicked && abilityToBeSelected.abilityRequirement) {
       for (const requirement of abilityToBeSelected.abilityRequirement) {
+        let requirementMet = false;
         currentAbilities
           .find(abilities => {
             if (abilities && abilities.abilityRequirement) {
-              abilities.abilityRequirement
-                .find(abilityRequirement => {
-                  if (abilityRequirement.requirementType === requirement.requirementType) {
-                    canBePicked = canBePicked && !!requirement.requirementValue;
-                    if (!requirement.requirementValue) {
-                      reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
-                    }
-                  }
-                });
+              const result = this.findMatchingRequirement(abilities.abilityRequirement, requirement, canBePicked, requirementMet, reasonItCannotBeSelected);
+              canBePicked = result.isSelectable;
+              reasonItCannotBeSelected = result.reasonItCannotBeSelected;
+            } else if (abilities && abilities.mechanicalBonus) {
+              const result = this.findMatchingRequirement(abilities.mechanicalBonus, requirement, canBePicked, requirementMet, reasonItCannotBeSelected);
+              canBePicked = result.isSelectable;
+              reasonItCannotBeSelected = result.reasonItCannotBeSelected;
             }
           });
         if (requirement.requirementType in AttributeName) {
@@ -101,12 +100,41 @@ export class AbilityFactoryService {
           const pickedAttribute = attributes.find(attribute => attribute && requirement.requirementType === attribute.attributeName);
           const enough = pickedAttribute.attributeStrength >= requirement.requirementValue;
           canBePicked = canBePicked && enough;
+          requirementMet = canBePicked;
           if (!enough) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
         }
+        if (!requirementMet && !reasonItCannotBeSelected) {
+          canBePicked = requirementMet;
+          reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+        }
       }
     }
+    return {isSelectable: canBePicked, reasonItCannotBeSelected: reasonItCannotBeSelected};
+  }
+
+  private findMatchingRequirement(abilities: Array<IAbilityBonus | IAbilityRequirement>,
+                                  requirement: IAbilityRequirement,
+                                  canBePicked: boolean,
+                                  requirementMet: boolean,
+                                  reasonItCannotBeSelected: string): ICanBeSelected {
+    abilities
+      .find(bonus => {
+        if ((bonus as IAbilityBonus).abilityBonus === requirement.requirementType) {
+          canBePicked = canBePicked && !!requirement.requirementValue;
+          requirementMet = canBePicked;
+          if (!requirement.requirementValue) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
+        } else if ((bonus as IAbilityRequirement).requirementType === requirement.requirementType) {
+          canBePicked = canBePicked && !!requirement.requirementValue;
+          requirementMet = canBePicked;
+          if (!requirement.requirementValue) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
+        }
+      });
     return {isSelectable: canBePicked, reasonItCannotBeSelected: reasonItCannotBeSelected};
   }
 

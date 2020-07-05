@@ -309,9 +309,24 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should be able to print out the brief description of Commanding Strike', () => {
-      const talent = service.getNewAbility(TalentName.CommandingStrike, AbilityType.Talent);
-      const text = service.printOutBriefDescription(talent);
-      expect(text).toBe("Commanding Strike: (Power) Standard. Two allies within 10 squares are able to make a basic attack with a +1 to hit.");
+    const talent = service.getNewAbility(TalentName.CommandingStrike, AbilityType.Talent);
+    const text = service.printOutBriefDescription(talent);
+    expect(text).toBe("Commanding Strike: (Power) Standard. Two allies within 10 squares are able to make a basic attack with a +1 to hit.");
+  });
+
+  it('should need an ability to generate thp to be able to select bolster', () => {
+    const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
+    expect(function () {
+      service.selectAbility(talent, []);
+    }).toThrowError("The ability: Bolster is an invalid selection because you have To Generate Temporary Hit Points");
+  });
+
+  it('should be able to select bolster if you an ability that can generate thp', () => {
+    const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
+    const requiredTalent = service.getNewAbility(TalentName.ArmorUp, AbilityType.Talent);
+    let currentAbilities = [requiredTalent];
+    currentAbilities = service.selectAbility(talent, currentAbilities);
+    expect(currentAbilities.length).toEqual(2);
   });
 
   /**Stupid Helper functions**/

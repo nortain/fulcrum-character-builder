@@ -530,5 +530,52 @@ export function getTalentObject(): TalentConstants {
       },
       abilityRequirement: [{requirementType: AttributeName.Reasoning, requirementValue: AttributeStrength.Heroic}],
     } as AbilityModel,
+
+    Bolster: {
+      abilityName: TalentName.Bolster,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "When an ally within 10 squares becomes bloodied from an attack you can have that ally $" + AbilityBonus.ToGenerateTemporaryHitPoints + " Temporary Hit Points",
+        fullDescription:
+          "When an ally within 10 squares becomes bloodied from an attack you can have that ally gain 6 + level * 1.2 Temporary Hit Points"
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}],
+      abilityRequirement: [{requirementType: AbilityBonus.ToGenerateTemporaryHitPoints, requirementValue: true}],
+    } as AbilityModel,
+
+    GreaterJuggernaut: {
+      abilityName: TalentName.GreaterJuggernaut,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage resistance of Juggernaut by 1 and gain the Armor Up feature.",
+        fullDescription:
+          "Increase the damage resistance of Juggernaut by 1 and gain the Armor Up feature."
+      },
+      associatedAbilities: [TalentName.ArmorUp],
+      abilityRequirement: [{requirementType: AbilityBonus.Juggernaut, requirementValue: 1}],
+    } as AbilityModel,
+    ArmorUp: {
+      abilityName: TalentName.ArmorUp,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      fullDescriptionAbilityType: AbilityType.Feature,
+      briefDescriptionAbilityType: AbilityType.Feature,
+      abilityDescription: {
+        briefDescription:
+          "You gain $" + AbilityBonus.ToGenerateTemporaryHitPoints + "THP.",
+        fullDescription:
+          "You gain 3 THP.  Increase the THP amount by 1 at levels 4, 6, and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}],
+
+    } as AbilityModel,
   };
 }

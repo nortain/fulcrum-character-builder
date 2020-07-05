@@ -393,10 +393,10 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "As a minor action, you can increase all damage done until the end of this round by $" + AbilityBonus.GlobalDamage + ". This ability can only be used after being crit or while bloodied.",
+          "You can increase all damage done until the end of this round by $" + AbilityBonus.GlobalDamage + ". This ability can only be used after being crit or while bloodied.",
         fullDescription:
           "<i>Requires Champion Brawn</i>\n" +
-          "As a minor action, you can increase all damage done until the end of this round by 8 + 1.5 * level. This ability can only be used after being crit or while bloodied."
+          "You can increase all damage done until the end of this round by 8 + 1.5 * level. This ability can only be used after being crit or while bloodied."
       },
       mechanicalBonus: [
         {abilityBonus: AbilityBonus.GlobalDamage, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 23}}
@@ -405,24 +405,127 @@ export function getTalentObject(): TalentConstants {
 
     } as AbilityModel,
 
-    // TODO finish implementing this
-    PrecisionStrikess: {
+
+    PrecisionStrike: {
       abilityName: TalentName.PrecisionStrike,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Minor,
       abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "As a minor action, you can increase all damage done until the end of this round by $" + AbilityBonus.GlobalDamage + ". This ability can only be used after being crit or while bloodied.",
+          "You can increase your hit bonus by $" + AbilityBonus.ToHit + " and your attack damage bonus by $" + AbilityBonus.AttackDamage + " to your next attack action made this turn.",
         fullDescription:
           "<i>Requires Champion Agility</i>\n" +
-          "As a minor action you can increase your hit bonus by +2 and your damage by 4+level bonus to your next attack action made this turn."
+          "You can increase your hit bonus by 2 and your attack damage bonus by 4 + level to your next attack action made this turn."
       },
       mechanicalBonus: [
-        {abilityBonus: AbilityBonus.GlobalDamage, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 23}}
+        {abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 14}},
+        {abilityBonus: AbilityBonus.GlobalDamage, abilityType: AbilityType.Power, value: {minBonus: 2, maxBonus: 2}}
       ],
-      abilityRequirement: [{requirementType: AttributeName.Brawn, requirementValue: AttributeStrength.Champion}],
+      abilityRequirement: [{requirementType: AttributeName.Agility, requirementValue: AttributeStrength.Champion}],
 
+    } as AbilityModel,
+
+    UnstoppableMarch: {
+      abilityName: TalentName.UnstoppableMarch,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Tactically move speed - 3 squares.  You may drag up to three adjacent equal size creatures with you.  You may also choose to spend a recovery.",
+        fullDescription:
+          "<i>Requires Heroic Brawn</i>\n" +
+          "Tactically move speed - 3 squares.  You may drag up to three equal size creatures with you.  You may also choose to spend a recovery."
+      },
+      abilityRequirement: [{requirementType: AttributeName.Brawn, requirementValue: AttributeStrength.Heroic}],
+
+    } as AbilityModel,
+
+    CounterSwing: {
+      abilityName: TalentName.CounterSwing,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "You may make a -1 DC attack.",
+        fullDescription:
+          "<i>Requires Heroic Brawn</i>\n" +
+          "You may make a -1 DC attack."
+      },
+      abilityRequirement: [{requirementType: AttributeName.Brawn, requirementValue: AttributeStrength.Heroic}],
+
+    } as AbilityModel,
+
+    LightningStrike: {
+      abilityName: TalentName.LightningStrike,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "You may make a -2 DC attack with a +2 to hit.",
+        fullDescription:
+          "<i>Requires Heroic Agility</i>\n" +
+          "You may make a -2 DC attack with a +2 to hit."
+      },
+      abilityRequirement: [{requirementType: AttributeName.Agility, requirementValue: AttributeStrength.Heroic}],
+
+    } as AbilityModel,
+
+    KnightsMove: {
+      abilityName: TalentName.KnightsMove,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Two allies within 7 squares are able to tactically move 2 squares.",
+        fullDescription:
+          "<i>Requires Champion Reasoning</i>\n" +
+          "Two allies within 7 squares are able to tactically move 2 squares."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Feature, abilityType: AbilityType.Feature, value: {minBonus: 2, maxBonus: 2}} ],
+      abilityRequirement: [{requirementType: AttributeName.Reasoning, requirementValue: AttributeStrength.Champion}],
+
+    } as AbilityModel,
+
+    MasterTactician: {
+      abilityName: TalentName.MasterTactician,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Slide up to 3 allies within 10 squares of you $" + AbilityBonus.FriendlyMovement + " squares each.",
+        fullDescription:
+          "<i>Requires Heroic Reasoning</i>\n" +
+          "Slide up to 3 allies within 10 squares 4 squares each."
+      },
+      abilityRequirement: [{requirementType: AttributeName.Reasoning, requirementValue: AttributeStrength.Heroic}],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Keyword, abilityType: AbilityType.Power, value: AbilityBonus.FriendlyMovement}, // special case
+        {abilityBonus: AbilityBonus.FriendlyMovement, abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 4}}
+      ]
+    } as AbilityModel,
+
+    // TODO THIS IS NOT DONE
+    CommandingStrike: {
+      abilityName: TalentName.CommandingStrike,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementType: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Slide up to 3 allies within 10 squares of you $" + AbilityBonus.FriendlyMovement + "  squares each.",
+        fullDescription:
+          "<i>Requires Heroic Reasoning</i>\n" +
+          "Slide up to 3 allies within 10 squares 4 squares each."
+      },
+      abilityRequirement: [{requirementType: AttributeName.Reasoning, requirementValue: AttributeStrength.Heroic}],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FriendlyMovement, abilityType: AbilityType.Power, value: AbilityBonus.FriendlyMovement}, // special case
+        {abilityBonus: AbilityBonus.FriendlyMovement, abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 4}}
+      ]
     } as AbilityModel,
   };
 }

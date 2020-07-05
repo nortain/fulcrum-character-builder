@@ -240,7 +240,7 @@ export class AbilityFactoryService {
     if (ability.associatedAbilities) {
       ability.associatedAbilities.forEach((association) => {
         const newAbility = this.getNewAbility(association, ability.abilityType);
-        description += "\n" + this.printOutAssociatedAbility(newAbility, Level.Ten, false);
+        description += "\n" + this.printOutAssociatedAbility(newAbility, Level.Ten, description, description);
       });
     }
     return description;
@@ -251,8 +251,9 @@ export class AbilityFactoryService {
    * @param ability
    * @param level
    */
-  printOutBriefDescription(ability: AbilityModel, level: Level = Level.Ten): string {
+  printOutBriefDescription(ability: AbilityModel, level: Level = Level.Ten, currentAbilities = new Array<AbilityModel>()): string {
     let description = ability.abilityDescription.briefDescription;
+    let nextValueBonus = 0;
     if (this.hasReplacementValuesForBriefDescription(ability)) {
       for (const mechanic of ability.mechanicalBonus) {
         if (this.isValueRange(mechanic.value)) {
@@ -262,22 +263,28 @@ export class AbilityFactoryService {
           } else {
             numberValue = this.attributeFactoryService.extractNumberFromValueRange(mechanic.value, level, mechanic.dieSize, mechanic.adjustLevel);
           }
+          if (nextValueBonus > 0) {
+            numberValue += nextValueBonus;
+            nextValueBonus = 0;
+          }
           description = description.replace("$" + mechanic.abilityBonus, numberValue).toString();
+        } else if (mechanic.abilityBonus === AbilityBonus.Keyword) {
+          nextValueBonus = this.getBonusForAbility(mechanic.value, currentAbilities, level) as number;
         }
       }
     }
     if (ability.associatedAbilities && ability.pickNumber <= 0) {
       ability.associatedAbilities.forEach((association) => {
         const newAbility = this.getNewAbility(association, ability.abilityType);
-        description += "\n" + this.printOutAssociatedAbility(newAbility, level, true);
+        description += "\n" + this.printOutAssociatedAbility(newAbility, level, ability.abilityDescription.briefDescription, description);
       });
     } else if (ability.innerSelectedAbilities && ability.pickNumber > 0) {
       ability.innerSelectedAbilities.forEach((association) => {
         const newAbility = this.getNewAbility(association, ability.abilityType);
-        description += "\n" + this.printOutAssociatedAbility(newAbility, level, true);
+        description += "\n" + this.printOutAssociatedAbility(newAbility, level, ability.abilityDescription.briefDescription, description);
       });
     }
-    return description;
+    return this.printOutAssociatedAbility(ability, level, ability.abilityDescription.briefDescription, description);
   }
 
   /**
@@ -286,25 +293,17 @@ export class AbilityFactoryService {
    * abilityName: (abilityType) abilityAction. abilityDescription
    * @param ability
    * @param level
-   * @param isBriefDescription
+   * @param unalteredDescription
+   * @param alteredDescription
    */
-  printOutAssociatedAbility(ability: AbilityModel, level: Level = Level.Ten, isBriefDescription: boolean): string {
-    let description: string;
-    let unalteredDescription: string;
-    if (isBriefDescription) {
-      description = this.printOutBriefDescription(ability, level);
-      unalteredDescription = ability.abilityDescription.briefDescription;
-    } else {
-      description = this.printOutFullDescription(ability);
-      unalteredDescription = ability.abilityDescription.fullDescription;
-    }
+  printOutAssociatedAbility(ability: AbilityModel, level: Level = Level.Ten, unalteredDescription: string, alteredDescription: string): string {
     let nonTalentText = "";
     if (ability.mechanicalBonus) {
       const matchingBonus = ability.mechanicalBonus.find(bonus => unalteredDescription.indexOf(bonus.abilityBonus) !== -1);
-      nonTalentText = !!matchingBonus && matchingBonus.abilityType !== AbilityType.Talent ? "(" + matchingBonus.abilityType + ") " : "";
+      nonTalentText = !!matchingBonus && matchingBonus.abilityType !== AbilityType.Talent && matchingBonus.abilityType !== AbilityType.Passive ? "(" + matchingBonus.abilityType + ") " : "";
     }
     const nonPassiveText = ability.abilityAction && ability.abilityAction !== ActionType.Passive ? ability.abilityAction + ". " : "";
-    return this.castleCasePipe.transform(ability.abilityName) + ": " + nonTalentText + nonPassiveText + description;
+    return this.castleCasePipe.transform(ability.abilityName) + ": " + nonTalentText + nonPassiveText + alteredDescription;
   }
 
   /**

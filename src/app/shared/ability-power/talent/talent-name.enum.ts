@@ -11,6 +11,8 @@ export enum TalentName {
   ChargeMastery = "ChargeMastery",
   ChargeMasteryLesser = "ChargeMasteryLesser",
   CoordinatedStrikes = "CoordinatedStrikes",
+  CommandingStrike = "CommandingStrike",
+  CounterSwing = "CounterSwing",
   DefensiveCharge = "DefensiveCharge",
   Deflection = "Deflection",
   EmpoweredStrikes = "EmpoweredStrikes",
@@ -20,7 +22,10 @@ export enum TalentName {
   HealingSpecialization = "HealingSpecialization",
   ImprovedController = "ImprovedController",
   ImprovedVitality = "ImprovedVitality",
+  KnightsMove = "KnightsMove",
   LethalStrikes = "LethalStrikes",
+  LightningStrike = "LightningStrike",
+  MasterTactician = "MasterTactician",
   MeasuredCharge = "MeasuredCharge",
   MeleeArcher = "MeleeArcher",
   MissileParry = "MissileParry",
@@ -29,5 +34,6 @@ export enum TalentName {
   Reaper = "Reaper",
   SureShot = "SureShot",
   SavageCharge = "SavageCharge",
+  UnstoppableMarch = "UnstoppableMarch",
   VulnerableShots = "VulnerableShots"
 }

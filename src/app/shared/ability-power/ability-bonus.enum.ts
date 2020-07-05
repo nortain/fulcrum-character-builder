@@ -61,5 +61,7 @@ export enum AbilityBonus {
   SpellLevel = "SpellLevel",
   Overcast = "Overcast",
   AdvancedWeaponTraining = "AdvancedWeaponTraining",
+  Feature = "Feature",
+  Keyword = "Keyword",
 
 }

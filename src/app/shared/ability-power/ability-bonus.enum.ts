@@ -60,12 +60,12 @@ export enum AbilityBonus {
   Ongoing = "Ongoing",
   Environment = "Environment",
   Concentration = "Concentration",
+  ResistancePiercing = "ResistancePiercing",
   SpellLevel = "SpellLevel",
   Overcast = "Overcast",
   AdvancedWeaponTraining = "AdvancedWeaponTraining",
   Feature = "Feature",
   Keyword = "Keyword",
-  Power = "Power",
-  Empty = ""
+
 
 }

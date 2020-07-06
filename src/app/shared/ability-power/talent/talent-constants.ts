@@ -740,14 +740,22 @@ export function getTalentObject(): TalentConstants {
     ChiFocus: {
       abilityName: TalentName.ChiFocus,
       abilityType: AbilityType.Talent,
-      abilityAction: ActionType.Passive,
+      abilityAction: ActionType.Swift,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser},
+        {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
-        briefDescription:
-          "Increase your attack damage by $" + AbilityBonus.AttackDamage,
-        fullDescription:
-          "Increase your attack damage by 2.  Increase this bonus by 1 at levels 4 and 8."
+        briefDescription: "Choose two effects among the following, you may choose the same option twice:\n" +
+          "Increase your damage by $" + AbilityBonus.AttackDamage + " until the start of your next turn.\n" +
+          "Gain $" + AbilityBonus.TemporaryDamageResist + " damage resistance until the start of your next turn.\n" +
+          "Gain a +1 to hit to and " + AbilityBonus.ResistancePiercing + " resistance piercing to all attacks until the start of your next turn.",
+        fullDescription: "Choose two effects among the following, you may choose the same option twice:\n" +
+          "Increase your damage by 4 + (level / 2 ) until the start of your next turn.\n" +
+          "Gain 2 + (level / 3) damage resistance until the start of your next turn.\n" +
+          "Gain a +1 to hit to and 5 + level resistance piercing to all attacks until the start of your next turn."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 9}},
+        {abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Power, value: {minBonus: 2, maxBonus: 5}},
+        {abilityBonus: AbilityBonus.ResistancePiercing, abilityType: AbilityType.Power, value: {minBonus: 6, maxBonus: 15}}]
     } as AbilityModel,
 
     ChiStrikes: {
@@ -756,11 +764,11 @@ export function getTalentObject(): TalentConstants {
       abilityAction: ActionType.Passive,
       abilityDescription: {
         briefDescription:
-          "Increase your attack damage by $" + AbilityBonus.AttackDamage,
+          "Gain  $" + AbilityBonus.EmpoweredDamage + " to your empowered damage bonus.",
         fullDescription:
-          "Increase your attack damage by 2.  Increase this bonus by 1 at levels 4 and 8."
+          "Gain 3 to your empowered damage bonus.  Increase this bonus by 1 at levels 4 and 8."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 3, maxBonus: 5}}]
     } as AbilityModel,
   };
 }

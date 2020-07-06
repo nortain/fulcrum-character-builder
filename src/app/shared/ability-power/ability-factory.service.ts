@@ -63,7 +63,7 @@ export class AbilityFactoryService {
       if (canBeSelected.isSelectable) {
         newAbilities = [...newAbilities, this.getNewAbility(abilityToBeSelected.abilityName, abilityToBeSelected.abilityType)];
       } else {
-        throw new Error("The ability: " + this.castleCasePipe.transform(abilityToBeSelected.abilityName) + " is an invalid selection because " + canBeSelected.reasonItCannotBeSelected);
+        throw new Error("The " + abilityToBeSelected.abilityType.toLocaleLowerCase() + ": " + this.castleCasePipe.transform(abilityToBeSelected.abilityName) + " is an invalid selection because " + canBeSelected.reasonItCannotBeSelected);
       }
     }
     return newAbilities;
@@ -78,6 +78,11 @@ export class AbilityFactoryService {
   canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>()): ICanBeSelected {
     let reasonItCannotBeSelected: string;
     let canBePicked = this.hasAbilityNotBeenSelected(abilityToBeSelected, currentAbilities);
+    const abilityHasACost = abilityToBeSelected.abilityCost && abilityToBeSelected.abilityCost.length > 0;
+    if (!abilityHasACost) {
+      reasonItCannotBeSelected = "it does not have a cost. This can only be selected as part of a larger " + abilityToBeSelected.abilityType.toLocaleLowerCase() + ".";
+    }
+    canBePicked = canBePicked && abilityHasACost;
     if (canBePicked && abilityToBeSelected.abilityRequirement) {
       for (const requirement of abilityToBeSelected.abilityRequirement) {
         let requirementMet = false;

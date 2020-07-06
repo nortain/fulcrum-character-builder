@@ -264,7 +264,7 @@ describe('AbilityFactoryService', () => {
   it('should prevent you from selecting a talent if you do not meet the attribute requirement', () => {
     expect(function () {
       const result = service.selectAbility(complexTalent, []);
-    }).toThrowError("The ability: Missile Parry is an invalid selection because you require at least Heroic Agility");
+    }).toThrowError("The talent: Missile Parry is an invalid selection because you require at least Heroic Agility");
   });
 
   it('should only get mechanical bonuses for passive talents because active talents are only active while active', () => {
@@ -318,7 +318,7 @@ describe('AbilityFactoryService', () => {
     const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
     expect(function () {
       service.selectAbility(talent, []);
-    }).toThrowError("The ability: Bolster is an invalid selection because you have To Generate Temporary Hit Points");
+    }).toThrowError("The talent: Bolster is an invalid selection because you have To Generate Temporary Hit Points");
   });
 
   it('should be able to select bolster if you an ability that can generate thp', () => {
@@ -355,7 +355,14 @@ describe('AbilityFactoryService', () => {
     expect(function () {
       service.selectAbility(talent, []);
     })
-      .toThrowError("The ability: Greater Juggernaut is an invalid selection because you require at least 1 rank in the Subtheme Juggernaut.");
+      .toThrowError("The talent: Greater Juggernaut is an invalid selection because you require at least 1 rank in the Subtheme Juggernaut.");
+  });
+
+  it('should not be able to select Rending Strikes because it has no ability cost', () => {
+    const talent = service.getNewAbility(TalentName.RendingStrikes, AbilityType.Talent);
+    expect(function () {
+      service.selectAbility(talent, []);
+    }).toThrowError("The talent: Rending Strikes is an invalid selection because it does not have a cost. This can only be selected as part of a larger talent.");
   });
 
   /**Stupid Helper functions**/

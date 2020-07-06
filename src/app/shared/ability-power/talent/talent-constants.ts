@@ -633,7 +633,6 @@ export function getTalentObject(): TalentConstants {
       mechanicalBonus: [{abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
     } as AbilityModel,
 
-    // TODO finish implementing me
     AdvancedWeaponTrainingWaterDancer: {
       abilityName: TalentName.AdvancedWeaponTrainingWaterDancer,
       abilityType: AbilityType.Talent,
@@ -663,7 +662,6 @@ export function getTalentObject(): TalentConstants {
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
     } as AbilityModel,
 
-
     Sidestep: {
       abilityName: TalentName.Sidestep,
       abilityType: AbilityType.Talent,
@@ -676,6 +674,93 @@ export function getTalentObject(): TalentConstants {
           "Reduce the damage taken from an attack that targets Active Defense or Reflex by 6 + 1.2 * level."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}]
+    } as AbilityModel,
+
+    AdvancedWeaponTrainingBigWeapons: {
+      abilityName: TalentName.AdvancedWeaponTrainingBigWeapons,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater},
+        {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "The character gains the following benefits when fighting with a two handed weapon:",
+        fullDescription:
+          "The character gains the following benefits when fighting with a two handed weapon:"
+      },
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
+      associatedAbilities: [TalentName.RendingStrikes, TalentName.LengthAdvantage]
+    } as AbilityModel,
+
+    LengthAdvantage: {
+      abilityName: TalentName.LengthAdvantage,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      briefDescriptionAbilityType: AbilityType.Power,
+      fullDescriptionAbilityType: AbilityType.Power,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser},
+        {requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Make a snap basic attack with a +4 to hit against an enemy that leaves a square you threaten",
+        fullDescription:
+          "Make a snap basic attack with a +4 to hit against an enemy that leaves a square you threaten"
+      },
+    } as AbilityModel,
+
+    RendingStrikes: {
+      abilityName: TalentName.RendingStrikes,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Increase your attack damage by $" + AbilityBonus.AttackDamage,
+        fullDescription:
+          "Increase your attack damage by 2.  Increase this bonus by 1 at levels 4 and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}]
+    } as AbilityModel,
+
+    AdvancedWeaponTrainingInnerFocus: {
+      abilityName: TalentName.AdvancedWeaponTrainingInnerFocus,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater},
+        {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Gain the following:",
+        fullDescription:
+          "Gain the following:"
+      },
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
+      associatedAbilities: [TalentName.ChiFocus, TalentName.ChiStrikes]
+    } as AbilityModel,
+
+    ChiFocus: {
+      abilityName: TalentName.ChiFocus,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Increase your attack damage by $" + AbilityBonus.AttackDamage,
+        fullDescription:
+          "Increase your attack damage by 2.  Increase this bonus by 1 at levels 4 and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}]
+    } as AbilityModel,
+
+    ChiStrikes: {
+      abilityName: TalentName.ChiStrikes,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Increase your attack damage by $" + AbilityBonus.AttackDamage,
+        fullDescription:
+          "Increase your attack damage by 2.  Increase this bonus by 1 at levels 4 and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}]
     } as AbilityModel,
   };
 }

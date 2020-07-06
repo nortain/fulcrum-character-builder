@@ -123,7 +123,7 @@ describe('AbilityFactoryService', () => {
     const requirements: Array<IAbilityRequirement> = service.getRequirementForAbility(complexTalent);
     expect(requirements
       .find(
-        (requirement) => requirement.requirementType === AttributeName.Agility)
+        (requirement) => requirement.requirementAbilityName === AttributeName.Agility)
     ).toBeTruthy();
 
     expect(requirements.find(requirement => requirement.requirementValue === AttributeStrength.Heroic)).toBeTruthy();
@@ -327,6 +327,35 @@ describe('AbilityFactoryService', () => {
     let currentAbilities = [requiredTalent];
     currentAbilities = service.selectAbility(talent, currentAbilities);
     expect(currentAbilities.length).toEqual(2);
+  });
+
+  it('should be able to select bolster when you have a talent that is associated with a talent that can generate thp', () => {
+    const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
+    const requiredTalent = service.getNewAbility(TalentName.GreaterJuggernaut, AbilityType.Talent);
+    let currentAbilities = [requiredTalent];
+    currentAbilities = service.selectAbility(talent, currentAbilities);
+    expect(currentAbilities.length).toEqual(2);
+  });
+
+  it('should be able to print out greater juggernaut correctly', () => {
+    const talent = service.getNewAbility(TalentName.GreaterJuggernaut, AbilityType.Talent);
+    let text = service.printOutBriefDescription(talent, Level.Three);
+    expect(text).toBe("Greater Juggernaut: Increase the damage resistance of Juggernaut by 1 and gain the Armor Up feature.\n" +
+      "Armor Up: (Feature) Move. You gain 3 THP.");
+    text = service.printOutBriefDescription(talent, Level.Four);
+    expect(text).toContain("4 THP.");
+    text = service.printOutBriefDescription(talent, Level.Six);
+    expect(text).toContain("5 THP.");
+    text = service.printOutBriefDescription(talent, Level.Eight);
+    expect(text).toContain("6 THP.");
+  });
+
+  it('should not be able to select greater juggernaut without 1 rank juggernaut', () => {
+    const talent = service.getNewAbility(TalentName.GreaterJuggernaut, AbilityType.Talent);
+    expect(function () {
+      service.selectAbility(talent, []);
+    })
+      .toThrowError("The ability: Greater Juggernaut is an invalid selection because you require at least 1 rank in the Subtheme Juggernaut.");
   });
 
   /**Stupid Helper functions**/

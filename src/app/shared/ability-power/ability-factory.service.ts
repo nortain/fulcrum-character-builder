@@ -84,20 +84,22 @@ export class AbilityFactoryService {
         currentAbilities
           .find(abilities => {
             if (abilities && abilities.abilityRequirement) {
-              const result = this.findMatchingRequirement(abilities.abilityRequirement, requirement, canBePicked, requirementMet, reasonItCannotBeSelected);
+              const result = this.findMatchingRequirement(abilities.abilityRequirement, requirement, canBePicked, reasonItCannotBeSelected);
               canBePicked = result.isSelectable;
+              requirementMet = canBePicked;
               reasonItCannotBeSelected = result.reasonItCannotBeSelected;
             } else if (abilities && abilities.mechanicalBonus) {
-              const result = this.findMatchingRequirement(abilities.mechanicalBonus, requirement, canBePicked, requirementMet, reasonItCannotBeSelected);
+              const result = this.findMatchingRequirement(abilities.mechanicalBonus, requirement, canBePicked, reasonItCannotBeSelected);
               canBePicked = result.isSelectable;
+              requirementMet = canBePicked;
               reasonItCannotBeSelected = result.reasonItCannotBeSelected;
             }
           });
-        if (requirement.requirementType in AttributeName) {
-          if (!(requirement.requirementType in attributes)) {
-            attributes = [this.attributeFactoryService.getNewAttribute(requirement.requirementType as AttributeName, AttributeStrength.Normal)];
+        if (requirement.requirementAbilityName in AttributeName) {
+          if (!(requirement.requirementAbilityName in attributes)) {
+            attributes = [this.attributeFactoryService.getNewAttribute(requirement.requirementAbilityName as AttributeName, AttributeStrength.Normal)];
           }
-          const pickedAttribute = attributes.find(attribute => attribute && requirement.requirementType === attribute.attributeName);
+          const pickedAttribute = attributes.find(attribute => attribute && requirement.requirementAbilityName === attribute.attributeName);
           const enough = pickedAttribute.attributeStrength >= requirement.requirementValue;
           canBePicked = canBePicked && enough;
           requirementMet = canBePicked;
@@ -117,19 +119,16 @@ export class AbilityFactoryService {
   private findMatchingRequirement(abilities: Array<IAbilityBonus | IAbilityRequirement>,
                                   requirement: IAbilityRequirement,
                                   canBePicked: boolean,
-                                  requirementMet: boolean,
                                   reasonItCannotBeSelected: string): ICanBeSelected {
     abilities
       .find(bonus => {
-        if ((bonus as IAbilityBonus).abilityBonus === requirement.requirementType) {
+        if ((bonus as IAbilityBonus).abilityBonus === requirement.requirementAbilityName) {
           canBePicked = canBePicked && !!requirement.requirementValue;
-          requirementMet = canBePicked;
           if (!requirement.requirementValue) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
-        } else if ((bonus as IAbilityRequirement).requirementType === requirement.requirementType) {
+        } else if ((bonus as IAbilityRequirement).requirementAbilityName === requirement.requirementAbilityName) {
           canBePicked = canBePicked && !!requirement.requirementValue;
-          requirementMet = canBePicked;
           if (!requirement.requirementValue) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
@@ -140,11 +139,14 @@ export class AbilityFactoryService {
 
   getReasonWhyAbilityCannotBeSelected(requirement: IAbilityRequirement): string {
     let haveOrNotHave: string;
-    if (typeof requirement.requirementValue === "number") {
-      haveOrNotHave = "you require at least " + AttributeStrength[requirement.requirementValue] + " " + this.castleCasePipe.transform(requirement.requirementType);
+    if (typeof requirement.requirementValue === "number" && requirement.requirementType === AbilityType.Attribute) {
+      haveOrNotHave = "you require at least " + AttributeStrength[requirement.requirementValue] + " " + this.castleCasePipe.transform(requirement.requirementAbilityName);
+    } else if (typeof requirement.requirementValue === "number" && requirement.requirementType === AbilityType.Subtheme) {
+      const pluralOrSingular = requirement.requirementValue === 1 ? " rank " : " ranks ";
+      haveOrNotHave = "you require at least " + requirement.requirementValue + pluralOrSingular + "in the " + requirement.requirementType + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
     } else {
       haveOrNotHave = requirement.requirementValue ? "you have " : " you do not have ";
-      haveOrNotHave += this.castleCasePipe.transform(requirement.requirementType);
+      haveOrNotHave += this.castleCasePipe.transform(requirement.requirementAbilityName);
     }
     return haveOrNotHave;
   }
@@ -265,9 +267,9 @@ export class AbilityFactoryService {
       ability.abilityRequirement.forEach((requirement, index) => {
         if (typeof requirement.requirementValue === "boolean") {
           const notText = requirement.requirementValue ? "" : "not ";
-          requirementText += "You must " + notText + "already have " + this.castleCasePipe.transform(requirement.requirementType) + ".";
+          requirementText += "You must " + notText + "already have " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
         } else if (Object.values(AttributeStrength).includes(requirement.requirementValue as AttributeStrength)) {
-          requirementText += "You require at least " + AttributeStrength[requirement.requirementValue as AttributeStrength] + " " + this.castleCasePipe.transform(requirement.requirementType) + ".";
+          requirementText += "You require at least " + AttributeStrength[requirement.requirementValue as AttributeStrength] + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
         }
         if (index < ability.abilityRequirement.length - 1) {
           requirementText += " ";
@@ -312,7 +314,7 @@ export class AbilityFactoryService {
       for (const mechanic of ability.mechanicalBonus) {
         if (this.isValueRange(mechanic.value)) {
           let numberValue;
-          if (ability.abilityType === AbilityType.Talent && mechanic.abilityType === AbilityType.Passive) {
+          if (ability.abilityType === AbilityType.Talent && (mechanic.abilityType === AbilityType.Passive || mechanic.abilityType === AbilityType.Feature)) {
             numberValue = this.extractNumberFromValueRangeForPassiveTalents(mechanic.value, level, mechanic.adjustLevel);
           } else {
             numberValue = this.attributeFactoryService.extractNumberFromValueRange(mechanic.value, level, mechanic.dieSize, mechanic.adjustLevel);

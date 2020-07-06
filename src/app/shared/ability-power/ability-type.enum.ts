@@ -15,7 +15,9 @@ export enum AbilityType {
   Feature = "Feature",
   Passive = "Passive",
   Knack = "Knack",
-  Talent = "Talent"
+  Talent = "Talent",
+  Subtheme = "Subtheme",
+  Attribute = "Attribute"
 }
 
 

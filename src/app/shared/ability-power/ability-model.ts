@@ -48,6 +48,7 @@ export interface ICanBeSelected {
  * Expresses a requirement that is necessary to obtain this ability.  In a key value pair.  A requirement identifier which is a AbilityBonus enum to specify what specific thing is required and then a requirementValue which is how much of said bonus is needed.
  */
 export interface IAbilityRequirement {
-  requirementType: AbilityName;
+  requirementAbilityName: AbilityName;
+  requirementType: AbilityType;
   requirementValue: number | boolean;
 }

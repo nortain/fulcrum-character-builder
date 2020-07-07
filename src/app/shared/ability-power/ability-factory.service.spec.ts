@@ -179,14 +179,14 @@ describe('AbilityFactoryService', () => {
     expect(result.isSelectable).toBeFalsy();
   });
 
-  it('should not be able to select a greater talent and then choose its less power', () => {
+  it('should not be able to select a greater talent and then choose its less power or any of AWT power', () => {
     const talent = service.getNewAbility(TalentName.AdvancedWeaponTrainingRanged, AbilityType.Talent);
     const talent2 = service.getNewAbility(TalentName.SureShot, AbilityType.Talent);
     const talent3 = service.getNewAbility(TalentName.FollowUpAttack, AbilityType.Talent);
     let result = service.canAbilityBeSelected(talent, [talent2]);
     expect(result.isSelectable).toBeFalsy();
     result = service.canAbilityBeSelected(talent, [talent3]);
-    expect(result.isSelectable).toBeTruthy();
+    expect(result.isSelectable).toBeFalsy();
   });
 
   it('should not be able to choose a lesser power and then choose that powers greater talent', () => {
@@ -363,6 +363,36 @@ describe('AbilityFactoryService', () => {
     expect(function () {
       service.selectAbility(talent, []);
     }).toThrowError("The talent: Rending Strikes is an invalid selection because it does not have a cost. This can only be selected as part of a larger talent.");
+  });
+
+  it('should be able to get any qualifiers for a bonus', () => {
+    const talent = service.getNewAbility(TalentName.GreaterJuggernaut, AbilityType.Talent);
+    expect(service.getAbilityQualifiers(talent).length).toEqual(0);
+    const otherTalent = service.getNewAbility(TalentName.ArmorOfTheScoundrel, AbilityType.Talent);
+    const result = service.getAbilityQualifiers(otherTalent, AbilityBonus.ActiveDefense);
+    expect(result.length).toEqual(1);
+    expect(result[0].abilityQualifier.find(qualifier => qualifier.requirementAbilityName === AbilityBonus.NonStacking)).toBeTruthy();
+  });
+
+  it('should be able to show that a character is trained in heavy armors', () => {
+      const talent = service.getNewAbility(TalentName.AdvancedArmorTraining, AbilityType.Talent);
+      const result = service.getBonusForAbility(AbilityBonus.HeavyArmorTraining, [talent]);
+      expect(result).toBe(AbilityBonus.HeavyArmorTraining);
+  });
+
+  it('should be able briefly print out masterful strikes', () => {
+    const talent = service.getNewAbility(TalentName.WeaponMastery, AbilityType.Talent);
+    const text = service.printOutBriefDescription(talent);
+    expect(text).toBe("Weapon Mastery: Gain 1 to your attack damage bonus and gain the Masterful Strikes Feature.\n" +
+    "Masterful Strikes: (Feature) Move. Gain a +7 to your attack damage bonus to all attacks until the end of your turn.");
+  });
+
+  it('should be able fully print out masterful strikes', () => {
+    const talent = service.getNewAbility(TalentName.WeaponMastery, AbilityType.Talent);
+    const text = service.printOutFullDescription(talent);
+    expect(text).toBe("<i>You require at least 2 ranks in the Weapon Specialization subtheme.</i>\n" +
+      "Weapon Mastery: Gain 1 to your attack damage bonus and gain the Masterful Strikes Feature.\n" +
+      "Masterful Strikes: (Feature) Move. Gain a +3 to your attack damage bonus to all attacks until the end of your turn. Increase this bonus by 1 at levels 2, 4, 6 and 8.");
   });
 
   /**Stupid Helper functions**/

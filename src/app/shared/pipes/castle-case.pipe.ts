@@ -5,7 +5,10 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class CastleCasePipe implements PipeTransform {
 
-  transform(value: string, args?: any): any {
+  transform(value: string | number, args?: any): any {
+    if (typeof value === "number") {
+      value = value.toString();
+    }
     if (value) {
       let newString = value.replace(/[A-Z]/g, (x) => {
         return " " + x.toUpperCase();

@@ -273,8 +273,11 @@ export class AbilityFactoryService {
         if (typeof requirement.requirementValue === "boolean") {
           const notText = requirement.requirementValue ? "" : "not ";
           requirementText += "You must " + notText + "already have " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
-        } else if (Object.values(AttributeStrength).includes(requirement.requirementValue as AttributeStrength)) {
+        } else if (requirement.requirementType === AbilityType.Attribute) {
           requirementText += "You require at least " + AttributeStrength[requirement.requirementValue as AttributeStrength] + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
+        } else if (requirement.requirementType === AbilityType.Subtheme) {
+          const rankOrRanks = requirement.requirementValue === 1 ? ' rank' : ' ranks';
+          requirementText += "You require at least " + requirement.requirementValue + rankOrRanks + " in the " + this.castleCasePipe.transform(requirement.requirementAbilityName) + " subtheme.";
         }
         if (index < ability.abilityRequirement.length - 1) {
           requirementText += " ";
@@ -373,6 +376,29 @@ export class AbilityFactoryService {
     const nonPassiveText = ability.abilityAction && ability.abilityAction !== ActionType.Passive ? ability.abilityAction + ". " : "";
     return this.castleCasePipe.transform(ability.abilityName) + ": " + nonTalentText + nonPassiveText + alteredDescription;
   }
+
+
+  /**
+   * This will return a collection of IAbilityBonuses that either have any qualifier or, if the optional ability name is provided, will return only IAbilityBonuses that match the given ability name.  For example if you want to see if a any bonuses for an ability A has the nonstacking qualifier for bonus b you could pass in ability A and AbilityBonus.B and you would get back a collection of bonuses that have a qualifier and the caller can process those qualifiers how they like.
+   * @param ability
+   * @param abilityName
+   */
+  getAbilityQualifiers(ability: AbilityModel, abilityName?: AbilityName): Array<IAbilityBonus> {
+    const bonusesWithQualifiers = [];
+    const hasMechanicalBonuses = ability.mechanicalBonus && ability.mechanicalBonus.length > 0;
+    if (hasMechanicalBonuses) {
+      for (const bonus of ability.mechanicalBonus) {
+        const hasQualifiers = bonus.abilityQualifier && bonus.abilityQualifier.length > 0;
+        if (hasQualifiers && !!abilityName && bonus.abilityBonus === abilityName) {
+          bonusesWithQualifiers.push(bonus);
+        } else if (hasQualifiers && !abilityName) {
+          bonusesWithQualifiers.push(bonus);
+        }
+      }
+    }
+    return bonusesWithQualifiers;
+  }
+
 
   /**
    * Give a bonus value of type value range or ability bonus figure out if it's a value range.  If so, return true otherwise return false.

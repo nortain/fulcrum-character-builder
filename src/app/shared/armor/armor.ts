@@ -1,8 +1,5 @@
 import {ArmorType} from "./armor-type.enum";
-import {
-  ACTIVE_DEFENSE, CASTER_PENALTY, CRITICAL_REDUCTION, MAX_MOVEMENT, PASSIVE_DEFENSE, REQUIRES_THREE_MAGIC, REQUIRES_TRAINING,
-  SKILL_PENALTY
-} from "../constants/constants";
+import {ACTIVE_DEFENSE, CASTER_PENALTY, CRITICAL_REDUCTION, MAX_MOVEMENT, PASSIVE_DEFENSE, REQUIRES_THREE_MAGIC, REQUIRES_TRAINING, SKILL_PENALTY} from "../constants/constants";
 import {MaxMovement} from "./max-movement";
 import {ThemePointsContainer} from "../theme-points/theme-points-container";
 
@@ -56,7 +53,15 @@ export class Armor {
   }
 
   getTemporaryHitPoints(): number {
-    const thp = this.type - 1;
-    return thp < 0 ? 0 : thp;
+    switch (this.type) {
+      case ArmorType.LightArmor:
+        return 1;
+      case ArmorType.MediumArmor:
+        return 2;
+      case ArmorType.HeavyArmor:
+        return 3;
+      default:
+        return 0;
+    }
   }
 }

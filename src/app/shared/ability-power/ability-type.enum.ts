@@ -5,8 +5,10 @@ import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {TalentType} from "./talent/talent-type.enum";
 import {ActionType} from "../action/action-type.enum";
 import {SpellDamageKeyword} from "../spells/enums/spell-damage-keyword.enum";
+import {ArmorType} from "../armor/armor-type.enum";
+import {SubthemeType} from "../theme-points/subthemes/subtheme-types.enum";
 
-export type AbilityName = TalentName | KnackName | AbilityBonus | AttributeName | TalentType | ActionType | SpellDamageKeyword;
+export type AbilityName = TalentName | KnackName | AbilityBonus | AttributeName | TalentType | ActionType | SpellDamageKeyword | ArmorType | SubthemeType;
 
 
 export enum AbilityType {
@@ -17,7 +19,8 @@ export enum AbilityType {
   Knack = "Knack",
   Talent = "Talent",
   Subtheme = "Subtheme",
-  Attribute = "Attribute"
+  Attribute = "Attribute",
+  Armor = "Armor"
 }
 
 

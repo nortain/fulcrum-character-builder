@@ -14,6 +14,9 @@ import {Armor} from "../armor/armor";
 import {ThemeType} from "../theme-points/theme-type.enum";
 import {ThemeStrength} from "../theme-points/theme-strength.enum";
 import {Level} from "./level.enum";
+import {TalentName} from "../ability-power/talent/talent-name.enum";
+import {AbilityType} from "../ability-power/ability-type.enum";
+import {AbilityBonus} from "../ability-power/ability-bonus.enum";
 
 // TODO when character factory service is done
 describe('Character Service Factory', () => {
@@ -247,6 +250,16 @@ describe('Character Service Factory', () => {
   it('should be able to set a weapon to main hand', () => {
 
   });
+
+  it('should only give bonus AD from armor of the scoundrel if you have light or lighter armor', () => {
+
+
+  });
+
+  it('should only give bonus AD from armor of the scoundrel if you do not already have something that gives you a bonus to AD', () => {
+
+  });
+
 
 
 });

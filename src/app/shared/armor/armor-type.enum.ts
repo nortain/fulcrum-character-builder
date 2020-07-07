@@ -1,7 +1,7 @@
 export enum ArmorType {
-  None,
-  CasterArmor,
-  LightArmor,
-  MediumArmor,
-  HeavyArmor
+  None = "None",
+  CasterArmor = "CasterArmor",
+  LightArmor = "LightArmor",
+  MediumArmor = "MediumArmor",
+  HeavyArmor = "HeavyArmor"
 }

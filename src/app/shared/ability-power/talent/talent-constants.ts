@@ -8,6 +8,9 @@ import {TalentName} from "./talent-name.enum";
 import {Level} from "../../character/level.enum";
 import {TalentType} from "./talent-type.enum";
 import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum";
+import {ArmorType} from "../../armor/armor-type.enum";
+import {SubthemeType} from "../../theme-points/subthemes/subtheme-types.enum";
+import {ThemeStrength} from "../../theme-points/theme-strength.enum";
 
 export type TalentConstants = { [K in TalentName]: AbilityModel };
 
@@ -211,7 +214,7 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Gain advantage to an attack that has missed its target. If the attack still misses this power is not expended."
       },
-      abilityRequirement: [{requirementAbilityName: TalentName.AdvancedWeaponTrainingTwoWeaponFighting, requirementValue: false}]
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
     } as AbilityModel,
 
     SureShot: {
@@ -226,6 +229,7 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Gain advantage to a missed ranged weapon attack. If the attack still misses this power is not expended."
       },
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
     } as AbilityModel,
 
     ChargeMastery: {
@@ -477,7 +481,7 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "You may make a -2 DC attack with a +2 to hit."
       },
-      abilityRequirement: [{requirementAbilityName: AttributeName.Agility, requirementValue: AttributeStrength.Heroic}],
+      abilityRequirement: [{requirementAbilityName: AttributeName.Agility, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic}],
 
     } as AbilityModel,
 
@@ -494,7 +498,7 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Two allies within 7 squares are able to tactically move 2 squares."
       },
-      abilityRequirement: [{requirementAbilityName: AttributeName.Reasoning, requirementValue: AttributeStrength.Champion}],
+      abilityRequirement: [{requirementAbilityName: AttributeName.Reasoning, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Champion}],
 
     } as AbilityModel,
 
@@ -560,7 +564,7 @@ export function getTalentObject(): TalentConstants {
           "Increase the damage resistance of Juggernaut by 1 and gain the Armor Up feature."
       },
       associatedAbilities: [TalentName.ArmorUp],
-      abilityRequirement: [{requirementAbilityName: AbilityBonus.Juggernaut, requirementType: AbilityType.Subtheme, requirementValue: 1}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.Juggernaut, requirementType: AbilityType.Subtheme, requirementValue: 1}],
     } as AbilityModel,
     ArmorUp: {
       abilityName: TalentName.ArmorUp,
@@ -616,7 +620,8 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Reduce the damage taken from an attack targeting physical defense by 6 +  1.2 * level."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
 
     } as AbilityModel,
 
@@ -673,7 +678,8 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Reduce the damage taken from an attack that targets Active Defense or Reflex by 6 + 1.2 * level."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
     } as AbilityModel,
 
     AdvancedWeaponTrainingBigWeapons: {
@@ -706,6 +712,7 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Make a snap basic attack with a +4 to hit against an enemy that leaves a square you threaten"
       },
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
     } as AbilityModel,
 
     RendingStrikes: {
@@ -740,7 +747,7 @@ export function getTalentObject(): TalentConstants {
     ChiFocus: {
       abilityName: TalentName.ChiFocus,
       abilityType: AbilityType.Talent,
-      abilityAction: ActionType.Swift,
+      abilityAction: ActionType.Minor,
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser},
         {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
@@ -755,7 +762,8 @@ export function getTalentObject(): TalentConstants {
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 9}},
         {abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Power, value: {minBonus: 2, maxBonus: 5}},
-        {abilityBonus: AbilityBonus.ResistancePiercing, abilityType: AbilityType.Power, value: {minBonus: 6, maxBonus: 15}}]
+        {abilityBonus: AbilityBonus.ResistancePiercing, abilityType: AbilityType.Power, value: {minBonus: 6, maxBonus: 15}}],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.AdvancedWeaponTraining, requirementValue: false}],
     } as AbilityModel,
 
     ChiStrikes: {
@@ -769,6 +777,147 @@ export function getTalentObject(): TalentConstants {
           "Gain 3 to your empowered damage bonus.  Increase this bonus by 1 at levels 4 and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 3, maxBonus: 5}}]
+    } as AbilityModel,
+
+    ArmorOfTheScoundrel: {
+      abilityName: TalentName.ArmorOfTheScoundrel,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser},
+        {requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "You gain a +$" + AbilityBonus.ActiveDefense + " bonus to AD when wearing light armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, quickness).",
+        fullDescription:
+          "You gain a +1 bonus to AD when wearing light armor or less.  This bonus does not stack with any other AD bonuses (shield, evasion, quickness)."
+      },
+      mechanicalBonus: [{
+        abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
+          {requirementAbilityName: AbilityBonus.NonStacking, requirementValue: true}, {requirementAbilityName: ArmorType.LightArmor, requirementValue: true}, {requirementAbilityName: ArmorType.None, requirementValue: true}
+        ], value: {minBonus: 1, maxBonus: 1}
+      }],
+      abilityRequirement: [{requirementAbilityName: AttributeName.Agility, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic}]
+    } as AbilityModel,
+
+    ArmorOfTheNorthmen: {
+      abilityName: TalentName.ArmorOfTheNorthmen,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "You gain a +$" + AbilityBonus.ActiveDefense + " bonus to AD when wearing medium armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, quickness).",
+        fullDescription:
+          "You gain a +1 bonus to AD when wearing medium armor or less.  This bonus does not stack with any other AD bonuses (shield, evasion, quickness)."
+      },
+      mechanicalBonus: [{
+        abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
+          {requirementAbilityName: AbilityBonus.NonStacking, requirementValue: true}, {requirementAbilityName: ArmorType.MediumArmor, requirementValue: true}, {
+            requirementAbilityName: ArmorType.LightArmor,
+            requirementValue: true
+          }, {requirementAbilityName: ArmorType.None, requirementValue: true}
+        ], value: {minBonus: 1, maxBonus: 1}
+      }],
+      abilityRequirement: [{requirementAbilityName: AttributeName.Brawn, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic}]
+    } as AbilityModel,
+
+    AdvancedArmorTraining: {
+      abilityName: TalentName.AdvancedArmorTraining,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "You are trained in the use of heavy armor.",
+        fullDescription:
+          "You are trained in the use of heavy armor."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.HeavyArmorTraining, abilityType: AbilityType.Passive, value: AbilityBonus.HeavyArmorTraining}],
+    } as AbilityModel,
+
+    UnboundFortitude: {
+      abilityName: TalentName.UnboundFortitude,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Gain " + AbilityBonus.FortitudeDefense + " to Fortitude defense. All attacks that primarily target your Fortitude defense have a -2 DC.",
+        fullDescription:
+          "Gain 1 to Fortitude defense. All attacks that primarily target your Fortitude defense have a -2 DC."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FortitudeDefense, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+    } as AbilityModel,
+
+    BlindFighting: {
+      abilityName: TalentName.BlindFighting,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "When attacking creatures in vision restricted squares you can reduce any vision penalty you may receive by 2.  You are never forced to use your passive defense due to lighting conditions.",
+        fullDescription:
+          "When attacking creatures in vision restricted squares you can reduce any vision penalty you may receive by 2.  You are never forced to use your passive defense due to lighting conditions."
+      },
+    } as AbilityModel,
+
+    Unbreakable: {
+      abilityName: TalentName.Unbreakable,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Spend a recovery to ignore a killing blow.  Set your hit points to recovery value + $" + AbilityBonus.RecoveryValue,
+        fullDescription:
+          "Spend a recovery to ignore a killing blow.  Set your hit points to recovery value + 5 + level / 2."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.RecoveryValue, abilityType: AbilityType.Power, value: {minBonus: 5, maxBonus: 10}}]
+    } as AbilityModel,
+
+    DislodgingBlows: {
+      abilityName: TalentName.DislodgingBlows,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your empowered damage by $" + AbilityBonus.EmpoweredDamage + ".  Once per turn when you hit an enemy with a weapon or implement attack on your turn you may slide them up to two squares.  The enemy must end the slide in an adjacent square. This slide can take place before you displace the enemy.",
+        fullDescription:
+          "Increase your empowered damage by +1.  Once per turn when you hit an enemy with a weapon or implement attack on your turn you may slide them up to two squares.  The enemy must end the slide in an adjacent square. This slide can take place before you displace the enemy."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.EmpoweredDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
+    } as AbilityModel,
+
+    WeaponMastery: {
+      abilityName: TalentName.WeaponMastery,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.AttackDamage + " to your attack damage bonus and gain the Masterful Strikes Feature.",
+        fullDescription:
+          "Gain 1 to your attack damage bonus and gain the Masterful Strikes Feature."
+      },
+      associatedAbilities: [TalentName.MasterfulStrikes],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.WeaponSpecialization, requirementType: AbilityType.Subtheme, requirementValue: ThemeStrength.Lesser}]
+    } as AbilityModel,
+
+    MasterfulStrikes: {
+      abilityName: TalentName.MasterfulStrikes,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      fullDescriptionAbilityType: AbilityType.Feature,
+      abilityDescription: {
+        briefDescription:
+          "Gain a +$" + AbilityBonus.AttackDamage + " to your attack damage bonus to all attacks until the end of your turn.",
+        fullDescription:
+          "Gain a +3 to your attack damage bonus to all attacks until the end of your turn. Increase this bonus by 1 at levels 2, 4, 6 and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 7}}],
     } as AbilityModel,
   };
 }

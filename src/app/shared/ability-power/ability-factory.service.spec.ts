@@ -13,6 +13,7 @@ import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
+import {PowerPointName} from "./power-point/power-point-name.enum";
 
 describe('AbilityFactoryService', () => {
   let service: AbilityFactoryService;
@@ -318,7 +319,7 @@ describe('AbilityFactoryService', () => {
     const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
     expect(function () {
       service.selectAbility(talent, []);
-    }).toThrowError("The talent: Bolster is an invalid selection because you have To Generate Temporary Hit Points");
+    }).toThrowError("The talent: Bolster is an invalid selection because you do not have the Power To Generate Temporary Hit Points.");
   });
 
   it('should be able to select bolster if you an ability that can generate thp', () => {
@@ -393,6 +394,23 @@ describe('AbilityFactoryService', () => {
     expect(text).toBe("<i>You require at least 2 ranks in the Weapon Specialization subtheme.</i>\n" +
       "Weapon Mastery: Gain 1 to your attack damage bonus and gain the Masterful Strikes Feature.\n" +
       "Masterful Strikes: (Feature) Move. Gain a +3 to your attack damage bonus to all attacks until the end of your turn. Increase this bonus by 1 at levels 2, 4, 6 and 8.");
+  });
+
+  it('should be able to use talent passive/feature level scaling with protection mastery\'s taunt', () => {
+    const talent = service.getNewAbility(TalentName.Taunt, AbilityType.Talent);
+    const scalingText = service.printOutBriefDescription(talent, Level.Five);
+    expect(scalingText).toBe("Taunt: (Feature) Move. You may pull an enemy within 2 squares of you 1 square.  Increase the damage of your Protector Aura by 10 until SoNT.");
+  });
+
+  it('should require the rage powerpoint feature in order to select the enrage talent', () => {
+    const talent = service.getNewAbility(TalentName.Enrage, AbilityType.Talent);
+    expect(function () {
+      service.selectAbility(talent, []);
+    }).toThrowError("The talent: Enrage is an invalid selection because you do not have the Power Point Feature Rage.");
+    const ragePP = service.getNewAbility(PowerPointName.Rage, AbilityType.PowerPointFeature, [PowerPointName.MinorRage]);
+    const result = service.selectAbility(talent, [ragePP]);
+    expect(result.length).toEqual(2);
+    expect(result.find(value => value.abilityName === AbilityBonus.Rage)).toBeTruthy();
   });
 
   /**Stupid Helper functions**/

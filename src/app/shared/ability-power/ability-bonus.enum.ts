@@ -16,6 +16,7 @@ export enum AbilityBonus {
   MagicDefense = "MagicDefense",
   AdrenalinePoint = "AdrenalinePoint",
   PowerPoint = "PowerPoint",
+  PowerPointFeature = "PowerPointFeature",
   RecoveryValue = "RecoveryValue",
   RecoveryPoint = "RecoveryPoint",
   Protector = "Protector",

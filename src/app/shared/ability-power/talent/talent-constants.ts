@@ -549,7 +549,7 @@ export function getTalentObject(): TalentConstants {
           "When an ally within 10 squares becomes bloodied from an attack you can have that ally gain 6 + level * 1.2 Temporary Hit Points"
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}],
-      abilityRequirement: [{requirementAbilityName: AbilityBonus.ToGenerateTemporaryHitPoints, requirementValue: true}],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.ToGenerateTemporaryHitPoints, requirementType: AbilityType.Power, requirementValue: true}],
     } as AbilityModel,
 
     GreaterJuggernaut: {
@@ -918,6 +918,74 @@ export function getTalentObject(): TalentConstants {
           "Gain a +3 to your attack damage bonus to all attacks until the end of your turn. Increase this bonus by 1 at levels 2, 4, 6 and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 7}}],
+    } as AbilityModel,
+
+    ProtectionMastery: {
+      abilityName: TalentName.ProtectionMastery,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.Protector + " protector aura damage and gain the Taunt Feature.",
+        fullDescription:
+          "Gain 4 to your protector aura damage and gain the Taunt Feature."
+      },
+      associatedAbilities: [TalentName.Taunt],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Passive, value: {minBonus: 4, maxBonus: 4}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.Protector, requirementType: AbilityType.Subtheme, requirementValue: ThemeStrength.Lesser}]
+    } as AbilityModel,
+
+    Taunt: {
+      abilityName: TalentName.Taunt,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      fullDescriptionAbilityType: AbilityType.Feature,
+      abilityDescription: {
+        briefDescription:
+          "You may pull an enemy within 2 squares of you 1 square.  Increase the damage of your Protector Aura by $" + AbilityBonus.Protector + " until SoNT.",
+        fullDescription:
+          "You may pull an enemy within 2 squares of you 1 square.  Increase the damage of your Protector Aura by 6 until SoNT.  Increase by 2 at levels 2, 4, 6 and by 3 at level 8"
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Feature, value: {minBonus: 6, maxBonus: 15}}],
+    } as AbilityModel,
+
+    Enrage: {
+      abilityName: TalentName.Enrage,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.EmpoweredDamage + " to your empowered damage bonus.  Increase the bonus damage provided by your Rage Feature by $" + AbilityBonus.Rage + ".",
+        fullDescription:
+          "Gain 1 to your empowered damage bonus.  Increase the bonus damage provided by your Rage Feature by 1.  Increase your Rage bonus damage by 1 at levels 4, 6, and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Rage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 4}}, {
+        abilityBonus: AbilityBonus.EmpoweredDamage,
+        abilityType: AbilityType.Passive,
+        value: {minBonus: 1, maxBonus: 1}
+      }],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.Rage, requirementType: AbilityType.PowerPointFeature, requirementValue: true}]
+    } as AbilityModel,
+
+    BristlingGuardian: {
+      abilityName: TalentName.BristlingGuardian,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your protector aura damage by $" + AbilityBonus.Protector + ". Increase your rebuke bonus by $" + AbilityBonus.Rebuke + ".",
+        fullDescription:
+          "Increase your protector aura damage by 2. Increase your rebuke bonus by 4.  Increase your rebuke bonus by 2 at levels 2, 4, 6 and increase by 3 at level 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}, {
+        abilityBonus: AbilityBonus.Rebuke,
+        abilityType: AbilityType.Passive,
+        value: {minBonus: 4, maxBonus: 13}
+      }],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.Rebuke, requirementType: AbilityType.PowerPointFeature, requirementValue: true}]
     } as AbilityModel,
   };
 }

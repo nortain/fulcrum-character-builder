@@ -7,8 +7,10 @@ import {ActionType} from "../action/action-type.enum";
 import {SpellDamageKeyword} from "../spells/enums/spell-damage-keyword.enum";
 import {ArmorType} from "../armor/armor-type.enum";
 import {SubthemeType} from "../theme-points/subthemes/subtheme-types.enum";
+import {PowerPointName} from "./power-point/power-point-name.enum";
+import {ThemeType} from "../theme-points/theme-type.enum";
 
-export type AbilityName = TalentName | KnackName | AbilityBonus | AttributeName | TalentType | ActionType | SpellDamageKeyword | ArmorType | SubthemeType;
+export type AbilityName = TalentName | KnackName | AbilityBonus | AttributeName | TalentType | ActionType | SpellDamageKeyword | ArmorType | SubthemeType | PowerPointName | ThemeType;
 
 
 export enum AbilityType {
@@ -19,8 +21,10 @@ export enum AbilityType {
   Knack = "Knack",
   Talent = "Talent",
   Subtheme = "Subtheme",
+  Theme = "Theme",
   Attribute = "Attribute",
-  Armor = "Armor"
+  Armor = "Armor",
+  PowerPointFeature = "PowerPointFeature"
 }
 
 

@@ -11,6 +11,7 @@ import {AttributeModel} from "../attribute/attribute-model";
 import {CastleCasePipe} from "../pipes/castle-case.pipe";
 import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
+import {getPowerPointObject} from "./power-point/power-point-constants";
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,13 @@ export class AbilityFactoryService {
           innerSelectedAbilities: innerSelections
         };
         break;
+      }
+      case AbilityType.PowerPointFeature: {
+        model = {
+          ...new AbilityModel(),
+          ...getPowerPointObject()[abilityName],
+          innerSelectedAbilities: innerSelections
+        };
       }
     }
     return model;
@@ -150,8 +158,8 @@ export class AbilityFactoryService {
       const pluralOrSingular = requirement.requirementValue === 1 ? " rank " : " ranks ";
       haveOrNotHave = "you require at least " + requirement.requirementValue + pluralOrSingular + "in the " + requirement.requirementType + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
     } else {
-      haveOrNotHave = requirement.requirementValue ? "you have " : " you do not have ";
-      haveOrNotHave += this.castleCasePipe.transform(requirement.requirementAbilityName);
+      haveOrNotHave = !requirement.requirementValue ? "you have the " : "you do not have the ";
+      haveOrNotHave += this.castleCasePipe.transform(requirement.requirementType) + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
     }
     return haveOrNotHave;
   }
@@ -230,7 +238,16 @@ export class AbilityFactoryService {
 
 
   extractNumberFromValueRangeForPassiveTalents(bonus: ValueRange, level: Level, adjustLevel?: Level): number {
-    const delta = (bonus.maxBonus - bonus.minBonus);
+    let delta = (bonus.maxBonus - bonus.minBonus);
+    let multiplier = 0, remainder = 0;
+    while (delta > 4) {
+      multiplier += delta / 4;
+      delta = Math.floor(delta / 4);
+      remainder += (multiplier * 4) - (delta * 4);
+    }
+    if (multiplier > 0) {
+      delta = 4;
+    }
     const numberOfLevelsToGain = 10;
     const valueArray: Array<number> = [];
     for (let i = 0; i < numberOfLevelsToGain; i++) {
@@ -240,22 +257,22 @@ export class AbilityFactoryService {
       } else {
         switch (delta) {
           case 1:
-            valueArray[i] += i >= 5 ? 1 : 0;
+            valueArray[i] += i >= 5 ? this.incrementValue(multiplier, remainder, 5) : 0;
             break;
           case 2:
-            valueArray[i] += i >= 3 ? 1 : 0;
-            valueArray[i] += i >= 7 ? 1 : 0;
+            valueArray[i] += i >= 3 ? this.incrementValue(multiplier, remainder, 3) : 0;
+            valueArray[i] += i >= 7 ? this.incrementValue(multiplier, remainder, 7) : 0;
             break;
           case 3:
-            valueArray[i] += i >= 3 ? 1 : 0;
-            valueArray[i] += i >= 5 ? 1 : 0;
-            valueArray[i] += i >= 7 ? 1 : 0;
+            valueArray[i] += i >= 3 ? this.incrementValue(multiplier, remainder, 3) : 0;
+            valueArray[i] += i >= 5 ? this.incrementValue(multiplier, remainder, 5) : 0;
+            valueArray[i] += i >= 7 ? this.incrementValue(multiplier, remainder, 7) : 0;
             break;
           case 4:
-            valueArray[i] += i >= 1 ? 1 : 0;
-            valueArray[i] += i >= 3 ? 1 : 0;
-            valueArray[i] += i >= 5 ? 1 : 0;
-            valueArray[i] += i >= 7 ? 1 : 0;
+            valueArray[i] += i >= 1 ? this.incrementValue(multiplier, remainder, 1) : 0;
+            valueArray[i] += i >= 3 ? this.incrementValue(multiplier, remainder, 3) : 0;
+            valueArray[i] += i >= 5 ? this.incrementValue(multiplier, remainder, 5) : 0;
+            valueArray[i] += i >= 7 ? this.incrementValue(multiplier, remainder, 7) : 0;
             break;
           default:
           // do nothing setting min bonus is enough
@@ -263,6 +280,17 @@ export class AbilityFactoryService {
       }
     }
     return valueArray[level - 1];
+  }
+
+  private incrementValue(multiplier: number, remainder: number, level: number): number {
+    if (multiplier > 0) {
+      let value = Math.floor(multiplier);
+      const temp = remainder * (level / 7);
+      value = Math.floor(value + temp);
+      return value;
+    } else {
+      return 1;
+    }
   }
 
 

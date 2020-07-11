@@ -348,6 +348,11 @@ export class AbilityFactoryService {
     let nextValueBonus = 0;
     if (this.hasReplacementValuesForBriefDescription(ability)) {
       for (const mechanic of ability.mechanicalBonus) {
+        if (mechanic.keywords) {
+          for (const keyword of mechanic.keywords) {
+            nextValueBonus += this.getBonusForAbility(keyword, currentAbilities, level) as number;
+          }
+        }
         if (this.isValueRange(mechanic.value)) {
           let numberValue;
           if (ability.abilityType === AbilityType.Talent && (mechanic.abilityType === AbilityType.Passive || mechanic.abilityType === AbilityType.Feature)) {
@@ -360,8 +365,6 @@ export class AbilityFactoryService {
             nextValueBonus = 0;
           }
           description = description.replace("$" + mechanic.abilityBonus, numberValue).toString();
-        } else if (mechanic.abilityBonus === AbilityBonus.Keyword) {
-          nextValueBonus = this.getBonusForAbility(mechanic.value, currentAbilities, level) as number;
         }
       }
     }
@@ -395,11 +398,11 @@ export class AbilityFactoryService {
     const description = isBriefDescription ? ability.abilityDescription.briefDescription : ability.abilityDescription.fullDescription;
     if (ability.mechanicalBonus && isBriefDescription && !ability.briefDescriptionAbilityType) {
       const matchingBonus = ability.mechanicalBonus.find(bonus => description.indexOf(bonus.abilityBonus) !== -1);
-      nonTalentText = !!matchingBonus && matchingBonus.abilityType !== AbilityType.Talent && matchingBonus.abilityType !== AbilityType.Passive ? "(" + matchingBonus.abilityType + ") " : "";
+      nonTalentText = !!matchingBonus && matchingBonus.abilityType !== AbilityType.Talent && matchingBonus.abilityType !== AbilityType.Passive ? "(" + this.castleCasePipe.transform(matchingBonus.abilityType) + ") " : "";
     } else if (isBriefDescription && ability.briefDescriptionAbilityType) {
-      nonTalentText = "(" + ability.briefDescriptionAbilityType + ") ";
+      nonTalentText = "(" + this.castleCasePipe.transform(ability.briefDescriptionAbilityType) + ") ";
     } else if (!isBriefDescription && ability.fullDescriptionAbilityType && ability.fullDescriptionAbilityType !== AbilityType.Talent) {
-      nonTalentText = "(" + ability.fullDescriptionAbilityType + ") ";
+      nonTalentText = "(" + this.castleCasePipe.transform(ability.fullDescriptionAbilityType) + ") ";
     }
     const nonPassiveText = ability.abilityAction && ability.abilityAction !== ActionType.Passive ? ability.abilityAction + ". " : "";
     return this.castleCasePipe.transform(ability.abilityName) + ": " + nonTalentText + nonPassiveText + alteredDescription;

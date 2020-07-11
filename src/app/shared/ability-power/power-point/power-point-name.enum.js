@@ -4,7 +4,6 @@ exports.PowerPointName = void 0;
 var PowerPointName;
 (function (PowerPointName) {
     PowerPointName["Rage"] = "Rage";
-    PowerPointName["GreaterRage"] = "GreaterRage";
-    PowerPointName["LesserRage"] = "LesserRage";
-    PowerPointName["MinorRage"] = "MinorRage";
+    PowerPointName["Protector"] = "Rebuke";
+    PowerPointName["Juggernaut"] = "IgnorePain";
 })(PowerPointName = exports.PowerPointName || (exports.PowerPointName = {}));

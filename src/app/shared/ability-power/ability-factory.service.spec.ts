@@ -407,10 +407,22 @@ describe('AbilityFactoryService', () => {
     expect(function () {
       service.selectAbility(talent, []);
     }).toThrowError("The talent: Enrage is an invalid selection because you do not have the Power Point Feature Rage.");
-    const ragePP = service.getNewAbility(PowerPointName.Rage, AbilityType.PowerPointFeature, [PowerPointName.MinorRage]);
+    const ragePP = service.getNewAbility(PowerPointName.Rage, AbilityType.PowerPointFeature);
     const result = service.selectAbility(talent, [ragePP]);
     expect(result.length).toEqual(2);
     expect(result.find(value => value.abilityName === AbilityBonus.Rage)).toBeTruthy();
+  });
+
+  it('should be able to correctly display ignore pain power point feature with bonuses from multiple talents that increase thp', () => {
+    const ppFeature = service.getNewAbility(PowerPointName.IgnorePain, AbilityType.PowerPointFeature);
+    let briefText = service.printOutBriefDescription(ppFeature, Level.One);
+    const abilities = [service.getNewAbility(TalentName.FortificationSpecialization, AbilityType.Talent)];
+    expect(briefText).toBe("Ignore Pain: (Power Point Feature) Minor. Gain 3 temporary hit points and increase your damage resistance until the start of your next turn by 1.");
+    briefText = service.printOutBriefDescription(ppFeature, Level.One, abilities);
+    expect(briefText).toBe("Ignore Pain: (Power Point Feature) Minor. Gain 4 temporary hit points and increase your damage resistance until the start of your next turn by 1.");
+    abilities.push(service.getNewAbility(TalentName.Stoicism, AbilityType.Talent));
+    briefText = service.printOutBriefDescription(ppFeature, Level.One, abilities);
+    expect(briefText).toBe("Ignore Pain: (Power Point Feature) Minor. Gain 5 temporary hit points and increase your damage resistance until the start of your next turn by 1.");
   });
 
   /**Stupid Helper functions**/

@@ -364,6 +364,21 @@ export function getTalentObject(): TalentConstants {
     } as AbilityModel,
 
 
+    FortificationSpecialization: {
+      abilityName: TalentName.FortificationSpecialization,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the number of temporary hit points your spells and abilities with the fortify keyword grant by $" + AbilityBonus.Fortify + ".",
+        fullDescription:
+          "Increase the number of temporary hit points your spells and abilities with the fortify keyword grant by 1."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
+    } as AbilityModel,
+
+
     PowerSource: {
       abilityName: TalentName.PowerSource,
       abilityType: AbilityType.Talent,
@@ -514,9 +529,7 @@ export function getTalentObject(): TalentConstants {
           "Slide up to 3 allies within 10 squares 4 squares each."
       },
       abilityRequirement: [{requirementAbilityName: AttributeName.Reasoning, requirementValue: AttributeStrength.Heroic}],
-      mechanicalBonus: [{abilityBonus: AbilityBonus.Keyword, abilityType: AbilityType.Power, value: AbilityBonus.FriendlyMovement}, // special case
-        {abilityBonus: AbilityBonus.FriendlyMovement, abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 4}}
-      ]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FriendlyMovement, keywords: [AbilityBonus.FriendlyMovement], abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 4}}]
     } as AbilityModel,
 
     CommandingStrike: {
@@ -986,6 +999,25 @@ export function getTalentObject(): TalentConstants {
         value: {minBonus: 4, maxBonus: 13}
       }],
       abilityRequirement: [{requirementAbilityName: AbilityBonus.Rebuke, requirementType: AbilityType.PowerPointFeature, requirementValue: true}]
+    } as AbilityModel,
+
+    Stoicism: {
+      abilityName: TalentName.Stoicism,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your starting temporary hit points by $" + AbilityBonus.StartingTemporaryHitPoints + ". Increase the amount of temporary hit points gained from ignore pain by $" + AbilityBonus.IgnorePainTHP + ".",
+        fullDescription:
+          "Increase your starting temporary hit points by 2. Increase the amount of temporary hit points gained from ignore pain by 1.  Increase the Ignore Pain temporary hit point gain by 1 at levels 4, 6, 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}, {
+        abilityBonus: AbilityBonus.IgnorePainTHP,
+        abilityType: AbilityType.Passive,
+        value: {minBonus: 1, maxBonus: 4}
+      }],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.IgnorePain, requirementType: AbilityType.PowerPointFeature, requirementValue: true}]
     } as AbilityModel,
   };
 }

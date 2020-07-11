@@ -46,6 +46,8 @@ export enum AbilityBonus {
   Requires = "Requires",
   Rebuke = "Rebuke",
   Rage = "Rage",
+  IgnorePain = "IgnorePain",
+  IgnorePainTHP= "IgnorePainTHP",
   MissileRangeDistance = "AllRangeDistance",
   ThrownRangeDistance = "ThrownRangeDistance",
   BurstRangeDistance = "BurstRangeDistance",

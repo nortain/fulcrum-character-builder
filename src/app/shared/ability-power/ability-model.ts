@@ -43,6 +43,7 @@ export interface IDescription {
 export interface IAbilityBonus {
   abilityBonus: AbilityBonus;
   abilityType: AbilityType;
+  keywords: Array<AbilityBonus>;
   value: ValueRange | AbilityBonus;
   abilityQualifier: Array<IAbilityRequirement>;
   dieSize?: DiceSize;

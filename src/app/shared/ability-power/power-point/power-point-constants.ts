@@ -116,10 +116,10 @@ export function getPowerPointObject(): PowerPointConstants {
       abilityAction: ActionType.Minor,
       abilityDescription:
         {
-          briefDescription: "Your protector aura deals",
-          fullDescription: "Your character can deal moderate extra damage with attacks."
+          briefDescription: "Your protector aura deals $" + AbilityBonus.Protector + " damage to enemies who attack your allies while threatened.  Threatened enemies who attack you take " + AbilityBonus.Thorns + " thorns damage.",
+          fullDescription: "Your protector aura deals 8 damage to enemies who attack your allies while threatened.  Threatened enemies who attack you take 2 thorns damage. Increase your protector damage by 2 every level.  Increase your thorns damage by 1 at levels 3, 5, 7, 9"
         },
-      mechanicalBonus: []
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.PowerPointFeature, value: {minBonus: 8, maxBonus: 26}}, {abilityBonus: AbilityBonus.Thorns, abilityType: AbilityType.PowerPointFeature, value: {minBonus: Math.floor(8 / 4), maxBonus: Math.floor(26 / 4)}}]
     } as AbilityModel,
 
     MinorProtector: {
@@ -129,10 +129,10 @@ export function getPowerPointObject(): PowerPointConstants {
       abilityAction: ActionType.Minor,
       abilityDescription:
         {
-          briefDescription: "Your character can deal moderate extra damage with attacks.",
-          fullDescription: "Your character can deal moderate extra damage with attacks."
+          briefDescription: "Your protector aura deals $" + AbilityBonus.Protector + " damage to enemies who attack your allies while threatened.  Threatened enemies who attack you take " + AbilityBonus.Thorns + " thorns damage.",
+          fullDescription: "Your protector aura deals 4 damage to enemies who attack your allies while threatened.  Threatened enemies who attack you take 2 thorns damage. Increase your protector damage by 1 every level.  Increase your thorns damage by 1 at levels 5, 9"
         },
-      mechanicalBonus: []
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.PowerPointFeature, value: {minBonus: 8, maxBonus: 26}}, {abilityBonus: AbilityBonus.Thorns, abilityType: AbilityType.PowerPointFeature, value: {minBonus: Math.floor(4 / 4), maxBonus: Math.floor(13 / 4)}}]
     } as AbilityModel,
 
   };

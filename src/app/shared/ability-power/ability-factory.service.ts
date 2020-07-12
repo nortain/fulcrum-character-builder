@@ -51,7 +51,7 @@ export class AbilityFactoryService {
     return model;
   }
 
-  selectAbility<K extends keyof AbilityType>(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>(), innerSelections = new Array<AbilityName>()): Array<AbilityModel> {
+  selectAbility<K extends keyof AbilityType>(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>(), level = Level.One, innerSelections = new Array<AbilityName>()): Array<AbilityModel> {
     let newAbilities = [...currentAbilities];
     if (abilityToBeSelected.pickNumber > 0) {
       if (abilityToBeSelected.pickNumber !== innerSelections.length) {
@@ -67,7 +67,7 @@ export class AbilityFactoryService {
         newAbilities = [...newAbilities, this.getNewAbility(abilityToBeSelected.abilityName, abilityToBeSelected.abilityType, innerSelections)];
       }
     } else { // pick number is 0
-      const canBeSelected = this.canAbilityBeSelected(abilityToBeSelected, currentAbilities);
+      const canBeSelected = this.canAbilityBeSelected(abilityToBeSelected, currentAbilities, attributes, level);
       if (canBeSelected.isSelectable) {
         newAbilities = [...newAbilities, this.getNewAbility(abilityToBeSelected.abilityName, abilityToBeSelected.abilityType)];
       } else {
@@ -78,12 +78,13 @@ export class AbilityFactoryService {
   }
 
   /**
-   * Give an ability to be selected, all current abilities and all attributes, determine if the ability is allowed to be selected.  This doesn't consider cost of the talent that a character might have, this is simply comparing data to see if the ability is eligible to be selected.  If so, return true otherwise return false.
+   * Give an ability to be selected, all current abilities and all attributes, determine if the ability is allowed to be selected.  This doesn't consider cost of the talent that a character might have, this is simply comparing data to see if the ability is eligible to be selected.  This also looks at level to ensure that level requirement is met is an ability requires such  If so, return true otherwise return false.
    * @param abilityToBeSelected
    * @param currentAbilities
    * @param attributes
+   * @param level
    */
-  canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>()): ICanBeSelected {
+  canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>(), level = Level.One): ICanBeSelected {
     let reasonItCannotBeSelected: string;
     let canBePicked = this.hasAbilityNotBeenSelected(abilityToBeSelected, currentAbilities);
     const abilityHasACost = abilityToBeSelected.abilityCost && abilityToBeSelected.abilityCost.length > 0;
@@ -98,14 +99,33 @@ export class AbilityFactoryService {
           .find(abilities => {
             if (abilities && abilities.abilityRequirement) {
               const result = this.findMatchingRequirement(abilities.abilityRequirement, requirement, canBePicked, reasonItCannotBeSelected);
-              canBePicked = result.isSelectable;
-              requirementMet = canBePicked;
+              requirementMet = result.isSelectable;
               reasonItCannotBeSelected = result.reasonItCannotBeSelected;
-            } else if (abilities && abilities.mechanicalBonus) {
+            }
+            if (!requirementMet && abilities && abilities.mechanicalBonus) {
               const result = this.findMatchingRequirement(abilities.mechanicalBonus, requirement, canBePicked, reasonItCannotBeSelected);
-              canBePicked = result.isSelectable;
-              requirementMet = canBePicked;
+              requirementMet = result.isSelectable;
               reasonItCannotBeSelected = result.reasonItCannotBeSelected;
+            }
+            if (!requirementMet && abilities && abilities.associatedAbilities) {
+              for (const nameOfAssociation of abilities.associatedAbilities) {
+                const associatedAbility = this.getNewAbility(nameOfAssociation, abilities.abilityType);
+                let result = {} as ICanBeSelected;
+                if (associatedAbility.abilityRequirement) {
+                  result = this.findMatchingRequirement(associatedAbility.abilityRequirement, requirement, canBePicked, reasonItCannotBeSelected);
+                  requirementMet = result.isSelectable;
+                  reasonItCannotBeSelected = result.reasonItCannotBeSelected;
+                }
+                if (!requirementMet && associatedAbility.mechanicalBonus) {
+                  result = this.findMatchingRequirement(associatedAbility.mechanicalBonus, requirement, canBePicked, reasonItCannotBeSelected);
+                  requirementMet = result.isSelectable;
+                  reasonItCannotBeSelected = result.reasonItCannotBeSelected;
+                }
+                if (requirementMet) {
+                  break;
+                }
+              }
+
             }
           });
         if (requirement.requirementAbilityName in AttributeName) {
@@ -113,15 +133,25 @@ export class AbilityFactoryService {
             attributes = [this.attributeFactoryService.getNewAttribute(requirement.requirementAbilityName as AttributeName, AttributeStrength.Normal)];
           }
           const pickedAttribute = attributes.find(attribute => attribute && requirement.requirementAbilityName === attribute.attributeName);
-          const enough = pickedAttribute.attributeStrength >= requirement.requirementValue;
-          canBePicked = canBePicked && enough;
-          requirementMet = canBePicked;
-          if (!enough) {
+          requirementMet = pickedAttribute.attributeStrength >= requirement.requirementValue;
+          if (!requirementMet) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
         }
+        if (requirement.requirementType === AbilityType.CharacterLevel) {
+          requirementMet = level >= requirement.requirementValue;
+          if (!requirementMet) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
+        }
+        if (requirement.requirementType === AbilityType.PowerPointFeature) {
+          requirementMet = !!currentAbilities.find(ability => ability.abilityType === AbilityType.PowerPointFeature && requirement.requirementAbilityName === ability.abilityName);
+          if (!requirementMet) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
+        }
+        canBePicked = requirementMet;
         if (!requirementMet && !reasonItCannotBeSelected) {
-          canBePicked = requirementMet;
           reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
         }
       }
@@ -133,6 +163,7 @@ export class AbilityFactoryService {
                                   requirement: IAbilityRequirement,
                                   canBePicked: boolean,
                                   reasonItCannotBeSelected: string): ICanBeSelected {
+    let requirementMet = false;
     abilities
       .find(bonus => {
         if ((bonus as IAbilityBonus).abilityBonus === requirement.requirementAbilityName) {
@@ -140,14 +171,28 @@ export class AbilityFactoryService {
           if (!requirement.requirementValue) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
+        } else if (requirement.requirementAbilityName === AbilityBonus.ToGenerateTemporaryHitPoints && !!(bonus as IAbilityBonus).abilityBonus) {
+          bonus = (bonus as IAbilityBonus);
+          const canGenerateTHP = (
+            bonus.abilityBonus === AbilityBonus.Fortify
+            || bonus.abilityBonus === AbilityBonus.IgnorePainTHP)
+            && (bonus.abilityType === AbilityType.PowerPointFeature
+              || bonus.abilityType === AbilityType.Power
+              || bonus.abilityType === AbilityType.Ability
+              || bonus.abilityType === AbilityType.Subtheme
+              || bonus.abilityType === AbilityType.Feature);
+          requirementMet = canGenerateTHP && !!requirement.requirementValue;
+          if (!requirementMet) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
         } else if ((bonus as IAbilityRequirement).requirementAbilityName === requirement.requirementAbilityName) {
-          canBePicked = canBePicked && !!requirement.requirementValue;
+          requirementMet = canBePicked && !!requirement.requirementValue;
           if (!requirement.requirementValue) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
         }
       });
-    return {isSelectable: canBePicked, reasonItCannotBeSelected: reasonItCannotBeSelected};
+    return {isSelectable: requirementMet, reasonItCannotBeSelected: reasonItCannotBeSelected};
   }
 
   getReasonWhyAbilityCannotBeSelected(requirement: IAbilityRequirement): string {
@@ -157,6 +202,8 @@ export class AbilityFactoryService {
     } else if (typeof requirement.requirementValue === "number" && requirement.requirementType === AbilityType.Subtheme) {
       const pluralOrSingular = requirement.requirementValue === 1 ? " rank " : " ranks ";
       haveOrNotHave = "you require at least " + requirement.requirementValue + pluralOrSingular + "in the " + requirement.requirementType + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
+    } else if (typeof requirement.requirementValue === "number" && requirement.requirementType === AbilityType.CharacterLevel) {
+      haveOrNotHave = "you require at least character level " + requirement.requirementValue + " to select this.";
     } else {
       haveOrNotHave = !requirement.requirementValue ? "you have the " : "you do not have the ";
       haveOrNotHave += this.castleCasePipe.transform(requirement.requirementType) + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";

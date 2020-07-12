@@ -572,11 +572,12 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Increase the damage resistance of Juggernaut by 1 and gain the Armor Up feature.",
+          "Increase the damage resistance of Juggernaut by $" + AbilityBonus.Juggernaut + " and gain the Armor Up feature.",
         fullDescription:
           "Increase the damage resistance of Juggernaut by 1 and gain the Armor Up feature."
       },
       associatedAbilities: [TalentName.ArmorUp],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Juggernaut, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
       abilityRequirement: [{requirementAbilityName: SubthemeType.Juggernaut, requirementType: AbilityType.Subtheme, requirementValue: 1}],
     } as AbilityModel,
     ArmorUp: {
@@ -587,11 +588,11 @@ export function getTalentObject(): TalentConstants {
       briefDescriptionAbilityType: AbilityType.Feature,
       abilityDescription: {
         briefDescription:
-          "You gain $" + AbilityBonus.ToGenerateTemporaryHitPoints + " THP.",
+          "You gain $" + AbilityBonus.Fortify + " THP.",
         fullDescription:
           "You gain 3 THP.  Increase the THP amount by 1 at levels 4, 6, and 8."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}],
     } as AbilityModel,
 
     AdvancedWeaponTrainingShieldMastery: {
@@ -1019,5 +1020,51 @@ export function getTalentObject(): TalentConstants {
       }],
       abilityRequirement: [{requirementAbilityName: AbilityBonus.IgnorePain, requirementType: AbilityType.PowerPointFeature, requirementValue: true}]
     } as AbilityModel,
+
+    ImprovedWeaponSpecialization: {
+      abilityName: TalentName.ImprovedWeaponSpecialization,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage bonus provided by Weapon Specialization by $" + AbilityBonus.WeaponSpecialization + ".",
+        fullDescription:
+          "Increase the damage bonus provided by Weapon Specialization by 1.  Increase by 1 at level 6."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.WeaponSpecialization, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.WeaponSpecialization, requirementType: AbilityType.Subtheme, requirementValue: 1}]
+    } as AbilityModel,
+
+    ImprovedProtector: {
+      abilityName: TalentName.ImprovedProtector,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your protector aura by $" + AbilityBonus.Protector + ".",
+        fullDescription:
+          "Increase your protector aura by 4.  Increase this by 1 at levels 2, 4, 6 and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Passive, value: {minBonus: 4, maxBonus: 8}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.Protector, requirementType: AbilityType.Subtheme, requirementValue: 1}]
+    } as AbilityModel,
+
+    ReinforcedProtector: {
+      abilityName: TalentName.ReinforcedProtector,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your protector aura by $" + AbilityBonus.Protector + ".",
+        fullDescription:
+          "Increase your protector aura by an additional 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Passive, value: {minBonus: 8, maxBonus: 8}}],
+      abilityRequirement: [{requirementAbilityName: TalentName.ImprovedProtector, requirementType: AbilityType.Talent, requirementValue: true}, {requirementAbilityName: AbilityBonus.CharacterLevel, requirementType: AbilityType.CharacterLevel, requirementValue: Level.Ten}]
+    } as AbilityModel,
+
   };
 }

@@ -24,7 +24,9 @@ export enum AbilityType {
   Theme = "Theme",
   Attribute = "Attribute",
   Armor = "Armor",
-  PowerPointFeature = "PowerPointFeature"
+  PowerPointFeature = "PowerPointFeature",
+  Weapon = "Weapon",
+  CharacterLevel = "CharacterLevel"
 }
 
 

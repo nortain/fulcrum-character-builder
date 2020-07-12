@@ -216,7 +216,7 @@ describe('AbilityFactoryService', () => {
 
   it('should be able to choose sub-options of a lesser version of greater talent like charge mastery', () => {
     const lesserCharge = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
-    const abilities: Array<AbilityModel> = service.selectAbility(lesserCharge, [], null, [TalentName.MeasuredCharge, TalentName.SavageCharge]);
+    const abilities: Array<AbilityModel> = service.selectAbility(lesserCharge, [], null, Level.One, [TalentName.MeasuredCharge, TalentName.SavageCharge]);
     expect(abilities.length).toEqual(1);
     expect(abilities.find((ability) => ability.abilityName === TalentName.ChargeMasteryLesser)).toBeTruthy();
     expect(abilities[0].innerSelectedAbilities.find((name) => name === TalentName.SavageCharge)).toBeTruthy();
@@ -248,7 +248,7 @@ describe('AbilityFactoryService', () => {
   it('should throw an error if try to selected a pick talent without the right number of current abilities', () => {
     const lesserCharge = service.getNewAbility(TalentName.ChargeMasteryLesser, AbilityType.Talent);
     expect(function () {
-      service.selectAbility(lesserCharge, [], null, [TalentName.MeasuredCharge]);
+      service.selectAbility(lesserCharge, [], null, Level.One, [TalentName.MeasuredCharge]);
     }).toThrowError("You must have 2 inner selection choices but only 1 was given.");
   });
 
@@ -330,7 +330,7 @@ describe('AbilityFactoryService', () => {
     expect(currentAbilities.length).toEqual(2);
   });
 
-  it('should be able to select bolster when you have a talent that is associated with a talent that can generate thp', () => {
+  it('should be able to select bolster when you have a talent that is associated with the ability to generate thp', () => {
     const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
     const requiredTalent = service.getNewAbility(TalentName.GreaterJuggernaut, AbilityType.Talent);
     let currentAbilities = [requiredTalent];
@@ -376,16 +376,16 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should be able to show that a character is trained in heavy armors', () => {
-      const talent = service.getNewAbility(TalentName.AdvancedArmorTraining, AbilityType.Talent);
-      const result = service.getBonusForAbility(AbilityBonus.HeavyArmorTraining, [talent]);
-      expect(result).toBe(AbilityBonus.HeavyArmorTraining);
+    const talent = service.getNewAbility(TalentName.AdvancedArmorTraining, AbilityType.Talent);
+    const result = service.getBonusForAbility(AbilityBonus.HeavyArmorTraining, [talent]);
+    expect(result).toBe(AbilityBonus.HeavyArmorTraining);
   });
 
   it('should be able briefly print out masterful strikes', () => {
     const talent = service.getNewAbility(TalentName.WeaponMastery, AbilityType.Talent);
     const text = service.printOutBriefDescription(talent);
     expect(text).toBe("Weapon Mastery: Gain 1 to your attack damage bonus and gain the Masterful Strikes Feature.\n" +
-    "Masterful Strikes: (Feature) Move. Gain a +7 to your attack damage bonus to all attacks until the end of your turn.");
+      "Masterful Strikes: (Feature) Move. Gain a +7 to your attack damage bonus to all attacks until the end of your turn.");
   });
 
   it('should be able fully print out masterful strikes', () => {
@@ -423,6 +423,31 @@ describe('AbilityFactoryService', () => {
     abilities.push(service.getNewAbility(TalentName.Stoicism, AbilityType.Talent));
     briefText = service.printOutBriefDescription(ppFeature, Level.One, abilities);
     expect(briefText).toBe("Ignore Pain: (Power Point Feature) Minor. Gain 5 temporary hit points and increase your damage resistance until the start of your next turn by 1.");
+  });
+
+  it('should determine if an ability can be selected based on level', () => {
+    const talent = service.getNewAbility(TalentName.ReinforcedProtector, AbilityType.Talent);
+    const requiredTalent = service.getNewAbility(TalentName.ImprovedProtector, AbilityType.Talent);
+    const iCanBeSelected = service.canAbilityBeSelected(talent, [requiredTalent], [], Level.Nine);
+    expect(iCanBeSelected.isSelectable).toBeFalsy();
+    expect(iCanBeSelected.reasonItCannotBeSelected).toBe("you require at least character level 10 to select this.");
+  });
+
+  it('should require that you are level 10 to get reinforced protector in addition to having improved protector', () => {
+    const talent = service.getNewAbility(TalentName.ReinforcedProtector, AbilityType.Talent);
+    const requiredTalent = service.getNewAbility(TalentName.ImprovedProtector, AbilityType.Talent);
+    expect(function () {
+      service.selectAbility(talent, [requiredTalent], [], Level.Nine);
+    }).toThrowError("The talent: Reinforced Protector is an invalid selection because you require at least character level 10 to select this.");
+  });
+
+  it('should be able to select reinforced protector when you met all of the requirements', () => {
+    const talent = service.getNewAbility(TalentName.ReinforcedProtector, AbilityType.Talent);
+    const requiredTalent = service.getNewAbility(TalentName.ImprovedProtector, AbilityType.Talent);
+    const result = service.selectAbility(talent, [requiredTalent], [], Level.Ten);
+    expect(result.length).toEqual(2);
+    expect(result.find(ability => ability.abilityName === TalentName.ReinforcedProtector)).toBeTruthy();
+
   });
 
   /**Stupid Helper functions**/

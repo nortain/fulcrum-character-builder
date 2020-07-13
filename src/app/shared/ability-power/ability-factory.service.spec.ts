@@ -447,7 +447,13 @@ describe('AbilityFactoryService', () => {
     const result = service.selectAbility(talent, [requiredTalent], [], Level.Ten);
     expect(result.length).toEqual(2);
     expect(result.find(ability => ability.abilityName === TalentName.ReinforcedProtector)).toBeTruthy();
+  });
 
+  it('should be able to print out Evasion talents correctly and give bonus to dodge but treat the secondary effect like a non-passive effect', () => {
+    const talent = service.getNewAbility(TalentName.JustAFleshWound, AbilityType.Talent);
+    expect(service.printOutBriefDescription(talent, Level.One)).toBe("Just A Flesh Wound: Increase the damage reduction of your evasion powers and abilities by 2. The turn after making a dodge you may use your Rapid Recovery feature as a minor action OR heal for 2 as a swift action.");
+    expect(service.getBonusForAbility(AbilityBonus.Dodge, [talent])).toEqual(4); // gives a bonus to dodge
+    expect(service.getBonusForAbility(AbilityBonus.Healing, [talent])).toBeFalsy(); // the bonus from healing does not give bonuses to other healing keywords
   });
 
   /**Stupid Helper functions**/

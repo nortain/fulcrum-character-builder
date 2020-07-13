@@ -1036,6 +1036,25 @@ export function getTalentObject(): TalentConstants {
       abilityRequirement: [{requirementAbilityName: SubthemeType.WeaponSpecialization, requirementType: AbilityType.Subtheme, requirementValue: 1}]
     } as AbilityModel,
 
+    ReinforcedWeaponSpecialization: {
+      abilityName: TalentName.ReinforcedWeaponSpecialization,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage bonus provided by Weapon Specialization by $" + AbilityBonus.WeaponSpecialization + ".",
+        fullDescription:
+          "Increase the damage bonus provided by Weapon Specialization by 2."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.WeaponSpecialization, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}],
+      abilityRequirement: [{requirementAbilityName: TalentName.ImprovedWeaponSpecialization, requirementType: AbilityType.Talent, requirementValue: true}, {
+        requirementAbilityName: AbilityBonus.CharacterLevel,
+        requirementType: AbilityType.CharacterLevel,
+        requirementValue: Level.Ten
+      }]
+    } as AbilityModel,
+
     ImprovedProtector: {
       abilityName: TalentName.ImprovedProtector,
       abilityType: AbilityType.Talent,
@@ -1063,7 +1082,54 @@ export function getTalentObject(): TalentConstants {
           "Increase your protector aura by an additional 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Protector, abilityType: AbilityType.Passive, value: {minBonus: 8, maxBonus: 8}}],
-      abilityRequirement: [{requirementAbilityName: TalentName.ImprovedProtector, requirementType: AbilityType.Talent, requirementValue: true}, {requirementAbilityName: AbilityBonus.CharacterLevel, requirementType: AbilityType.CharacterLevel, requirementValue: Level.Ten}]
+      abilityRequirement: [{requirementAbilityName: TalentName.ImprovedProtector, requirementType: AbilityType.Talent, requirementValue: true}, {
+        requirementAbilityName: AbilityBonus.CharacterLevel,
+        requirementType: AbilityType.CharacterLevel,
+        requirementValue: Level.Ten
+      }]
+    } as AbilityModel,
+
+    Intervene: {
+      abilityName: TalentName.Intervene,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "When an adjacent attacker hits an ally or an adjacent ally is hit with an attack.  The attack instead hits you and the original target gains $" + AbilityBonus.Fortify + " Temporary hit points.",
+        fullDescription:
+          "When an adjacent attacker hits an ally or an adjacent ally is hit with an attack.  The attack instead hits you and the original target gains 5 + level / 2 Temporary hit points."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Power, value: {minBonus: 5, maxBonus: 10}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.Protector, requirementType: AbilityType.Subtheme, requirementValue: 1}]
+    } as AbilityModel,
+
+    JustAFleshWound: {
+      abilityName: TalentName.JustAFleshWound,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage reduction of your evasion powers and abilities by $" + AbilityBonus.Dodge + ". The turn after making a dodge you may use your Rapid Recovery feature as a minor action OR heal for $" + AbilityBonus.Healing + " as a swift action.",
+        fullDescription:
+          "Increase the damage reduction of your evasion powers and abilities by 2 + (level / 4). The turn after making a dodge you may use your Rapid Recovery feature as a minor action OR heal for 2  + (level / 4) as a swift action."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Dodge, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}, {abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Talent, value: {minBonus: 2, maxBonus: 2}}]
+    } as AbilityModel,
+
+    IndomitableResolve: {
+      abilityName: TalentName.IndomitableResolve,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Spend up to two recoveries.  Each recovery heals for an additional $" + AbilityBonus.Healing + ".",
+        fullDescription:
+          "Spend up to two recoveries.  Each recovery heals for an additional 3. Increase this amount by 1 at levels 4, 6, and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Power, value: {minBonus: 3, maxBonus: 6}}]
     } as AbilityModel,
 
   };

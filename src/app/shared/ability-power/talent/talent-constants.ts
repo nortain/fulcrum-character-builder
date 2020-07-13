@@ -401,7 +401,7 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Universal, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss.  Gain a +" + AbilityBonus.EmpoweredDamage + " bonus to empowered attacks",
+          "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss.  Gain a +$" + AbilityBonus.EmpoweredDamage + " bonus to empowered attacks",
         fullDescription:
           "Attacks made with a -2 DC penalty or less do 1/2 damage on a miss.  Gain a +1 bonus to empowered attacks.  This bonus increases by 1 at level  6."
       },
@@ -768,7 +768,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription: "Choose two effects among the following, you may choose the same option twice:\n" +
           "Increase your damage by $" + AbilityBonus.AttackDamage + " until the start of your next turn.\n" +
           "Gain $" + AbilityBonus.TemporaryDamageResist + " damage resistance until the start of your next turn.\n" +
-          "Gain a +1 to hit to and " + AbilityBonus.ResistancePiercing + " resistance piercing to all attacks until the start of your next turn.",
+          "Gain a +1 to hit to and $" + AbilityBonus.ResistancePiercing + " resistance piercing to all attacks until the start of your next turn.",
         fullDescription: "Choose two effects among the following, you may choose the same option twice:\n" +
           "Increase your damage by 4 + (level / 2 ) until the start of your next turn.\n" +
           "Gain 2 + (level / 3) damage resistance until the start of your next turn.\n" +
@@ -856,7 +856,7 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-          "Gain " + AbilityBonus.FortitudeDefense + " to Fortitude defense. All attacks that primarily target your Fortitude defense have a -2 DC.",
+          "Gain $" + AbilityBonus.FortitudeDefense + " to Fortitude defense. All attacks that primarily target your Fortitude defense have a -2 DC.",
         fullDescription:
           "Gain 1 to Fortitude defense. All attacks that primarily target your Fortitude defense have a -2 DC."
       },
@@ -1130,6 +1130,137 @@ export function getTalentObject(): TalentConstants {
           "Spend up to two recoveries.  Each recovery heals for an additional 3. Increase this amount by 1 at levels 4, 6, and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Power, value: {minBonus: 3, maxBonus: 6}}]
+    } as AbilityModel,
+
+    AnchoredFighter: {
+      abilityName: TalentName.AnchoredFighter,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain Forced movement Resist $" + AbilityBonus.ForcedMovementResistance + ". Your character counts as a large creature vs enemy displacement attempts.",
+        fullDescription:
+          "Gain Forced movement Resist 1. Your character counts as a large creature vs enemy displacement attempts.  At level 6 increase the FMR to 2."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ForcedMovementResistance, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
+    } as AbilityModel,
+
+    AllAroundFighter: {
+      ...new AbilityModel(),
+      abilityName: TalentName.AllAroundFighter,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.StartingTemporaryHitPoints + " Starting Temporary Hit Point.  Flanking enemies have a -1 to hit you.",
+        fullDescription:
+          "Gain 1 Starting Temporary Hit Point.  Flanking enemies have a -1 to hit you. (They only get a +1 instead of +2)"
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
+    } as AbilityModel,
+
+    FightThroughThePain: {
+      ...new AbilityModel(),
+      abilityName: TalentName.FightThroughThePain,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your starting temporary hit points by $" + AbilityBonus.StartingTemporaryHitPoints + ".  Once per turn when you hit an enemy with a Natural Even Hit you may reduce the amount of ongoing damage you are taking by $" + AbilityBonus.ReduceOngoing + ".",
+        fullDescription:
+          "Increase your starting temporary hit points by 1.  Once per turn when you hit an enemy with a Natural Even Hit you may reduce the amount of ongoing damage you are taking by 1.  At level 6 increase this ongoing reduction to 2."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}, {
+        abilityBonus: AbilityBonus.ReduceOngoing,
+        abilityType: AbilityType.Talent,
+        value: {minBonus: 1, maxBonus: 2}
+      }]
+    } as AbilityModel,
+
+    UnwaveringGuard: {
+      ...new AbilityModel(),
+      abilityName: TalentName.UnwaveringGuard,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.Fortify + ". Until SoNT, gain Damage Resist $" + AbilityBonus.DamageResist + " and any attack that scores a critical also has a -1 DC applied to it.",
+        fullDescription:
+          "Gain 3 + level / 2 Temporary Hit Points. Until Start of next turn, gain Damage Resist 3 + level / 3 and any attack that scores a critical also has a -1 DC applied to it."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Power, value: {minBonus: 3, maxBonus: 8}}, {
+        abilityBonus: AbilityBonus.DamageResist,
+        abilityType: AbilityType.Power,
+        value: {minBonus: 3, maxBonus: 6}
+      }]
+    } as AbilityModel,
+
+    AspectOfTheBoar: {
+      ...new AbilityModel(),
+      abilityName: TalentName.AspectOfTheBoar,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "If you hit the target of a charge attack that is your size or smaller you may displace them and continue moving any distance unused by the charge. The displaced target does not get an opportunity attack, but other enemies may if you move through threatened squares. These extra squares of movement must be in a straight path.  You also gain a $" + AbilityBonus.Charging + " attack damage bonus to charge attacks.",
+        fullDescription:
+          "If you hit the target of a charge attack that is your size or smaller you may displace them and continue moving any distance unused by the charge. The displaced target does not get an opportunity attack, but other enemies may if you move through threatened squares. These extra squares of movement must be in a straight path.  You also gain a 1 attack damage bonus to charge attacks."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Charging, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
+    } as AbilityModel,
+
+    CripplingStrike: {
+      ...new AbilityModel(),
+      abilityName: TalentName.CripplingStrike,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Any target struck by your opportunity attack can’t move for the rest of the triggering action.",
+        fullDescription:
+          "Any target struck by your opportunity attack can’t move for the rest of the triggering action."
+      }
+    } as AbilityModel,
+
+
+    OpportuneStrikes: {
+      ...new AbilityModel(),
+      abilityName: TalentName.OpportuneStrikes,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.OpportunityAttackDamage + " to hit and damage with all opportunity attacks.",
+        fullDescription:
+          "Gain 3 to hit and damage with all opportunity attacks."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.OpportunityAttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 3, maxBonus: 3}}, {
+        abilityBonus: AbilityBonus.OpportunityAttackToHit,
+        abilityType: AbilityType.Passive,
+        value: {minBonus: 3, maxBonus: 3}
+      }]
+    } as AbilityModel,
+
+    DeadEye: {
+      ...new AbilityModel(),
+      abilityName: TalentName.DeadEye,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increases the range of all missile weapons by $" + AbilityBonus.MissileRangeDistance + "/5/5" + ".",
+        fullDescription:
+          "Increases the range of all missile weapons by 5/5/5."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}]
     } as AbilityModel,
 
   };

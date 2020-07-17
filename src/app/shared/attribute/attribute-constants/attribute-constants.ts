@@ -135,7 +135,7 @@ export function getAttributeObject(): AttributeConstants {
                 maxPicks: 1
               } as AttributeBonus,
               bonusToCriticalAndEmpowered: {
-                bonusToCritical: {minBonus: 1, maxBonus: 3},
+                bonusToCritical: {minBonus: 1, maxBonus: 2.4},
                 bonusToEmpowered: {minBonus: 1, maxBonus: 3},
                 pickValue: 1,
                 maxPicks: 0

@@ -11,9 +11,9 @@ import {Dice} from "../character/dice/dice";
 import {AttributeStrength} from "./attribute-enums/attribute-strength.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
 import {
-  AgilitySelections,
+  AgilitySelections, AttributeBonusAlias,
   AttributePick,
-  AttributeSelectionsAlias,
+  AttributeSelectionsAlias, AttributeSelectionTypes,
   AttributeSelectionWithPicks,
   BrawnSelections,
   PresenceSelections,
@@ -361,7 +361,8 @@ export class AttributeFactoryService {
    * @param selection - a fully populated (i.e. selectedableBonusPicks in attribute-constant) selection object of the type of strength that matches attribute strength in the attribute Map
    * @param propertyName The name of the property for the given selection's selection property.  You could also say K extends keyof selection.selections
    */
-  selectBonus<K extends keyof AttributeSelectionsAlias>(attributes: Map<AttributeName, AttributeModel>, selection: AttributeSelectionWithPicks, propertyName: K): boolean {
+  selectBonus(attributes: Map<AttributeName, AttributeModel>, selection: AttributeSelectionWithPicks, propertyName: AttributeSelectionTypes): boolean {
+    propertyName = this.convertSelectionTypeEnumToObjectProperty(propertyName);
     const choice = this.getProperty(selection.selections, propertyName);
     let attribute: AttributeModel;
     const type = selection.selections.name.toString().replace("Selections", ""); // risky unchecked way of finding the attribute but i'm tired and test should help ensure it works.
@@ -375,6 +376,10 @@ export class AttributeFactoryService {
       return true;
     }
     return false;
+  }
+
+  convertSelectionTypeEnumToObjectProperty(propertyName: AttributeSelectionTypes): keyof AttributeBonusAlias {
+    return propertyName.toString() as keyof AttributeBonusAlias;
   }
 
   /**

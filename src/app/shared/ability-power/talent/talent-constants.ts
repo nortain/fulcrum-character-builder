@@ -1256,11 +1256,11 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Increases the range of all missile weapons by $" + AbilityBonus.MissileRangeDistance + "/5/5" + ".",
+          "Increases the range of all missile weapons by $" + AbilityBonus.MissileRangeDistance + "/" + AbilityBonus.MissileRangeDistance + "/" + AbilityBonus.MissileRangeDistance + ".",
         fullDescription:
           "Increases the range of all missile weapons by 5/5/5."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}, {abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}, {abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}]
     } as AbilityModel,
 
   };

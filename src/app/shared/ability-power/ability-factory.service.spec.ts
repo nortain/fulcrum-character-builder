@@ -14,6 +14,7 @@ import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {PowerPointName} from "./power-point/power-point-name.enum";
+import {TalentType} from "./talent/talent-type.enum";
 
 describe('AbilityFactoryService', () => {
   let service: AbilityFactoryService;
@@ -454,6 +455,10 @@ describe('AbilityFactoryService', () => {
     expect(service.printOutBriefDescription(talent, Level.One)).toBe("Just A Flesh Wound: Increase the damage reduction of your evasion powers and abilities by 2. The turn after making a dodge you may use your Rapid Recovery feature as a minor action OR heal for 2 as a swift action.");
     expect(service.getBonusForAbility(AbilityBonus.Dodge, [talent])).toEqual(4); // gives a bonus to dodge
     expect(service.getBonusForAbility(AbilityBonus.Healing, [talent])).toBeFalsy(); // the bonus from healing does not give bonuses to other healing keywords
+  });
+
+  it('should print out dead eye correctly so each value looks correct', () => {
+    const talent = service.getNewAbility(TalentName.DeadEye, AbilityType.Talent);
   });
 
   /**Stupid Helper functions**/

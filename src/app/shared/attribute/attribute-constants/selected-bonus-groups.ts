@@ -10,6 +10,37 @@ export enum SelectionNames {
   AgilitySelections = "AgilitySelections",
 }
 
+export enum BrawnSelectionTypes {
+  bonusToCriticalAndAggressivePress = "bonusToCriticalAndAggressivePress",
+  bonusToEmpoweredAndAggressivePress = "bonusToEmpoweredAndAggressivePress",
+  bonusToEmpowered = "bonusToEmpowered",
+  bonusToProtectorAura = "bonusToProtectorAura",
+  bonusToCriticalAndEmpowered = "bonusToCriticalAndEmpowered"
+}
+
+export enum PresenceSelectionTypes {
+  forcedMovement = "forcedMovement",
+  friendlyMovement = "friendlyMovement",
+  bonusToHitWithEnvironmentAttacks = "bonusToHitWithEnvironmentAttacks",
+  convertAttackDamageIntoGlobal = "convertAttackDamageIntoGlobal",
+  bonusToGlobalDamageAndPenaltyToCritical = "bonusToGlobalDamageAndPenaltyToCritical"
+}
+
+export enum ReasoningSelectionTypes {
+  bonusToCritical = "bonusToCritical",
+  bonusToEmpowered = "bonusToEmpowered",
+  bonusToCriticalAndEmpowered = "bonusToCriticalAndEmpowered"
+}
+
+export enum AgilitySelectionTypes {
+  bonusToCritical = "bonusToCritical",
+  bonusToSpeedAndCritical = "bonusToSpeedAndCritical",
+  bonusToDualist = "bonusToDualist",
+  bonusToFindWeakness = "bonusToFindWeakness"
+}
+
+export type AttributeSelectionTypes = AgilitySelectionTypes | PresenceSelectionTypes | BrawnSelectionTypes | ReasoningSelectionTypes;
+
 export type AttributeSelectionsAlias = PresenceSelections | AgilitySelections | ReasoningSelections | BrawnSelections;
 
 export type AttributePicksAlias = PresenceAttributePicks | BrawnAttributePicks | AgilityAttributePicks | ReasoningAttributePicks;

@@ -8,7 +8,7 @@ import {AttributeFactoryService} from "../attribute/attribute-factory.service";
 import {AttributeFactoryServiceStub} from "../constants/testing-stub-classes";
 import {RaceFactoryService} from "./race/race-factory.service";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
-import {AgilitySelections, AttributeSelectionsAlias} from "../attribute/attribute-constants/selected-bonus-groups";
+import {AgilitySelections, AgilitySelectionTypes, AttributeSelectionsAlias, AttributeSelectionWithPicks} from "../attribute/attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
 import {Armor} from "../armor/armor";
 import {ThemeType} from "../theme-points/theme-type.enum";
@@ -69,7 +69,7 @@ describe('Character Service Factory', () => {
   it('should recognize that a characters movement is increased if they have epic agility', function () {
     characterFactoryService.assignAttributeStrength(bob, AttributeName.Agility, AttributeStrength.Epic);
     const selection = characterFactoryService.presentAttributeSelections(bob, AttributeName.Agility);
-    const type = "bonusToSpeedAndCritical" as keyof AttributeSelectionsAlias;
+    const type = AgilitySelectionTypes.bonusToSpeedAndCritical;
     characterFactoryService.selectAttributeBonus(bob, selection, type);
     expect(characterFactoryService.getSpeed(bob)).toEqual(7);
   });

@@ -6,17 +6,7 @@ import {AttributeModel} from "./attribute-model";
 import {WeaponCategory} from "../weapon/weapon-category.enum";
 import {Level} from "../character/level.enum";
 import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.enum";
-import {
-  AgilitySelections,
-  AttributeBonusAlias,
-  AttributeSelectionWithPicks,
-  BrawnAttributePicks,
-  BrawnSelections, BrawnSelectionTypes,
-  CriticalAndEmpoweredBonus,
-  PresenceSelections,
-  ReasoningSelections,
-  SelectionNames
-} from "./attribute-constants/selected-bonus-groups";
+import {AgilitySelections, AttributeBonusAlias, AttributeSelectionWithPicks, BrawnSelections, BrawnSelectionTypes, PresenceSelections, ReasoningSelections} from "./attribute-constants/selected-bonus-groups";
 import {ArmorType} from "../armor/armor-type.enum";
 import {INITIATIVE_TEXT, PRESS_TEXT} from "./attribute-constants/attribute-constants";
 
@@ -440,14 +430,16 @@ describe('AttributeFactoryService', () => {
     expect(result).toEqual(2);
   });
 
-  it('should be able to correctly calculate the combined value of picking empowered and resistance piercing twice', () => {
-    const newMap = service.initializeAllAttributes();
-    service.assignStrength(newMap.get(AttributeName.Brawn), AttributeStrength.Epic);
-    const choices = service.presentChoices(AttributeName.Brawn, newMap, WeaponCategory.Balanced);
-    expect(service.selectBonus(newMap, choices, BrawnSelectionTypes.bonusToCriticalAndEmpowered)).toBeTruthy();
-
-    // TODO finish!
-  });
+  // TODO eventually
+  // it('should be able to correctly calculate the combined value of picking empowered and resistance piercing twice', () => {
+  //   const newMap = service.initializeAllAttributes();
+  //   service.assignStrength(newMap.get(AttributeName.Brawn), AttributeStrength.Epic);
+  //   const choices = service.presentChoices(AttributeName.Brawn, newMap, WeaponCategory.Balanced);
+  //   expect(service.selectBonus(newMap, choices, BrawnSelectionTypes.bonusToCriticalAndEmpowered)).toBeTruthy();
+  //   expect(service.getCriticalBonus(newMap.get(AttributeName.Brawn), Level.Ten)).toEqual(2);
+  //   service.selectBonus(newMap, choices, BrawnSelectionTypes.bonusToCriticalAndEmpowered);
+  //   expect(service.getCriticalBonus(newMap.get(AttributeName.Brawn), Level.Ten)).toEqual(5);
+  // });
 
 
   /**

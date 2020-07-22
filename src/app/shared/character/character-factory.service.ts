@@ -15,7 +15,7 @@ import {RaceFactoryService} from "./race/race-factory.service";
 import {CharacterModel} from "./character-model";
 import {AttributeModel} from "../attribute/attribute-model";
 import {Injectable} from "@angular/core";
-import {AttributeSelectionsAlias, AttributeSelectionWithPicks} from "../attribute/attribute-constants/selected-bonus-groups";
+import {AttributeSelectionsAlias, AttributeSelectionTypes, AttributeSelectionWithPicks} from "../attribute/attribute-constants/selected-bonus-groups";
 import {Armor} from "../armor/armor";
 import {ThemeType} from "../theme-points/theme-type.enum";
 import {ThemeStrength} from "../theme-points/theme-strength.enum";
@@ -146,7 +146,7 @@ export class CharacterFactoryService {
    * @param selection
    * @param propertyName
    */
-  selectAttributeBonus<K extends keyof AttributeSelectionsAlias>(character: CharacterModel, selection: AttributeSelectionWithPicks, propertyName: K): void {
+  selectAttributeBonus<K extends keyof AttributeSelectionsAlias>(character: CharacterModel, selection: AttributeSelectionWithPicks, propertyName: AttributeSelectionTypes): void {
     if (!this.attributeFactoryService.selectBonus(character.attributes, selection, propertyName)) {
       throw Error("Cannot select " + propertyName + " from " + selection.selections.name);
     }

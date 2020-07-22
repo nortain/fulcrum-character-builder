@@ -23,7 +23,7 @@ export enum AbilityBonus {
   TemporaryDamageResist = "TemporaryDamageResist",
   Speed = "Speed",
   Initiative = "Initiative",
-  Dualist = "Dualist",
+  Duelist = "Duelist",
   ReduceOngoing = "ReduceOngoing",
   FindWeakness = "FindWeakness",
   Advance = "Advance",

@@ -17,7 +17,7 @@ export enum SubthemeType {
   Protector = "Protector",
   Juggernaut = "Juggernaut",
   FindWeakness = "FindWeakness",
-  Riposte = "Riposte",
+  Dualist = "Dualist",
   Evasion = "Evasion",
   Magent = "Magent",
   SpellWarden = "SpellWarden",

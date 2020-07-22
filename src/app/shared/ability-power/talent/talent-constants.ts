@@ -11,6 +11,7 @@ import {AttributeName} from "../../attribute/attribute-enums/attribute-name.enum
 import {ArmorType} from "../../armor/armor-type.enum";
 import {SubthemeType} from "../../theme-points/subthemes/subtheme-types.enum";
 import {ThemeStrength} from "../../theme-points/theme-strength.enum";
+import {PowerPointName} from "../power-point/power-point-name.enum";
 
 export type TalentConstants = { [K in TalentName]: AbilityModel };
 
@@ -1256,11 +1257,120 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Increases the range of all missile weapons by $" + AbilityBonus.MissileRangeDistance + "/" + AbilityBonus.MissileRangeDistance + "/" + AbilityBonus.MissileRangeDistance + ".",
+          "Increases the range of all missile weapons by $" + AbilityBonus.MissileRangeDistance + "/$" + AbilityBonus.MissileRangeDistance + "/$" + AbilityBonus.MissileRangeDistance + ".",
         fullDescription:
           "Increases the range of all missile weapons by 5/5/5."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}, {abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}, {abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}, {
+        abilityBonus: AbilityBonus.MissileRangeDistance,
+        abilityType: AbilityType.Passive,
+        value: {minBonus: 5, maxBonus: 5}
+      }, {abilityBonus: AbilityBonus.MissileRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 5}}]
+    } as AbilityModel,
+
+    ItsAllInTheWrist: {
+      ...new AbilityModel(),
+      abilityName: TalentName.ItsAllInTheWrist,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increases the range of all thrown missile weapons by $" + AbilityBonus.ThrownRangeDistance + "/$" + AbilityBonus.ThrownRangeDistance + "/$" + AbilityBonus.ThrownRangeDistance + ".",
+        fullDescription:
+          "Increases the range of all thrown missile weapons by 2/2/2."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ThrownRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}, {
+        abilityBonus: AbilityBonus.ThrownRangeDistance,
+        abilityType: AbilityType.Passive,
+        value: {minBonus: 2, maxBonus: 2}
+      }, {abilityBonus: AbilityBonus.ThrownRangeDistance, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}]
+    } as AbilityModel,
+
+    ImprovedFindWeakness: {
+      ...new AbilityModel(),
+      abilityName: TalentName.ImprovedFindWeakness,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage done by Find Weakness by $" + AbilityBonus.FindWeakness + ".",
+        fullDescription:
+          "Increase the damage done by Find Weakness by 2. Increase this bonus by 1 at levels 4 and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FindWeakness, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.FindWeakness, requirementType: AbilityType.Subtheme, requirementValue: 1}]
+    } as AbilityModel,
+
+    ReinforcedFindWeakness: {
+      abilityName: TalentName.ReinforcedFindWeakness,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your Find Weakness damage by $" + AbilityBonus.FindWeakness + ".",
+        fullDescription:
+          "Increase your Find Weakness damage by 4."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.FindWeakness, abilityType: AbilityType.Passive, value: {minBonus: 4, maxBonus: 4}}],
+      abilityRequirement: [{requirementAbilityName: TalentName.ImprovedFindWeakness, requirementType: AbilityType.Talent, requirementValue: true}, {
+        requirementAbilityName: AbilityBonus.CharacterLevel,
+        requirementType: AbilityType.CharacterLevel,
+        requirementValue: Level.Ten
+      }]
+    } as AbilityModel,
+
+    ImprovedDuelist: {
+      ...new AbilityModel(),
+      abilityName: TalentName.ImprovedDuelist,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your Duelist Damage by $" + AbilityBonus.Duelist + ".",
+        fullDescription:
+          "Increase your Duelist Damage by 1.  This becomes a +2 bonus at level 6."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Duelist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.Dualist, requirementType: AbilityType.Subtheme, requirementValue: 1}]
+    } as AbilityModel,
+
+    ReinforcedDuelist: {
+      abilityName: TalentName.ReinforcedDuelist,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your Duelist damage by $" + AbilityBonus.Duelist + ".",
+        fullDescription:
+          "Increase your Duelist damage by 2."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Duelist, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}],
+      abilityRequirement: [{requirementAbilityName: TalentName.ImprovedDuelist, requirementType: AbilityType.Talent, requirementValue: true}, {
+        requirementAbilityName: AbilityBonus.CharacterLevel,
+        requirementType: AbilityType.CharacterLevel,
+        requirementValue: Level.Ten
+      }]
+    } as AbilityModel,
+
+    PowerRoll: {
+      ...new AbilityModel(),
+      abilityName: TalentName.PowerRoll,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the shift, TM or ongoing reduction of the first action of Evasive Roll by $" + AbilityBonus.EvasiveRoll + ".  At Level 6 increase both actions by " + AbilityBonus.EvasiveRoll + ".",
+        fullDescription:
+          "Increase the shift, TM or ongoing reduction of the first action of Evasive Roll by 1. At level 6 increase both actions done by 1."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.EvasiveRoll, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}, {abilityBonus: AbilityBonus.EvasiveRoll, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+      abilityRequirement: [{requirementAbilityName: PowerPointName.EvasiveRoll, requirementType: AbilityType.PowerPointFeature, requirementValue: 1}]
     } as AbilityModel,
 
   };

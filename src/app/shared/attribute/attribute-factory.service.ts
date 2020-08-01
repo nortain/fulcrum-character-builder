@@ -59,7 +59,7 @@ export class AttributeFactoryService {
 
   /**
    * Given an attribute, a weapon category and a level this will return the amount of bonus damage
-   * that particular attribute provides for the given weapon category and character level.  This is returned in the form as a dice object but the modifier of the dice will be the bonus value.  This can be obtained from the modifer directly or the printroll function
+   * that particular attribute provides for the given weapon category and character level.  This is returned in the form as a dice object but the modifier of the dice will be the bonus value.  This can be obtained from the modifier directly or the printroll function
    * @param attribute
    * @param category
    * @param level
@@ -289,7 +289,7 @@ export class AttributeFactoryService {
   }
 
   /**
-   * Given an attribute name, a map of attributes and a weapon cateogry return an attribute selection with picks.
+   * Given an attribute name, a map of attributes and a weapon category return an attribute selection with picks.
    * If an attributeName has selectable bonus picks and enough attributeStrength has been assigned to said attribute (using the passed in map) get the requiredHybridAttributeStrength
    * Each requiredHybridAttributeStrength is a requirement of how strong certain other attributes must be if their weaponCategory matches the category passed in.
    * For Ex. if an Agility attribute is passed in with a weaponCategory of balanced then Brawn must be of at with least an attributeStrength of Heroic to present options.

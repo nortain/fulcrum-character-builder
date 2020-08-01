@@ -469,6 +469,18 @@ describe('AbilityFactoryService', () => {
     expect(text).toBe("Its All In The Wrist: Increases the range of all thrown missile weapons by 2/2/2.");
   });
 
+  it('should print out Evasive Fire correctly', () => {
+    const talent = service.getNewAbility(TalentName.EvasiveFire, AbilityType.Talent);
+    const text = service.printOutBriefDescription(talent);
+    expect(text).toBe("Evasive Fire: (Power) Standard. You are able to resolve a ranged attack as if it were a melee 1 attack (targets AD, doesn't provoke OAs). This attack gets a +3 to hit. After this attack resolves you may tactically move 2 squares.");
+  });
+
+  it('should print out Turn the Tables correctly', () => {
+    const talent = service.getNewAbility(TalentName.TurnTheTables, AbilityType.Talent);
+    const text = service.printOutBriefDescription(talent);
+    expect(text).toBe("Turn The Tables: (Feature) Move. All enemies flanking you grant you combat superiority 3 and count as isolated until the end of your turn.");
+  });
+
   /**Stupid Helper functions**/
 
   function getSimpleTalent(): AbilityModel {

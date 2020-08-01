@@ -646,11 +646,12 @@ export function getTalentObject(): TalentConstants {
       abilityAction: ActionType.Passive,
       abilityDescription: {
         briefDescription:
-          "Increase your active defense by $" + AbilityBonus.ActiveDefense + ".",
+          "Increase your active defense by $" + AbilityBonus.ActiveDefense + ". This cannot increase max permanent defense beyond $" + AbilityBonus.MaxDefense,
         fullDescription:
-          "Increase your active defense by 1."
+          "Increase your active defense by 1. This cannot increase max permanent defense beyond 15 + level"
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}},
+        {abilityBonus: AbilityBonus.MaxDefense, abilityType: AbilityType.Talent, value: {minBonus: 16, maxBonus: 25}}]
     } as AbilityModel,
 
     AdvancedWeaponTrainingWaterDancer: {
@@ -802,9 +803,9 @@ export function getTalentObject(): TalentConstants {
         {requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "You gain a +$" + AbilityBonus.ActiveDefense + " bonus to AD when wearing light armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, quickness).",
+          "You gain a +$" + AbilityBonus.ActiveDefense + " bonus to AD when wearing light armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, intuition).",
         fullDescription:
-          "You gain a +1 bonus to AD when wearing light armor or less.  This bonus does not stack with any other AD bonuses (shield, evasion, quickness)."
+          "You gain a +1 bonus to AD when wearing light armor or less.  This bonus does not stack with any other AD bonuses (shield, evasion, intuition)."
       },
       mechanicalBonus: [{
         abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
@@ -821,9 +822,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "You gain a +$" + AbilityBonus.ActiveDefense + " bonus to AD when wearing medium armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, quickness).",
+          "You gain a +$" + AbilityBonus.ActiveDefense + " bonus to AD when wearing medium armor or less. This bonus does not stack with any other AD bonuses (shield, evasion, intuition).",
         fullDescription:
-          "You gain a +1 bonus to AD when wearing medium armor or less.  This bonus does not stack with any other AD bonuses (shield, evasion, quickness)."
+          "You gain a +1 bonus to AD when wearing medium armor or less.  This bonus does not stack with any other AD bonuses (shield, evasion, intuition)."
       },
       mechanicalBonus: [{
         abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
@@ -1369,9 +1370,150 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Increase the shift, TM or ongoing reduction of the first action of Evasive Roll by 1. At level 6 increase both actions done by 1."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.EvasiveRoll, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}, {abilityBonus: AbilityBonus.EvasiveRoll, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.EvasiveRoll, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}, {
+        abilityBonus: AbilityBonus.EvasiveRoll,
+        abilityType: AbilityType.Passive,
+        value: {minBonus: 1, maxBonus: 1}
+      }],
       abilityRequirement: [{requirementAbilityName: PowerPointName.EvasiveRoll, requirementType: AbilityType.PowerPointFeature, requirementValue: 1}]
     } as AbilityModel,
+
+    RangedSuperiority: {
+      ...new AbilityModel(),
+      abilityName: TalentName.RangedSuperiority,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "If two or more allies have combat superiority due to flanking an enemy any range attack you make against the target also has combat superiority.",
+        fullDescription:
+          "If two or more allies have combat superiority due to flanking an enemy any range attack you make against the target also has combat superiority."
+      },
+    } as AbilityModel,
+
+    DefensiveMobility: {
+      ...new AbilityModel(),
+      abilityName: TalentName.DefensiveMobility,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "All opportunity attacks provoked from advancing have a -1 to hit and -2 DC.",
+        fullDescription:
+          "All opportunity attacks provoked from advancing have a -1 to hit and -2 DC."
+      },
+    } as AbilityModel,
+
+    OpportuneDefense: {
+      ...new AbilityModel(),
+      abilityName: TalentName.OpportuneDefense,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Opportunity attacks against you suffer a -2 to hit and a -1 DC.",
+        fullDescription:
+          "Opportunity attacks against you suffer a -2 to hit and a -1 DC."
+      },
+    } as AbilityModel,
+
+    CraftyEscape: {
+      ...new AbilityModel(),
+      abilityName: TalentName.CraftyEscape,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Gain $" + AbilityBonus.CriticalResist + " critical resistance.  If you start your turn threatened by one or more enemies your careful step action becomes tactical.",
+        fullDescription:
+          "Gain 1 critical resistance.  If you start your turn threatened by one or more enemies your careful step action becomes tactical."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.CriticalResist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+    } as AbilityModel,
+
+    NimbleFootwork: {
+      ...new AbilityModel(),
+      abilityName: TalentName.NimbleFootwork,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase your starting THP by $" + AbilityBonus.StartingTemporaryHitPoints + ".  Your tactical movement and advancing can move through squares occupied by enemies.",
+        fullDescription:
+          "Increase your starting THP by 1.  Your tactical movement and advancing can move through squares occupied by enemies."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+    } as AbilityModel,
+
+    EvasiveFire: {
+      ...new AbilityModel(),
+      abilityName: TalentName.EvasiveFire,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Standard,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "You are able to resolve a ranged attack as if it were a melee 1 attack (targets AD, doesn't provoke OAs). This attack gets a +3 to hit. After this attack resolves you may tactically move 2 squares.",
+        fullDescription:
+          "You are able to resolve a ranged attack as if it were a melee 1 attack (targets AD, doesn't provoke OAs). This attack gets a +3 to hit. After this attack resolves you may tactically move 2 squares."
+      },
+    } as AbilityModel,
+
+    SpringStep: {
+      ...new AbilityModel(),
+      abilityName: TalentName.SpringStep,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the number of squares you can advance when performing the careful step action by $" + AbilityBonus.CarefulStep + ".",
+        fullDescription:
+          "Increase the number of squares you can advance when performing the careful step action by 1."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.CarefulStep, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+    } as AbilityModel,
+
+    TurnTheTables: {
+      ...new AbilityModel(),
+      abilityName: TalentName.TurnTheTables,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      briefDescriptionAbilityType: AbilityType.Feature,
+      fullDescriptionAbilityType: AbilityType.Feature,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "All enemies flanking you grant you combat superiority 3 and count as isolated until the end of your turn.",
+        fullDescription:
+          "All enemies flanking you grant you combat superiority 3 and count as isolated until the end of your turn."
+      },
+    } as AbilityModel,
+
+    Murder: {
+      ...new AbilityModel(),
+      abilityName: TalentName.Murder,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Move,
+      briefDescriptionAbilityType: AbilityType.Power,
+      fullDescriptionAbilityType: AbilityType.Power,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Get a +2 hit bonus to and an attack damage bonus of $" + AbilityBonus.AttackDamage + " to the next attack you make against this turn against a creature that is isolated or granting you combat superiority.  If this attack misses this power is refreshed.",
+        fullDescription:
+          "Get a +2 hit bonus to and an attack damage bonus of (17 + level * 3) to the next attack you make against this turn against a creature that is isolated or granting you combat superiority.  If this attack misses this power is refreshed."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Power, value: {minBonus: 17, maxBonus: 47}}],
+    } as AbilityModel,
+
 
   };
 }

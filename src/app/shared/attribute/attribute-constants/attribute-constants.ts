@@ -682,19 +682,19 @@ export function getAttributeObject(): AttributeConstants {
       },
         {
           bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Heroic],
-          armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
+          armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor, ArmorType.HeavyArmor]
         },
         {
           bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Champion],
-          armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
+          armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor, ArmorType.HeavyArmor]
         },
         {
           bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Epic],
-          armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
+          armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor, ArmorType.HeavyArmor]
         }
         , {
           bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Legendary],
-          armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
+          armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor, ArmorType.HeavyArmor]
         }
       ],
       bonusToTrainedSkills: ATTRIBUTE_TRAINED_SKILL_BONUS

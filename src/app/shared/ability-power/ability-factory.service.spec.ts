@@ -466,7 +466,7 @@ describe('AbilityFactoryService', () => {
   it('should print out dead eye correctly so each value looks correct', () => {
     const talent = service.getNewAbility(TalentName.ItsAllInTheWrist, AbilityType.Talent);
     const text = service.printOutBriefDescription(talent);
-    expect(text).toBe("Its All In The Wriest: Increases the range of all thrown missile weapons by 2/2/2.");
+    expect(text).toBe("Its All In The Wrist: Increases the range of all thrown missile weapons by 2/2/2.");
   });
 
   /**Stupid Helper functions**/

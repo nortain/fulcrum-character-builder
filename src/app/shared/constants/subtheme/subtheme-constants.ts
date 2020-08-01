@@ -49,7 +49,7 @@ export function getSubthemeObject(magic: number): SubthemeObject {
     ],
     stealth: [
       new Subtheme(SubthemeType.FindWeakness),
-      new Subtheme(SubthemeType.Riposte),
+      new Subtheme(SubthemeType.Duelist),
       new Subtheme(SubthemeType.Evasion)
     ],
     magic: magicArray

@@ -678,7 +678,7 @@ export function getAttributeObject(): AttributeConstants {
       ],
       bonusToAd: [{
         bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Normal],
-        armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor]
+        armorTypes: [ArmorType.None, ArmorType.LightArmor, ArmorType.MediumArmor, ArmorType.HeavyArmor]
       },
         {
           bonusValue: ATTRIBUTE_BONUS_TO_AD[AttributeStrength.Heroic],

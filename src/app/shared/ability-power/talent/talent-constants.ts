@@ -1335,7 +1335,7 @@ export function getTalentObject(): TalentConstants {
           "Increase your Duelist Damage by 1.  This becomes a +2 bonus at level 6."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Duelist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}],
-      abilityRequirement: [{requirementAbilityName: SubthemeType.Dualist, requirementType: AbilityType.Subtheme, requirementValue: 1}]
+      abilityRequirement: [{requirementAbilityName: SubthemeType.Duelist, requirementType: AbilityType.Subtheme, requirementValue: 1}]
     } as AbilityModel,
 
     ReinforcedDuelist: {

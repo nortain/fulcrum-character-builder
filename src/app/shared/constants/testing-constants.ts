@@ -41,7 +41,7 @@ export function mockCharacter(name = "Bob", raceType = RaceType.Altwani) {
 
 export function mockSubtheme(subthemeType?: SubthemeType, str?: ThemeStrength): Subtheme {
   if (!subthemeType) {
-    subthemeType = SubthemeType.Riposte;
+    subthemeType = SubthemeType.Duelist;
   }
   str = !!str ? str : ThemeStrength.None;
   const sub = new Subtheme(subthemeType, str);

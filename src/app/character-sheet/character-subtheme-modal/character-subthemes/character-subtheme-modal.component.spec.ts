@@ -41,7 +41,7 @@ describe('CharacterSubthemeModalComponent', () => {
     protector = new Subtheme(SubthemeType.Protector, 0);
     juggernaut = new Subtheme(SubthemeType.Juggernaut, 0);
     find = new Subtheme(SubthemeType.FindWeakness, 0);
-    riposte = new Subtheme(SubthemeType.Riposte, 0);
+    riposte = new Subtheme(SubthemeType.Duelist, 0);
     evasion = new Subtheme(SubthemeType.Evasion, 0);
     magent = new Subtheme(SubthemeType.Magent, 0);
     fixture.detectChanges();

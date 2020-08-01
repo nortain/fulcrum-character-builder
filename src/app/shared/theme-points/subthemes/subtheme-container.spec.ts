@@ -21,7 +21,7 @@ describe('SubthemeContainer', () => {
     st.combat = [new Subtheme(SubthemeType.Juggernaut, ThemeStrength.Minor)];
     expect(st.getAvailableSubthemePoints("combat")).toEqual(0);
     expect(st.getAvailableSubthemePoints("stealth")).toEqual(1);
-    st.stealth = [new Subtheme(SubthemeType.Riposte, ThemeStrength.Greater)];
+    st.stealth = [new Subtheme(SubthemeType.Duelist, ThemeStrength.Greater)];
     expect(st.getAvailableSubthemePoints("stealth")).toEqual(-1);
     expect(st.getAvailableSubthemePoints("magic")).toEqual(1);
     st.magic = new Subtheme(SubthemeType.Magent, ThemeStrength.Minor);
@@ -29,7 +29,7 @@ describe('SubthemeContainer', () => {
 
   });
 
-  it('should be able to get the subthemeStrengh of all assigned combat themes', () => {
+  it('should be able to get the subtheme Strength of all assigned combat themes', () => {
     st.combat = [new Subtheme(SubthemeType.WeaponSpecialization, ThemeStrength.Minor)];
     expect(st.getSubthemeStrength("combat")).toEqual(ThemeStrength.Minor);
     st.combat = [new Subtheme(SubthemeType.WeaponSpecialization, ThemeStrength.Minor),
@@ -61,7 +61,7 @@ describe('SubthemeContainer', () => {
     expect(st.getSubthemeStrength("combat")).toEqual(2);
   });
 
-  it('shoudld be able to assign the same magic subtheme and have the first value replaced by the second', () => {
+  it('should be able to assign the same magic subtheme and have the first value replaced by the second', () => {
     const magent = new Subtheme(SubthemeType.Magent, ThemeStrength.Minor);
     const warden = new Subtheme(SubthemeType.SpellWarden, ThemeStrength.Minor);
     st.assignSubtheme(magent);
@@ -100,7 +100,7 @@ describe('SubthemeContainer', () => {
     st = new SubthemeContainer(new ThemePointsContainer(1, 2, 0, 1));
     so = st.buildSubthemeObject();
     const prot_minor = new Subtheme(SubthemeType.Protector, ThemeStrength.Minor);
-    const ripo_minor = new Subtheme(SubthemeType.Riposte, ThemeStrength.Minor);
+    const ripo_minor = new Subtheme(SubthemeType.Duelist, ThemeStrength.Minor);
     st.assignSubtheme(prot_minor);
     st.assignSubtheme(ripo_minor);
     const newerSo = st.buildSubthemeObject();

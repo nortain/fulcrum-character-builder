@@ -158,7 +158,7 @@ describe('SubthemeComponent', () => {
   });
 
   it('should be able to limit subtheme points based of simliar subthemes being assigned values', () => {
-    component.subtheme = new Subtheme(SubthemeType.Riposte, ThemeStrength.Minor);
+    component.subtheme = new Subtheme(SubthemeType.Duelist, ThemeStrength.Minor);
     component.assignedSubthemePoints = 4;
     component.subthemePointCap = 1;
     const result = component.totalAssignableSubthemePoints();
@@ -178,7 +178,7 @@ describe('SubthemeComponent', () => {
 
   it('should repsect subtheme points assigned to subthemes of the same theme type', () => {
     component.subthemePointCap = 1;
-    component.subtheme = new Subtheme(SubthemeType.Riposte, ThemeStrength.Minor);
+    component.subtheme = new Subtheme(SubthemeType.Duelist, ThemeStrength.Minor);
     component.assignedSubthemePoints = 3;
     const result = component.totalAssignableSubthemePoints();
     expect(result).toEqual(3);

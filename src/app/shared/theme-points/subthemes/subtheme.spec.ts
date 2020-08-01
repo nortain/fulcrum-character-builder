@@ -60,7 +60,7 @@ describe('Subtheme', () => {
   });
 
   it('should be able to get bonus for Riposte', () => {
-    stealth = new Subtheme(SubthemeType.Riposte, ThemeStrength.Greater);
+    stealth = new Subtheme(SubthemeType.Duelist, ThemeStrength.Greater);
     expect(stealth.getBonus(Level.Five, SubthemeBonus.RiposteAura)).toEqual(16);
     expect(stealth.getBonus(Level.Seven, SubthemeBonus.IsolationDamage)).toEqual(10);
   });
@@ -72,7 +72,7 @@ describe('Subtheme', () => {
   });
 
   it('should return 0 for a bonus if the wrong optional parameter or none at all is passed in for something that needs it', () => {
-    stealth = new Subtheme(SubthemeType.Riposte, ThemeStrength.Lesser);
+    stealth = new Subtheme(SubthemeType.Duelist, ThemeStrength.Lesser);
     expect(stealth.getBonus(Level.Nine, SubthemeBonus.TempHp)).toEqual(0);
     expect(magic.getBonus(Level.Three, SubthemeBonus.ProtectorAura)).toEqual(0);
   });

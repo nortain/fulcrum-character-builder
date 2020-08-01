@@ -71,4 +71,6 @@ export function getPowerPointObject(): PowerPointConstants {
 
   };
 
+  // TODO implement the remaining power point features
+
 }

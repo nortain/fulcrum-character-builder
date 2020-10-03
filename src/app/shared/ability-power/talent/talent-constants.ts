@@ -1514,6 +1514,37 @@ export function getTalentObject(): TalentConstants {
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Power, value: {minBonus: 17, maxBonus: 47}}],
     } as AbilityModel,
 
+    EasyMark: {
+      ...new AbilityModel(),
+      abilityName: TalentName.EasyMark,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Swift,
+      briefDescriptionAbilityType: AbilityType.Power,
+      fullDescriptionAbilityType: AbilityType.Power,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Mark a target as a swift action until the end of your turn.  The marked target grants you combat superiority 3 and can only use passive defense against your attacks.",
+        fullDescription:
+          "Mark a target as a swift action until the end of your turn.  The marked target grants you combat superiority 3 and can only use passive defense against your attacks."
+      }
+    } as AbilityModel,
+
+    CounterStrike: {
+      ...new AbilityModel(),
+      abilityName: TalentName.CounterStrike,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "Inflict $" + AbilityBonus.CounterStrike + " damage to an enemy that you threaten that misses you with an attack.  This damage stacks with any damage done from the Dualist feature.",
+        fullDescription:
+          "Inflict 5 damage to an enemy that you threaten that misses you with an attack.  This damage stacks with any damage done from the Dualist feature.  Increase this damage by 1 at levels 2, 4, 6, 8, and 10."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.CounterStrike, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 10}}],
+    } as AbilityModel,
+
 
   };
 }

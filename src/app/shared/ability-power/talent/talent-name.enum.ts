@@ -42,6 +42,7 @@ export enum TalentName {
   EmpoweredStrikes = "EmpoweredStrikes",
   EvasiveFire = "EvasiveFire",
   FightThroughThePain = "FightThroughThePain",
+  FindWeaknessMastery = "FindWeaknessMastery",
   FollowUpAttack = "FollowUpAttack",
   FortificationSpecialization = "FortificationSpecialization",
   FriendlyController = "FriendlyController",

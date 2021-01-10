@@ -1545,6 +1545,22 @@ export function getTalentObject(): TalentConstants {
       mechanicalBonus: [{abilityBonus: AbilityBonus.CounterStrike, abilityType: AbilityType.Passive, value: {minBonus: 5, maxBonus: 10}}],
     } as AbilityModel,
 
+    FindWeaknessMastery: {
+      abilityName: TalentName.FindWeaknessMastery,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+        "Increase the damage of your Find Weakness ability by $" + AbilityBonus.FindWeakness + " and gain the Weakness Exposed feature.",
+        fullDescription:
+          "Gain 1 to your attack damage bonus and gain the Masterful Strikes Feature."
+      },
+      associatedAbilities: [TalentName.MasterfulStrikes],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}],
+      abilityRequirement: [{requirementAbilityName: SubthemeType.WeaponSpecialization, requirementType: AbilityType.Subtheme, requirementValue: ThemeStrength.Lesser}]
+    } as AbilityModel,
+
 
   };
 }

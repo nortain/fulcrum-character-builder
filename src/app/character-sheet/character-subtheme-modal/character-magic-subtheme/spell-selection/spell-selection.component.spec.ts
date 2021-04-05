@@ -15,7 +15,7 @@ describe('SpellSelectionComponent', () => {
   let component: SpellSelectionComponent;
   let fixture: ComponentFixture<SpellSelectionComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(async (() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, NgbModule],
       providers: [NgbModal],
@@ -163,7 +163,7 @@ describe('SpellSelectionComponent', () => {
       spyOn(component, "getMagicText").and.returnValue([
         {
           name: "fireball",
-        }
+        } as Spell
       ]);
       component.openSpell({
         name: "fireball"
@@ -171,7 +171,7 @@ describe('SpellSelectionComponent', () => {
       fixture.detectChanges();
     });
 
-    it('shouldnt display fields if they arent present', () => {
+    it('should not display fields if they arent present', () => {
       const keywords = fixture.debugElement.queryAll(By.css("#keywordsHolder"));
       const defenseType = fixture.debugElement.queryAll(By.css("#defenseTypeHolder"));
       const aoe = fixture.debugElement.queryAll(By.css("#aoeHolder"));

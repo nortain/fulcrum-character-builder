@@ -502,7 +502,7 @@ describe('AbilityFactoryService', () => {
 
   it('should see that you cannot select perfect dodge by itself', () => {
     const dodge = service.getNewAbility(TalentName.PerfectDodge, AbilityType.Talent);
-    expect(service.canAbilityBeSelected(dodge, [], null, Level.One)).toBeFalsy();
+    expect(service.canAbilityBeSelected(dodge, [], null, Level.One).isSelectable).toBeFalsy();
 
 
   });

@@ -255,7 +255,10 @@ export class AbilityFactoryService {
   }
 
   /**
-   * Used to determine if a given ability model has one or more associated abilities.  This is most commonly the case with greater passive talents that also give a lesser powers.  The greater talent would be passed in along with the ability type talent and from their, if an active ability property exists on the talent then a new ability of type AbilityType will be returned.  This is assumed to be used by the application to get active talents without necessarily having to store them as complete talents else where.  The same may be true for other abilities.
+   * Used to determine if a given ability model has one or more associated abilities.  This is most commonly the case with greater passive talents that also give a lesser powers.
+   * The greater talent would be passed in along with the ability type talent and from there, if an active ability property exists on the talent then a new ability of type
+   * AbilityType will be returned.  This is assumed to be used by the application to get active talents without necessarily having to store them as complete talents else where.
+   * The same may be true for other abilities.
    * @param ability
    * @param abilityType
    */

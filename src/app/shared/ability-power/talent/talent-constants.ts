@@ -1689,13 +1689,41 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
+          "Gain $" + AbilityBonus.PassiveDefense + " to your passive defense (cannot exceed AD -1).",
+        fullDescription:
+          "Gain 2 to your passive defense (cannot exceed AD -1)."
+      },
+      associatedAbilities: [TalentName.PerfectDodge],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.PassiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}],
+    } as AbilityModel,
+
+    PerfectDodge: {
+      abilityName: TalentName.PerfectDodge,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      abilityDescription: {
+        briefDescription:
+          "Once per combat you can reduce the damage and ongoing applied by an attack by $" + AbilityBonus.TemporaryDamageResist + ".",
+        fullDescription:
+          "Once per combat you can reduce the damage and ongoing applied by an attack by 2. This increases by 1 at levels 4 and 8."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Ability, value: {minBonus: 2, maxBonus: 4}}]
+    } as AbilityModel,
+
+
+    SuperiorIsolation: {
+      abilityName: TalentName.PerfectDefense,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
           "Gain $" + AbilityBonus.PassiveDefense + " to your passive defense (cannot exceed AD -1). Once per combat you can reduce the damage and ongoing applied by an attack by $" + AbilityBonus.TemporaryDamageResist + ".",
         fullDescription:
           "Gain 2 to your passive defense (cannot exceed AD -1). Once per combat you can reduce the damage and ongoing applied by an attack by 2. This increases by 1 at levels 4 and 8."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.PassiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}, {abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Ability, value: {minBonus: 2, maxBonus: 4}}],
     } as AbilityModel,
-
 
   };
 }

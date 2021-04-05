@@ -40,7 +40,7 @@ describe('AbilityFactoryService', () => {
   });
 
   it('should be able to print out a value with level range based values', () => {
-    expect(service.printOutFullDescription(simpleTalent)).toEqual("Healing Specialization: Increase the amount of Healing granted by actions with the healing keyword by 1.  Increase by 1 at level 6.");
+    expect(service.printOutFullDescription(simpleTalent)).toEqual("Healing Specialization: Increase the amount of Healing granted by actions with the healing keyword by 1. Increase by 1 at level 6.");
     let result = service.printOutBriefDescription(simpleTalent, Level.Five);
     expect(result).toBe("Healing Specialization: Increase the amount of Healing granted by actions with the healing keyword by 1.");
     result = service.printOutBriefDescription(simpleTalent, Level.Six);
@@ -105,7 +105,7 @@ describe('AbilityFactoryService', () => {
   it('should be able to print and get values a talent that gives bonus to forced movement', () => {
     const talent = service.getNewAbility(TalentName.ImprovedController, AbilityType.Talent);
     const result = service.printOutBriefDescription(talent);
-    expect(result).toBe("Improved Controller: Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1.  Gain a +1 bonus to critical strikes.");
+    expect(result).toBe("Improved Controller: Any spell or ability with the Forced Movement keyword has its push, pull, teleport and slide effects increased by 1. Gain a +1 bonus to critical strikes.");
     const value = service.getBonusForAbility(AbilityBonus.ForcedMovement, [talent]);
     expect(value).toEqual(1);
   });
@@ -131,7 +131,7 @@ describe('AbilityFactoryService', () => {
 
   });
 
-  it('should be able to scale talents so that they level on even levels only.  I.e. 3 level increases would occur at levels 4, 6, 8 when there are 3.  2,4,6,8 with 5.', () => {
+  it('should be able to scale talents so that they level on even levels only. I.e. 3 level increases would occur at levels 4, 6, 8 when there are 3. 2,4,6,8 with 5.', () => {
     const range1: ValueRange = {minBonus: 1, maxBonus: 2};
 
     expect(service.extractNumberFromValueRangeForPassiveTalents(range1, Level.Five)).toEqual(1);
@@ -211,7 +211,7 @@ describe('AbilityFactoryService', () => {
       "Defensive Charge: You gain -2 DC against any attacks you incur while charging.\n" +
       "Accurate Charge: Gain a +2 bonus to hit when charging (+1 after negating the -1).\n" +
       "Accelerated Charge: Increase your speed by 1 when performing a charge.\n" +
-      "Savage Charge: Gain a +2 attack damage bonus when charging.  Increase this damage by 1 and levels 4 and 8.");
+      "Savage Charge: Gain a +2 attack damage bonus when charging. Increase this damage by 1 and levels 4 and 8.");
   });
 
   it('should be able to choose sub-options of a lesser version of greater talent like charge mastery', () => {
@@ -399,7 +399,7 @@ describe('AbilityFactoryService', () => {
   it('should be able to use talent passive/feature level scaling with protection mastery\'s taunt', () => {
     const talent = service.getNewAbility(TalentName.Taunt, AbilityType.Talent);
     const scalingText = service.printOutBriefDescription(talent, Level.Five);
-    expect(scalingText).toBe("Taunt: (Feature) Move. You may pull an enemy within 2 squares of you 1 square.  Increase the damage of your Protector Aura by 10 until SoNT.");
+    expect(scalingText).toBe("Taunt: (Feature) Move. You may pull an enemy within 2 squares of you 1 square. Increase the damage of your Protector Aura by 10 until SoNT.");
   });
 
   it('should require the rage powerpoint feature in order to select the enrage talent', () => {
@@ -483,12 +483,28 @@ describe('AbilityFactoryService', () => {
   it('should print out perfect defense correctly', () => {
     const talent = service.getNewAbility(TalentName.PerfectDefense, AbilityType.Talent);
     const text = service.printOutBriefDescription(talent);
-    expect(text).toBe("Perfect Defense: Gain 2 to your passive defense (cannot exceed AD -1). Once per combat you can reduce the damage and ongoing applied by an attack by 4.");
+    expect(text).toBe("Perfect Defense: Gain 2 to your passive defense (cannot exceed AD -1).\n" +
+      "Perfect Dodge: (Ability) Free. Once per combat you can reduce the damage and ongoing applied by an attack by 4.");
   });
 
-  it('should be able to see that perfect defense has an ability that can be used once per combat', () => {
-    const talent = service.getNewAbility(TalentName.PerfectDefense, AbilityType.Talent);
-    service.selectAbility()
+  it('should be able to see that chi defense has an ability that can be used', () => {
+    const chi = service.getNewAbility(TalentName.AdvancedWeaponTrainingInnerFocus, AbilityType.Talent);
+    const arrayOfAbilities = service.getAssociatedAbilities(chi, AbilityType.Power);
+    expect(arrayOfAbilities).not.toBeNull();
+    expect(arrayOfAbilities.length).toBeGreaterThan(0);
+  });
+
+  it('should be able to see that perfect defense is associated with perfect dodge', () => {
+    const defense = service.getNewAbility(TalentName.PerfectDefense, AbilityType.Talent);
+    const arrayOfAbilities = service.getAssociatedAbilities(defense, AbilityType.Ability);
+    expect(arrayOfAbilities.length).toEqual(1);
+  });
+
+  it('should see that you cannot select perfect dodge by itself', () => {
+    const dodge = service.getNewAbility(TalentName.PerfectDodge, AbilityType.Talent);
+    expect(service.canAbilityBeSelected(dodge, [], null, Level.One)).toBeFalsy();
+
+
   });
 
   /**Stupid Helper functions**/

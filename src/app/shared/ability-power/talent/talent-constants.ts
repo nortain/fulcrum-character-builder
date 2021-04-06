@@ -1552,7 +1552,7 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
       abilityDescription: {
         briefDescription:
-        "Increase the damage of your Find Weakness ability by $" + AbilityBonus.FindWeakness + " and gain the Weakness Exposed feature.",
+          "Increase the damage of your Find Weakness ability by $" + AbilityBonus.FindWeakness + " and gain the Weakness Exposed feature.",
         fullDescription:
           "Increase the damage of your Find Weakness ability by 2 and gain the Weakness Exposed feature."
       },
@@ -1642,7 +1642,7 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Increase your Duelist damage by $" + AbilityBonus.Duelist + " but gain a $" + AbilityBonus.CriticalStrike  + " critical strikes. Increase the Duelist damage provided by To the Pain by $" + AbilityBonus.ToThePain + ".",
+          "Increase your Duelist damage by $" + AbilityBonus.Duelist + " but gain a $" + AbilityBonus.CriticalStrike + " critical strikes. Increase the Duelist damage provided by To the Pain by $" + AbilityBonus.ToThePain + ".",
         fullDescription:
           "Increase your Duelist damage by 1 but gain a -1 to critical strikes. Increase the Duelist Damage bonus provided by To the Pain by 1, increasing by 1 at levels 4, 6, and 8."
       },
@@ -1659,7 +1659,7 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Increase the damage of your find weakness feature by $" + AbilityBonus.FindWeakness + ". Increase the damage of your Backstab powerpoint feature by $" + AbilityBonus.Backstab  + ".",
+          "Increase the damage of your find weakness feature by $" + AbilityBonus.FindWeakness + ". Increase the damage of your Backstab powerpoint feature by $" + AbilityBonus.Backstab + ".",
         fullDescription:
           "Increase the damage of your find weakness feature by 1. Increase the damage of your Backstab powerpoint feature by 2. Increase your bonus damage to Backstab by 1 at levels 2, 4, 6, and 8."
       },
@@ -1712,17 +1712,85 @@ export function getTalentObject(): TalentConstants {
 
 
     SuperiorIsolation: {
-      abilityName: TalentName.PerfectDefense,
+      abilityName: TalentName.SuperiorIsolation,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
-      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        fullDescription:
+          "Enemies granting you combat superiority from flanking count as being isolated.",
+        briefDescription:
+          "Enemies granting you combat superiority from flanking count as being isolated."
+      }
+    } as AbilityModel,
+
+    FirstStrike: {
+      abilityName: TalentName.FirstStrike,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        fullDescription:
+          "All creatures that have not yet acted in combat grant you combat superiority and count as being isolated.",
+        briefDescription:
+          "All creatures that have not yet acted in combat grant you combat superiority and count as being isolated."
+      }
+    } as AbilityModel,
+
+    AtTheReady: {
+      abilityName: TalentName.AtTheReady,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Gain $" + AbilityBonus.PassiveDefense + " to your passive defense (cannot exceed AD -1). Once per combat you can reduce the damage and ongoing applied by an attack by $" + AbilityBonus.TemporaryDamageResist + ".",
+          "At the start of your turn gain " + AbilityBonus.TemporaryDamageResist + " damage resist that lasts until the end of the round.  This passive no longer applies once round 3 of combat starts.",
         fullDescription:
-          "Gain 2 to your passive defense (cannot exceed AD -1). Once per combat you can reduce the damage and ongoing applied by an attack by 2. This increases by 1 at levels 4 and 8."
+          "At the start of your turn gain 2 damage resist that lasts until the end of the round.  This passive no longer applies once round 3 of combat starts. Increase the resistance by 1 at levels 4 and 8."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.PassiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 2}}, {abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Ability, value: {minBonus: 2, maxBonus: 4}}],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}],
+    } as AbilityModel,
+
+    UnfairAdvantage: {
+      abilityName: TalentName.UnfairAdvantage,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain an additional +1 hit bonus against targets with combat superiority.",
+        fullDescription:
+          "Gain an additional +1 hit bonus against targets with combat superiority."
+      }
+    } as AbilityModel,
+
+    DeftOpening: {
+      abilityName: TalentName.DeftOpening,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain a +1 hit bonus against isolated targets.",
+        fullDescription:
+          "Gain a +1 hit bonus against isolated targets."
+      }
+    } as AbilityModel,
+
+    Soothsayer: {
+      abilityName: TalentName.Soothsayer,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Grant a target in 10 one of the following:",
+        fullDescription:
+          "Grant a target in 10 one of the following:"
+      },
+      associatedAbilities: [TalentName.SoothsayerHeal, TalentName.SoothsayerMend]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 20}}],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.ToGenerateTemporaryHitPoints, requirementType: AbilityType.Power, requirementValue: true}],
     } as AbilityModel,
 
   };

@@ -14,6 +14,7 @@ import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {PowerPointName} from "./power-point/power-point-name.enum";
+import {isIterable} from "rxjs/internal-compatibility";
 
 describe('AbilityFactoryService', () => {
   let service: AbilityFactoryService;
@@ -503,9 +504,9 @@ describe('AbilityFactoryService', () => {
   it('should see that you cannot select perfect dodge by itself', () => {
     const dodge = service.getNewAbility(TalentName.PerfectDodge, AbilityType.Talent);
     expect(service.canAbilityBeSelected(dodge, [], null, Level.One).isSelectable).toBeFalsy();
-
-
   });
+
+
 
   /**Stupid Helper functions**/
 

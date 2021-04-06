@@ -1117,7 +1117,8 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Increase the damage reduction of your evasion powers and abilities by 2 + (level / 4). The turn after making a dodge you may use your Rapid Recovery feature as a minor action OR heal for 2  + (level / 4) as a swift action."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.Dodge, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}}, {abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Talent, value: {minBonus: 2, maxBonus: 2}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Dodge, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}},
+        {abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Talent, value: {minBonus: 2, maxBonus: 2}}]
     } as AbilityModel,
 
     IndomitableResolve: {
@@ -1781,17 +1782,100 @@ export function getTalentObject(): TalentConstants {
       abilityName: TalentName.Soothsayer,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Minor,
-      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
           "Grant a target in 10 one of the following:",
         fullDescription:
           "Grant a target in 10 one of the following:"
       },
-      associatedAbilities: [TalentName.SoothsayerHeal, TalentName.SoothsayerMend]
-      mechanicalBonus: [{abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 20}}],
+      associatedAbilities: [TalentName.SoothsayerHeal, TalentName.SoothsayerMend],
       abilityRequirement: [{requirementAbilityName: AbilityBonus.ToGenerateTemporaryHitPoints, requirementType: AbilityType.Power, requirementValue: true}],
     } as AbilityModel,
 
+    SoothsayerHeal: {
+      abilityName: TalentName.SoothsayerHeal,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityDescription: {
+        briefDescription:
+          "Heal a blooded target for " + AbilityBonus.Fortify + " Hit points.",
+        fullDescription:
+          "Heal a blooded target for for 8 hit points.  Increase this by 1 at levels 2, 4, 5, 7, 8, 10.  Increase by 2 at levels 3, 6, 9."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 20}}]
+    } as AbilityModel,
+
+    SoothsayerMend: {
+      abilityName: TalentName.SoothsayerMend,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityDescription: {
+        briefDescription:
+          "Reduce ongoing by " + AbilityBonus.ReduceOngoing + ".",
+        fullDescription:
+          "Reduce ongoing by 4.  Increase by 1 at levels 3, 5, 7 and 9"
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ReduceOngoing, abilityType: AbilityType.Power, value: {minBonus: 4, maxBonus: 8}}]
+    } as AbilityModel,
+
+    ThievesIntuition: {
+      abilityName: TalentName.ThievesIntuition,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain advantage to initiative rolls.",
+        fullDescription:
+          "Gain advantage to initiative rolls."
+      }
+    } as AbilityModel,
+
+    PressTheAdvantage: {
+      abilityName: TalentName.PressTheAdvantage,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "After striking a creature with combat superiority cause the target to gain Stun (2).",
+        fullDescription:
+          "After striking a creature with combat superiority cause the target to gain Stun (2)."
+      }
+    } as AbilityModel,
+
+    CleverPloy: {
+      abilityName: TalentName.CleverPloy,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "When an adjacent enemy uses a forced movement ability against you, you may choose to swap positions with the enemy instead of being moved.  The enemy gains disoriented (1).",
+        fullDescription:
+          "When an adjacent enemy uses a forced movement ability against you, you may choose to swap positions with the enemy instead of being moved.  The enemy gains disoriented (1)."
+      }
+    } as AbilityModel,
+
+    /*
+    * WIP
+    *
+    * */
+    AgileEvasion: {
+      abilityName: TalentName.AgileEvasion,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Increase the damage reduction of your evasion powers and abilities by " + AbilityBonus.Dodge + ". On your next turn you are able to tactically move " + AbilityBonus.TacticalMovement + " as a minor action OR as a swift action reduce your current ongoing by " + AbilityBonus.ReduceOngoing + ".",
+        fullDescription:
+          "Increase the damage reduction of your evasion powers and abilities by 2 + (level / 4). On your next turn you are able to tactically move 1 as a minor action OR as a swift action reduce your current ongoing by 1 + (level / 6)."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Dodge, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}},
+        {abilityBonus: AbilityBonus.TacticalMovement, abilityType: AbilityType.Ability, value: {minBonus: 1, maxBonus: 1}},
+        {abilityBonus: AbilityBonus.ReduceOngoing, abilityType: AbilityType.Ability, value: {minBonus: 1, maxBonus: 2}}]
+    } as AbilityModel,
   };
 }

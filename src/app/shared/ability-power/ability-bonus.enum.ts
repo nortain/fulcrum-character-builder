@@ -1,5 +1,6 @@
 export enum AbilityBonus {
   HitPoints = "HitPoints",
+  IgnoreArmorPenalty = "IgnoreArmorPenalty",
   StartingTemporaryHitPoints = "StartingTemporaryHitPoints",
   ActiveDefense = "ActiveDefense",
   PassiveDefense = "PassiveDefense",

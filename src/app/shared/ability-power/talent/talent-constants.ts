@@ -1858,10 +1858,6 @@ export function getTalentObject(): TalentConstants {
       }
     } as AbilityModel,
 
-    /*
-    * WIP
-    *
-    * */
     AgileEvasion: {
       abilityName: TalentName.AgileEvasion,
       abilityType: AbilityType.Talent,
@@ -1876,6 +1872,105 @@ export function getTalentObject(): TalentConstants {
       mechanicalBonus: [{abilityBonus: AbilityBonus.Dodge, abilityType: AbilityType.Passive, value: {minBonus: 2, maxBonus: 4}},
         {abilityBonus: AbilityBonus.TacticalMovement, abilityType: AbilityType.Ability, value: {minBonus: 1, maxBonus: 1}},
         {abilityBonus: AbilityBonus.ReduceOngoing, abilityType: AbilityType.Ability, value: {minBonus: 1, maxBonus: 2}}]
+    } as AbilityModel,
+
+    Regroup: {
+      abilityName: TalentName.Regroup,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Spend up to 2 recoveries and gain a -1 DC against all attacks until the start of your next turn.",
+        fullDescription:
+          "Spend up to 2 recoveries and gain a -1 DC against all attacks until the start of your next turn."
+      }
+    } as AbilityModel,
+
+    Ghost: {
+      abilityName: TalentName.Ghost,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain " + AbilityBonus.Fortify + " THP.  Until the end of your turn, you gain a +2 speed bonus and all of your movement becomes tactical.",
+        fullDescription:
+          "Gain 3 + level / 2 Temporary Hit Points.  Until the end of your turn, you gain a +2 speed bonus and all of your movement becomes tactical (movement does not provoke opportunity attacks)."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Power, value: {minBonus: 3, maxBonus: 8}}]
+    } as AbilityModel,
+
+    GoForTheKill: {
+      abilityName: TalentName.GoForTheKill,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "The next application of Find Weakness of Duelist damage dealt this turn does " + AbilityBonus.AttackDamage + " additional damage.",
+        fullDescription:
+          "The next application of Find Weakness or Duelist damage dealt this turn does 11 + 2 * level additional damage."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Power, value: {minBonus: 13, maxBonus: 31}}]
+    } as AbilityModel,
+
+    ShadowGuard: {
+      abilityName: TalentName.ShadowGuard,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Minor,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Lose threatening and all incoming attacks have a -3 DC applied to them until the start of your next.",
+        fullDescription:
+          "Lose threatening and all incoming attacks have a -3 DC applied to them until the start of your next."
+      }
+    } as AbilityModel,
+
+    FatalMistake: {
+      abilityName: TalentName.FatalMistake,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "When a threatened enemy makes an odd attack roll against you, before their attack is resolved, you can perform a -3 DC basic attack with a +2 to hit against the triggering enemy. " +
+          "If the attack hits the creature loses all awareness track effects and gains Dazed (2).  If this attack misses the power is not expended.",
+        fullDescription:
+          "When a threatened enemy makes an odd attack roll against you, before their attack is resolved, you can perform a -3 DC basic attack with a +2 to hit against the triggering enemy. " +
+          "If the attack hits the creature loses all awareness track effects and gains Dazed (2).  If this attack misses the power is not expended."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Power, value: {minBonus: 13, maxBonus: 31}}]
+    } as AbilityModel,
+
+    OutOfTheGates: {
+      abilityName: TalentName.OutOfTheGates,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Stealth, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Start combat with " + AbilityBonus.StartingTemporaryHitPoints + " additional THP. Until the start of round 3 gain a +2 bonus to speed.",
+        fullDescription:
+          "Start combat with 1 additional Temporary Hit Point.  Until the start of round 3 gain a +2 bonus to speed."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}]
+    } as AbilityModel,
+
+    ArcaneConduit: {
+      abilityName: TalentName.ArcaneConduit,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Magic, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Ignore any casting penalties from armor and you can use a shield in the offhand. Additionally increase your starting THP by " + AbilityBonus.StartingTemporaryHitPoints + ".",
+        fullDescription:
+          "Ignore any casting penalties from armor and you can use a shield in the offhand. Additionally increase your starting THP by 1.  Increase staring temporary hit points by 1 at level 6."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}},
+        {abilityBonus: AbilityBonus.IgnoreArmorPenalty, abilityType: AbilityType.Passive, value: true}]
     } as AbilityModel,
   };
 }

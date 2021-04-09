@@ -506,6 +506,10 @@ describe('AbilityFactoryService', () => {
     expect(service.canAbilityBeSelected(dodge, [], null, Level.One).isSelectable).toBeFalsy();
   });
 
+  it('should not be able to select kinetic reinforcement without one of the three required attributes', () => {
+    const talent = service.getNewAbility(TalentName.KineticReinforcement, AbilityType.Talent);
+
+  });
 
 
   /**Stupid Helper functions**/

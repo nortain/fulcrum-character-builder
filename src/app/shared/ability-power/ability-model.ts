@@ -32,7 +32,8 @@ export interface IDescription {
 }
 
 /**
- * This interace will track ability bonuses granted by abilities.  The abilityBonus is the name of the bonus being provide while ability type narrows down what type of ability it is.  The value can be a value range for scaling and non-scaling numerical bonuses while the ability bonus can be used to confirm or convert an existing ability bonus.  For example if an ability makes MD count as AD then the ability bonus would be MissileDefense while the value would be ActiveDefense.
+ * This interface will track ability bonuses granted by abilities.  The abilityBonus is the name of the bonus being provide while ability type narrows down what type of ability it is.
+ * The value can be a value range for scaling and non-scaling numerical bonuses while the ability bonus can be used to confirm or convert an existing ability bonus.  For example if an ability makes MD count as AD then the ability bonus would be MissileDefense while the value would be ActiveDefense.
  *
  * abilityQualifiers are a collection of requirements where they can restrict or prevent the ability from actually giving its intended bonus.
  *
@@ -62,4 +63,5 @@ export interface IAbilityRequirement {
   requirementAbilityName: AbilityName;
   requirementType: AbilityType;
   requirementValue: number | boolean;
+  canAlsoMeetThisRequirement: AbilityName[];
 }

@@ -74,6 +74,7 @@ export enum TalentName {
   Intervene = "Intervene",
   ItsAllInTheWrist = "ItsAllInTheWrist",
   JustAFleshWound = "JustAFleshWound",
+  KineticReinforcement = "KineticReinforcement",
   KnightsMove = "KnightsMove",
   LengthAdvantage = "LengthAdvantage",
   LethalStrikes = "LethalStrikes",

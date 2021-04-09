@@ -1972,5 +1972,28 @@ export function getTalentObject(): TalentConstants {
       mechanicalBonus: [{abilityBonus: AbilityBonus.StartingTemporaryHitPoints, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}},
         {abilityBonus: AbilityBonus.IgnoreArmorPenalty, abilityType: AbilityType.Passive, value: true}]
     } as AbilityModel,
+
+    KineticReinforcement: {
+      abilityName: TalentName.KineticReinforcement,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Magic, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Gain a " + AbilityBonus.ActiveDefense + " to AD if you are wearing light or medium armor, or caster armor.  This bonus doesn’t stack with any other AD bonuses.",
+        fullDescription:
+          "Gain a +1 to AD if you are wearing light or medium armor, or caster armor.  This bonus doesn’t stack with any other AD bonuses."
+      },
+      mechanicalBonus: [{abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
+          {requirementAbilityName: AbilityBonus.NonStacking, requirementValue: true},
+          {requirementAbilityName: ArmorType.MediumArmor, requirementValue: true},
+          {requirementAbilityName: ArmorType.LightArmor, requirementValue: true},
+          {requirementAbilityName: ArmorType.CasterArmor, requirementValue: true}
+        ],
+        value: {minBonus: 1, maxBonus: 1}}],
+      abilityRequirement: [{requirementAbilityName: AttributeName.Reasoning, requirementType: AbilityType.Attribute, requirementValue: true, canAlsoMeetThisRequirement: [AttributeName.Presence, AttributeName.SelfDiscipline]},
+        {requirementAbilityName: AttributeName.SelfDiscipline, requirementType: AbilityType.Attribute, requirementValue: true, canAlsoMeetThisRequirement: [AttributeName.Reasoning, AttributeName.Presence]},
+        {requirementAbilityName: AttributeName.Presence, requirementType: AbilityType.Attribute, requirementValue: true, canAlsoMeetThisRequirement: [AttributeName.Reasoning, AttributeName.SelfDiscipline]}]
+    } as AbilityModel,
   };
 }

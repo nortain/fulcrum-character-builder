@@ -1984,16 +1984,25 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "Gain a +1 to AD if you are wearing light or medium armor, or caster armor.  This bonus doesn’t stack with any other AD bonuses."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
+      mechanicalBonus: [{
+        abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [
           {requirementAbilityName: AbilityBonus.NonStacking, requirementValue: true},
           {requirementAbilityName: ArmorType.MediumArmor, requirementValue: true},
           {requirementAbilityName: ArmorType.LightArmor, requirementValue: true},
+          {requirementAbilityName: ArmorType.None, requirementValue: true},
           {requirementAbilityName: ArmorType.CasterArmor, requirementValue: true}
         ],
-        value: {minBonus: 1, maxBonus: 1}}],
-      abilityRequirement: [{requirementAbilityName: AttributeName.Reasoning, requirementType: AbilityType.Attribute, requirementValue: true, canAlsoMeetThisRequirement: [AttributeName.Presence, AttributeName.SelfDiscipline]},
-        {requirementAbilityName: AttributeName.SelfDiscipline, requirementType: AbilityType.Attribute, requirementValue: true, canAlsoMeetThisRequirement: [AttributeName.Reasoning, AttributeName.Presence]},
-        {requirementAbilityName: AttributeName.Presence, requirementType: AbilityType.Attribute, requirementValue: true, canAlsoMeetThisRequirement: [AttributeName.Reasoning, AttributeName.SelfDiscipline]}]
+        value: {minBonus: 1, maxBonus: 1}
+      }],
+      abilityRequirement: [
+        {
+          requirementAbilityName: AttributeName.Reasoning,
+          requirementType: AbilityType.Attribute,
+          requirementValue: AttributeStrength.Heroic,
+          canAlsoMeetThisRequirement: 'AttributeRequirement'
+        },
+        {requirementAbilityName: AttributeName.SelfDiscipline, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic, canAlsoMeetThisRequirement: 'AttributeRequirement'},
+        {requirementAbilityName: AttributeName.Presence, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic, canAlsoMeetThisRequirement: 'AttributeRequirement'}]
     } as AbilityModel,
   };
 }

@@ -14,7 +14,7 @@ import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {PowerPointName} from "./power-point/power-point-name.enum";
-import {isIterable} from "rxjs/internal-compatibility";
+
 
 describe('AbilityFactoryService', () => {
   let service: AbilityFactoryService;
@@ -508,7 +508,11 @@ describe('AbilityFactoryService', () => {
 
   it('should not be able to select kinetic reinforcement without one of the three required attributes', () => {
     const talent = service.getNewAbility(TalentName.KineticReinforcement, AbilityType.Talent);
-
+    let canBeSelected = service.canAbilityBeSelected(talent, [], []);
+    expect(canBeSelected.isSelectable).toBeFalsy();
+    const attribute = attributeService.getNewAttribute(AttributeName.Reasoning, AttributeStrength.Heroic);
+    canBeSelected = service.canAbilityBeSelected(talent, [], [attribute], Level.One);
+    expect(canBeSelected.isSelectable).toBeTruthy();
   });
 
 

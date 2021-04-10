@@ -63,5 +63,5 @@ export interface IAbilityRequirement {
   requirementAbilityName: AbilityName;
   requirementType: AbilityType;
   requirementValue: number | boolean;
-  canAlsoMeetThisRequirement: AbilityName[];
+  canAlsoMeetThisRequirement: string;
 }

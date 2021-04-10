@@ -104,6 +104,7 @@ export class AbilityFactoryService {
     }
     canBePicked = canBePicked && abilityHasACost;
     if (canBePicked && abilityToBeSelected.abilityRequirement) {
+
       for (const requirement of abilityToBeSelected.abilityRequirement) {
         let requirementMet = false;
         currentAbilities
@@ -136,19 +137,8 @@ export class AbilityFactoryService {
                   break;
                 }
               }
-
             }
           });
-        if (requirement.requirementAbilityName in AttributeName) {
-          if (!(requirement.requirementAbilityName in attributes)) {
-            attributes = [this.attributeFactoryService.getNewAttribute(requirement.requirementAbilityName as AttributeName, AttributeStrength.Normal)];
-          }
-          const pickedAttribute = attributes.find(attribute => attribute && requirement.requirementAbilityName === attribute.attributeName);
-          requirementMet = pickedAttribute.attributeStrength >= requirement.requirementValue;
-          if (!requirementMet) {
-            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
-          }
-        }
         if (requirement.requirementType === AbilityType.CharacterLevel) {
           requirementMet = level >= requirement.requirementValue;
           if (!requirementMet) {
@@ -157,6 +147,18 @@ export class AbilityFactoryService {
         }
         if (requirement.requirementType === AbilityType.PowerPointFeature) {
           requirementMet = !!currentAbilities.find(ability => ability.abilityType === AbilityType.PowerPointFeature && requirement.requirementAbilityName === ability.abilityName);
+          if (!requirementMet) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
+        }
+        if (requirement.requirementAbilityName in AttributeName) {
+          this.hasNecessaryAttributes(abilityToBeSelected.abilityRequirement, attributes);
+
+          if (!(requirement.requirementAbilityName in attributes)) {
+            attributes = [this.attributeFactoryService.getNewAttribute(requirement.requirementAbilityName as AttributeName, AttributeStrength.Normal)];
+          }
+          const pickedAttribute = attributes.find(attribute => attribute && requirement.requirementAbilityName === attribute.attributeName);
+          requirementMet = pickedAttribute.attributeStrength >= requirement.requirementValue;
           if (!requirementMet) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
@@ -170,6 +172,46 @@ export class AbilityFactoryService {
     return {isSelectable: canBePicked, reasonItCannotBeSelected: reasonItCannotBeSelected};
   }
 
+  /**
+   *
+   * @param requirement
+   * @param currentAttributes
+   * @param previouslyMetRequirements
+   * @param requirementMet
+   */
+  hasNecessaryAttributes(requirement: IAbilityRequirement[],
+                         currentAttributes: AttributeModel[]): ICanBeSelected {
+    for (const currentAttributeRequirement of requirement) {
+      if (currentAttributeRequirement.requirementType === AbilityType.Attribute) { // only look at attributes
+        if (!(currentAttributeRequirement.requirementAbilityName in currentAttributes)) { // if the current attributes don't have the attribute add it at strength 0
+          currentAttributes = [
+            ...currentAttributes,
+            this.attributeFactoryService.getNewAttribute(currentAttributeRequirement.requirementAbilityName as AttributeName, AttributeStrength.Normal)
+          ];
+        }
+        const pickedAttribute = currentAttributes.find(attribute => attribute && currentAttributeRequirement.requirementAbilityName === attribute.attributeName);
+        const requirementMet = pickedAttribute.attributeStrength >= currentAttributeRequirement.requirementValue;
+                
+        if (!requirementMet) {
+            const reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+
+        }
+
+      }
+    }
+
+
+    return null;
+  }
+
+  /**
+   * Attempts to find the matching requirements for an array of abilities
+   * @param abilities
+   * @param requirement
+   * @param canBePicked
+   * @param reasonItCannotBeSelected
+   * @private
+   */
   private findMatchingRequirement(abilities: Array<IAbilityBonus | IAbilityRequirement>,
                                   requirement: IAbilityRequirement,
                                   canBePicked: boolean,

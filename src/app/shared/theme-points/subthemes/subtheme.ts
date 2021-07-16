@@ -4,7 +4,7 @@ import {SubthemeType} from "./subtheme-types.enum";
 import {SubthemePipe} from "./subtheme.pipe";
 import {SubthemeBonus} from "./subtheme-bonus.enum";
 import {Level} from "../../character/level.enum";
-import {Knack, SUBTHEME_BONUS} from "../../constants/constants";
+import {SUBTHEME_BONUS} from "../../constants/constants";
 import {Spell} from "../../spells/spell";
 
 export class Subtheme {

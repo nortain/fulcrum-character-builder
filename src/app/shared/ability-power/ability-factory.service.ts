@@ -12,6 +12,8 @@ import {CastleCasePipe} from "../pipes/castle-case.pipe";
 import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength.enum";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {getPowerPointObject} from "./power-point/power-point-constants";
+import {SpellName} from "../spells/enums/spell-name.enum";
+import {getSpellObject} from "../constants/spells/spell-constants";
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +47,12 @@ export class AbilityFactoryService {
           ...new AbilityModel(),
           ...getPowerPointObject()[abilityName],
           innerSelectedAbilities: innerSelections
+        };
+      }
+      case AbilityType.Spell: {
+        model = {
+          ...new AbilityModel(),
+          ...this.getSpellAsAbility(abilityName as SpellName)
         };
       }
     }
@@ -96,17 +104,17 @@ export class AbilityFactoryService {
    * @param level
    */
   canAbilityBeSelected(abilityToBeSelected: AbilityModel, currentAbilities: Array<AbilityModel>, attributes = new Array<AttributeModel>(), level = Level.One): ICanBeSelected {
-    let reasonItCannotBeSelected: string;
+    let reasonItCannotBeSelected = "";
     let canBePicked = this.hasAbilityNotBeenSelected(abilityToBeSelected, currentAbilities);
+    let hasNecessaryAttributesResult: ICanBeSelected;
     const abilityHasACost = abilityToBeSelected.abilityCost && abilityToBeSelected.abilityCost.length > 0;
     if (!abilityHasACost) {
       reasonItCannotBeSelected = "it does not have a cost. This can only be selected as part of a larger " + abilityToBeSelected.abilityType.toLocaleLowerCase() + ".";
     }
     canBePicked = canBePicked && abilityHasACost;
     if (canBePicked && abilityToBeSelected.abilityRequirement) {
-
       for (const requirement of abilityToBeSelected.abilityRequirement) {
-        let requirementMet = false;
+        let requirementMet = false; // Assume any requirement is false until we find an ability that meets it.
         currentAbilities
           .find(abilities => {
             if (abilities && abilities.abilityRequirement) {
@@ -146,25 +154,22 @@ export class AbilityFactoryService {
           }
         }
         if (requirement.requirementType === AbilityType.PowerPointFeature) {
-          requirementMet = !!currentAbilities.find(ability => ability.abilityType === AbilityType.PowerPointFeature && requirement.requirementAbilityName === ability.abilityName);
+          requirementMet = !!currentAbilities.find(ability => ability.abilityType === AbilityType.PowerPointFeature && requirement.requirementAbilityName === ability.abilityName && requirement.requirementValue);
           if (!requirementMet) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
         }
-        if (requirement.requirementAbilityName in AttributeName) {
-          this.hasNecessaryAttributes(abilityToBeSelected.abilityRequirement, attributes);
-
-          if (!(requirement.requirementAbilityName in attributes)) {
-            attributes = [this.attributeFactoryService.getNewAttribute(requirement.requirementAbilityName as AttributeName, AttributeStrength.Normal)];
-          }
-          const pickedAttribute = attributes.find(attribute => attribute && requirement.requirementAbilityName === attribute.attributeName);
-          requirementMet = pickedAttribute.attributeStrength >= requirement.requirementValue;
+        if (requirement.requirementType === AbilityType.Subtheme) {
+          requirementMet = !!currentAbilities.find(ability => ability.abilityType === AbilityType.Subtheme && requirement.requirementAbilityName === ability.abilityName && ability.abilityCost.find(subthemeRequirement => subthemeRequirement.requirementValue >= requirement.requirementValue && subthemeRequirement.requirementAbilityName === requirement.requirementAbilityName));
           if (!requirementMet) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
         }
-        canBePicked = requirementMet;
-        if (!requirementMet && !reasonItCannotBeSelected) {
+        if (requirement.requirementType === AbilityType.Attribute) {
+          hasNecessaryAttributesResult = this.hasNecessaryAttributes(abilityToBeSelected.abilityRequirement, attributes);
+        }
+        canBePicked = requirementMet || !!(hasNecessaryAttributesResult && hasNecessaryAttributesResult.isSelectable);
+        if (!canBePicked) {
           reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
         }
       }
@@ -173,35 +178,57 @@ export class AbilityFactoryService {
   }
 
   /**
-   *
-   * @param requirement
+   * This will take in the a requirements array and current attributes array and try to determine if any requirements require particular attributes. If they do then we need to determine if those attributes have been obtained.
+   * Often multiple attributes can statisfy a single requirement, if this is the case then the canAlsoMeetThisRequirement string should be populated.  This means that all requirements with the same value can all satisfy the
+   * same requirement.  If at least one of them is met then we are good to go.  If no requirements require attributes then this whole function can more or less be ignored and it's results shouldn't impact the over all decision.  For that reason it should return isSelectedable as true unless an attribute requirement is specifically not met.
+   * @param requirements
    * @param currentAttributes
-   * @param previouslyMetRequirements
-   * @param requirementMet
+   * @param currentAbilities
    */
-  hasNecessaryAttributes(requirement: IAbilityRequirement[],
+  hasNecessaryAttributes(requirements: IAbilityRequirement[],
                          currentAttributes: AttributeModel[]): ICanBeSelected {
-    for (const currentAttributeRequirement of requirement) {
-      if (currentAttributeRequirement.requirementType === AbilityType.Attribute) { // only look at attributes
-        if (!(currentAttributeRequirement.requirementAbilityName in currentAttributes)) { // if the current attributes don't have the attribute add it at strength 0
+    const alternateRequirementMap = new Map<string, boolean>();
+    let reasonItCannotBeSelected = "";
+    let requirementMet = true;  // By default we assume we've met all attribute requirements unless we explicitly find that we don't meet one.
+
+    for (const currentRequirement of requirements) {
+      if (currentRequirement.requirementType === AbilityType.Attribute) { // only look at attributes
+        if (!(currentAttributes.find(attribute => attribute.attributeName === currentRequirement.requirementAbilityName))) { // if the current attributes don't have the attribute add it at strength 0
           currentAttributes = [
             ...currentAttributes,
-            this.attributeFactoryService.getNewAttribute(currentAttributeRequirement.requirementAbilityName as AttributeName, AttributeStrength.Normal)
+            this.attributeFactoryService.getNewAttribute(currentRequirement.requirementAbilityName as AttributeName, AttributeStrength.Normal)
           ];
         }
-        const pickedAttribute = currentAttributes.find(attribute => attribute && currentAttributeRequirement.requirementAbilityName === attribute.attributeName);
-        const requirementMet = pickedAttribute.attributeStrength >= currentAttributeRequirement.requirementValue;
-                
-        if (!requirementMet) {
-            const reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+        const pickedAttribute = currentAttributes.find(attribute => attribute && currentRequirement.requirementAbilityName === attribute.attributeName);
+        requirementMet = pickedAttribute.attributeStrength >= currentRequirement.requirementValue;
 
+
+        if (currentRequirement.canAlsoMeetThisRequirement) {
+          const existingRequirementMet = alternateRequirementMap.get(currentRequirement.canAlsoMeetThisRequirement);
+          alternateRequirementMap.set(currentRequirement.canAlsoMeetThisRequirement,
+            existingRequirementMet || requirementMet);
+        } else if (!requirementMet) {
+          requirementMet = false;
+          reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(currentRequirement);
         }
-
       }
-    }
+    } // end of for loop
 
 
-    return null;
+    let canBeSelected = true;
+    alternateRequirementMap.forEach((value, key) => {
+      canBeSelected = canBeSelected && value;
+      if (!canBeSelected) {
+        const requirementReason = requirements.find(requirement => requirement.canAlsoMeetThisRequirement === key);
+        reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirementReason);
+      }
+    });
+
+
+    return {
+      isSelectable: canBeSelected && requirementMet,
+      reasonItCannotBeSelected: reasonItCannotBeSelected
+    };
   }
 
   /**
@@ -257,6 +284,9 @@ export class AbilityFactoryService {
       haveOrNotHave = "you require at least " + requirement.requirementValue + pluralOrSingular + "in the " + requirement.requirementType + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
     } else if (typeof requirement.requirementValue === "number" && requirement.requirementType === AbilityType.CharacterLevel) {
       haveOrNotHave = "you require at least character level " + requirement.requirementValue + " to select this.";
+    } else if (typeof requirement.requirementValue === "boolean" && requirement.requirementType === AbilityType.Spell || requirement.requirementType === AbilityType.Knack) {
+      const additionalText = requirement.requirementValue ? "do not have" : "cannot have";
+      haveOrNotHave = "you " + additionalText + " a Spell or Knack with the " + this.castleCasePipe.transform(requirement.requirementAbilityName) + " keyword.";
     } else {
       haveOrNotHave = !requirement.requirementValue ? "you have the " : "you do not have the ";
       haveOrNotHave += this.castleCasePipe.transform(requirement.requirementType) + " " + this.castleCasePipe.transform(requirement.requirementAbilityName) + ".";
@@ -548,5 +578,28 @@ export class AbilityFactoryService {
    */
   hasReplacementValuesForBriefDescription(ability: AbilityModel): boolean {
     return ability.mechanicalBonus && ability.mechanicalBonus.length > 0 && !!ability.abilityDescription.briefDescription;
+  }
+
+
+  /**
+   * Given a spell name pull the necessary spell information from the spellObject constant and convert that information into a meaningful spell ability
+   * @param spellName
+   */
+  getSpellAsAbility(spellName: SpellName): AbilityModel {
+    const spell = getSpellObject()[spellName];
+    const ability = new AbilityModel();
+    ability.abilityName = spell.name;
+    ability.abilityType = AbilityType.Spell;
+    ability.abilityAction = spell.castAction;
+    ability.abilityCost = [{requirementAbilityName: spell.sphereName, requirementType: AbilityType.Subtheme, requirementValue: true} as IAbilityRequirement];
+    const bonus: IAbilityBonus = {} as IAbilityBonus;
+    for (const keyword of spell.spellKeywords) {
+      if (!!AbilityBonus[keyword]) {
+        bonus.keywords = [...bonus.keywords, AbilityBonus[keyword]];
+      }
+    }
+    bonus.abilityBonus = AbilityBonus.Keyword;
+    ability.mechanicalBonus = [bonus];
+    return ability;
   }
 }

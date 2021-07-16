@@ -2,7 +2,6 @@ import {ThemeStrength} from "../theme-strength.enum";
 import {SubthemeType} from "./subtheme-types.enum";
 import {Subtheme} from "./subtheme";
 import {Level} from "../../character/level.enum";
-import {WeaponCategory} from "../../weapon/weapon-category.enum";
 import {SubthemeBonus} from "./subtheme-bonus.enum";
 import {Spell} from "../../spells/spell";
 

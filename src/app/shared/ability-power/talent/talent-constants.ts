@@ -18,7 +18,6 @@ export type TalentConstants = { [K in TalentName]: AbilityModel };
 export function getTalentObject(): TalentConstants {
   return {
     AcceleratedReflexes: {
-      ...new AbilityModel(),
       abilityName: TalentName.AcceleratedReflexes,
       abilityType: AbilityType.Talent,
       abilityAction: ActionType.Passive,
@@ -558,13 +557,28 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "When an ally within 10 squares becomes bloodied from an attack you can have that ally $" + AbilityBonus.ToGenerateTemporaryHitPoints + " Temporary Hit Points",
+          "When an ally within 10 squares becomes bloodied from an attack you can have that ally gain $" + AbilityBonus.Fortify + " Temporary Hit Points",
         fullDescription:
           "When an ally within 10 squares becomes bloodied from an attack you can have that ally gain 6 + level * 1.2 Temporary Hit Points"
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}],
-      abilityRequirement: [{requirementAbilityName: AbilityBonus.ToGenerateTemporaryHitPoints, requirementType: AbilityType.Power, requirementValue: true}],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}],
+      abilityRequirement: [
+        {requirementAbilityName: AbilityBonus.Fortify, requirementType: AbilityType.Spell, requirementValue: true},
+        {requirementAbilityName: AbilityBonus.Fortify, requirementType: AbilityType.Knack, requirementValue: true}],
     } as AbilityModel,
+
+    /**
+     * abilityRequirement: [
+     {
+          requirementAbilityName: AttributeName.Reasoning,
+          requirementType: AbilityType.Attribute,
+          requirementValue: AttributeStrength.Heroic,
+          canAlsoMeetThisRequirement: 'AttributeRequirement'
+        },
+     {requirementAbilityName: AttributeName.SelfDiscipline, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic, canAlsoMeetThisRequirement: 'AttributeRequirement'},
+     {requirementAbilityName: AttributeName.Presence, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic, canAlsoMeetThisRequirement: 'AttributeRequirement'}]
+     }
+     */
 
     GreaterJuggernaut: {
       abilityName: TalentName.GreaterJuggernaut,
@@ -593,7 +607,7 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "You gain 3 THP. Increase the THP amount by 1 at levels 4, 6, and 8."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}, {abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Feature, value: true}],
     } as AbilityModel,
 
     AdvancedWeaponTrainingShieldMastery: {
@@ -1790,7 +1804,7 @@ export function getTalentObject(): TalentConstants {
           "Grant a target in 10 one of the following:"
       },
       associatedAbilities: [TalentName.SoothsayerHeal, TalentName.SoothsayerMend],
-      abilityRequirement: [{requirementAbilityName: AbilityBonus.ToGenerateTemporaryHitPoints, requirementType: AbilityType.Power, requirementValue: true}],
+      abilityRequirement: [{requirementAbilityName: AbilityBonus.Healing, requirementType: AbilityType.Power, requirementValue: true}],
     } as AbilityModel,
 
     SoothsayerHeal: {
@@ -1799,11 +1813,11 @@ export function getTalentObject(): TalentConstants {
       abilityAction: ActionType.Minor,
       abilityDescription: {
         briefDescription:
-          "Heal a blooded target for " + AbilityBonus.Fortify + " Hit points.",
+          "Heal a blooded target for " + AbilityBonus.Healing + " Hit points.",
         fullDescription:
           "Heal a blooded target for for 8 hit points.  Increase this by 1 at levels 2, 4, 5, 7, 8, 10.  Increase by 2 at levels 3, 6, 9."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 20}}]
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Healing, abilityType: AbilityType.Power, value: {minBonus: 8, maxBonus: 20}}]
     } as AbilityModel,
 
     SoothsayerMend: {
@@ -1982,7 +1996,7 @@ export function getTalentObject(): TalentConstants {
         briefDescription:
           "Gain a " + AbilityBonus.ActiveDefense + " to AD if you are wearing light or medium armor, or caster armor.  This bonus doesn’t stack with any other AD bonuses.",
         fullDescription:
-          "Gain a +1 to AD if you are wearing light or medium armor, or caster armor.  This bonus doesn’t stack with any other AD bonuses."
+          "Gain a +1 to AD if you are wearing light or medium armor, or caster armor.  This bonus doesn't stack with any other AD bonuses."
       },
       mechanicalBonus: [{
         abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, abilityQualifier: [

@@ -13,7 +13,7 @@ export enum SpellKeywords {
   Enhancement = "Enhancement",
   ForcedMovement = "ForcedMovement",
   FriendlyMovement = "FriendlyMovement",
-  Dispel = "Displet",
+  Dispel = "Dispel",
   Wall = "Wall",
   Summoning = "Summoning",
   Weapon = "Weapon",

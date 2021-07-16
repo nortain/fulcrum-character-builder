@@ -3,13 +3,16 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SpellSelectionComponent} from './spell-selection.component';
 import {mockSpell, mockSubtheme} from "../../../../shared/constants/testing-constants";
 import {ThemeStrength} from "../../../../shared/theme-points/theme-strength.enum";
-import {SpellSelectionType} from "../magic-type.enum";
+
 import {SharedModule} from "../../../../shared/shared.module";
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {SubthemeType} from "../../../../shared/theme-points/subthemes/subtheme-types.enum";
 import {By} from "@angular/platform-browser";
 
 import {Spell} from "../../../../shared/spells/spell";
+import {CharacterSheetModule} from "../../../character-sheet.module";
+import {SpellSelectionType} from "../magic-type.enum";
+import {Subtheme} from "../../../../shared/theme-points/subthemes/subtheme";
 
 describe('SpellSelectionComponent', () => {
   let component: SpellSelectionComponent;
@@ -17,7 +20,7 @@ describe('SpellSelectionComponent', () => {
 
   beforeEach(async (() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, NgbModule],
+      imports: [SharedModule, NgbModule, CharacterSheetModule],
       providers: [NgbModal],
       declarations: [SpellSelectionComponent],
     })
@@ -30,7 +33,7 @@ describe('SpellSelectionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SpellSelectionComponent);
     component = fixture.componentInstance;
-    component.subtheme = mockSubtheme(SubthemeType.Magent, ThemeStrength.Minor);
+    component.subtheme = new Subtheme(SubthemeType.Magent, ThemeStrength.Minor);
     component.generalThemePoint = ThemeStrength.None;
     component.numberOfSpellsToSelect = 1;
     component.propertyType = SpellSelectionType.Spells;

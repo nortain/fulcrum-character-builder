@@ -11,6 +11,7 @@ import {SpellDamageKeyword} from "./enums/spell-damage-keyword.enum";
 import {SpellType} from "./enums/spell-type.enum";
 import {SpellChart} from "./spell-chart";
 import {CasterType} from "../theme-points/subthemes/subtheme-types.enum";
+import {SpellName} from "./enums/spell-name.enum";
 
 export enum SpellEffectType {
   OnHit = "OnHit",
@@ -28,7 +29,7 @@ export interface SpellEffect {
 
 
 export class Spell {
-  name: string;
+  name: SpellName;
   sphereName: CasterType;
   defenseType?: AllDefenseType[];
   spellType?: SpellType;

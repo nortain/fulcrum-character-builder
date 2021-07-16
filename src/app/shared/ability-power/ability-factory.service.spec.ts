@@ -14,6 +14,8 @@ import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {PowerPointName} from "./power-point/power-point-name.enum";
+import {ShamanSpellList} from "../constants/spells/greater-spell-constants";
+import {SpellName} from "../spells/enums/spell-name.enum";
 
 
 describe('AbilityFactoryService', () => {
@@ -320,15 +322,24 @@ describe('AbilityFactoryService', () => {
     const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
     expect(function () {
       service.selectAbility(talent, []);
-    }).toThrowError("The talent: Bolster is an invalid selection because you do not have the Power To Generate Temporary Hit Points.");
+    }).toThrowError("The talent: Bolster is an invalid selection because you do not have a Spell or Knack with the Fortify keyword.");
   });
 
-  it('should be able to select bolster if you an ability that can generate thp', () => {
+  it('should be able to assign a spell as an ability', function () {
+    // write a test using getNewAbility with a spell name then try to fix failing tests that require fortify keyword of spell or knack.
+    fail();
+  });
+
+  it('should be able to select bolster if you have a spell or knack that can generate thp', () => {
     const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
     const requiredTalent = service.getNewAbility(TalentName.ArmorUp, AbilityType.Talent);
     let currentAbilities = [requiredTalent];
     currentAbilities = service.selectAbility(talent, currentAbilities);
-    expect(currentAbilities.length).toEqual(2);
+    expect(currentAbilities.length).toEqual(1);
+    const shamanSpell = ShamanSpellList().find(spell => spell.name === SpellName.Reawaken);
+
+
+    currentAbilities = [...currentAbilities, shamanSpell];
   });
 
   it('should be able to select bolster when you have a talent that is associated with the ability to generate thp', () => {
@@ -504,6 +515,15 @@ describe('AbilityFactoryService', () => {
   it('should see that you cannot select perfect dodge by itself', () => {
     const dodge = service.getNewAbility(TalentName.PerfectDodge, AbilityType.Talent);
     expect(service.canAbilityBeSelected(dodge, [], null, Level.One).isSelectable).toBeFalsy();
+  });
+
+  it('should be able to determine if necessary attributes were passed in', () => {
+    const talent = service.getNewAbility(TalentName.KineticReinforcement, AbilityType.Talent);
+    let result = service.hasNecessaryAttributes(talent.abilityRequirement, []);
+    expect(result.isSelectable).toBeFalsy();
+    const attribute = attributeService.getNewAttribute(AttributeName.Reasoning, AttributeStrength.Heroic);
+    result = service.hasNecessaryAttributes(talent.abilityRequirement, [attribute]);
+    expect(result.isSelectable).toBeTruthy();
   });
 
   it('should not be able to select kinetic reinforcement without one of the three required attributes', () => {

@@ -171,6 +171,53 @@ export function getSpellObject(): SpellConstants {
         }
       ],
       special: ["At the time of picking this spell you can choose for this attack to have an AoE of either Melee 1 in 1 or Weapon Range 1 in Range."],
+    },
+    Fireball: {
+      name: SpellName.Fireball,
+      sphereName: CasterType.Elementalist,
+      spellType: SpellType.DirectAttack,
+      damageKeyword: SpellDamageKeyword.Heat,
+      spellKeywords: [],
+      areaOfEffect: {
+        numberOfTargets: 1,
+        range: 10,
+        type: AreaOfEffectTypes.Zone
+      },
+      castAction: ActionType.Standard,
+      duration: [DurationType.Immediate],
+      critRoll: new Dice(1, DiceSize.d8, 0),
+      spellEffectText: [
+        {
+          type: SpellEffectType.SpellEffect,
+          text: "At a -1 DC creatures take heat damage equal to the level chart below + attack damage bonus.",
+          spellChart:
+            [
+              {
+                ...new SpellChart(),
+                rowName: "Heat Damage",
+                levelRange: LevelRange.FIFTHTEEN,
+                dieSize: DiceSize.d8,
+                minValue: 7.6,
+                maxValue: 29.53
+              }
+            ]
+        }
+      ]
     }
   };
+}
+
+export function getSpellList(sphereName: CasterType) {
+  console.log("In get Spell List: ");
+  const sphereList = [];
+  let count = 0;
+  for (const [key, value] of Object.entries(SpellName)) {
+    count++;
+    const spell: Spell = getSpellObject()[key];
+    if (spell.sphereName === sphereName) {
+      sphereList.push(spell);
+    }
+  }
+  console.log("Returning spell list, getSpellObject called: " + count + (count === 1 ? " time." : " times."));
+  return sphereList;
 }

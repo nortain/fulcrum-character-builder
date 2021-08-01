@@ -24,6 +24,7 @@ import {AllDefenseType} from "../character/physical-defense/physical-defense-typ
 import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap";
 import {CharacterModel} from "../character/character-model";
 import {DefenseModel} from "../character/physical-defense/defense-model";
+import {SpellName} from "../spells/enums/spell-name.enum";
 
 export function mockDropdownData() {
   return [
@@ -108,7 +109,7 @@ export function mockSpellChart(): SpellChart {
 
 export function mockSpell(): Spell {
   return {
-    name: "Fireball",
+    name: SpellName.Fireball,
     sphereName: CasterType.Archmage,
     defenseType: [AllDefenseType.Active, AllDefenseType.Passive],
     spellType: SpellType.DirectAttack,

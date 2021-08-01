@@ -12,6 +12,7 @@ import {SpellType} from "./enums/spell-type.enum";
 import {SpellChart} from "./spell-chart";
 import {CasterType} from "../theme-points/subthemes/subtheme-types.enum";
 import {SpellName} from "./enums/spell-name.enum";
+import {Summon} from "../summon/summon";
 
 export enum SpellEffectType {
   OnHit = "OnHit",
@@ -40,6 +41,7 @@ export class Spell {
   duration?: DurationType[];
   critRoll?: Dice;
   special?: string[];
+  summons?: Summon;
   minion?: Minion;
   spellEffectText?: SpellEffect[]; // TODO move spell chart array into the spell effect interface
 }

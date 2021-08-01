@@ -563,8 +563,8 @@ export function getTalentObject(): TalentConstants {
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 18}}],
       abilityRequirement: [
-        {requirementAbilityName: AbilityBonus.Fortify, requirementType: AbilityType.Spell, requirementValue: true},
-        {requirementAbilityName: AbilityBonus.Fortify, requirementType: AbilityType.Knack, requirementValue: true}],
+        {requirementAbilityName: AbilityBonus.Fortify, requirementType: AbilityType.Spell, requirementValue: true, canAlsoMeetThisRequirement: "Fortify"},
+        {requirementAbilityName: AbilityBonus.Fortify, requirementType: AbilityType.Knack, requirementValue: true, canAlsoMeetThisRequirement: "Fortify"}],
     } as AbilityModel,
 
     /**

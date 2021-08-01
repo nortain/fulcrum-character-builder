@@ -56,7 +56,7 @@ export class AbilityFactoryService {
         };
       }
     }
-    return model;
+    return model as AbilityModel;
   }
 
   /**
@@ -592,7 +592,7 @@ export class AbilityFactoryService {
     ability.abilityType = AbilityType.Spell;
     ability.abilityAction = spell.castAction;
     ability.abilityCost = [{requirementAbilityName: spell.sphereName, requirementType: AbilityType.Subtheme, requirementValue: true} as IAbilityRequirement];
-    const bonus: IAbilityBonus = {} as IAbilityBonus;
+    const bonus: IAbilityBonus = {keywords: []} as IAbilityBonus;
     for (const keyword of spell.spellKeywords) {
       if (!!AbilityBonus[keyword]) {
         bonus.keywords = [...bonus.keywords, AbilityBonus[keyword]];

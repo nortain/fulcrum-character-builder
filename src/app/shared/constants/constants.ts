@@ -3,9 +3,9 @@ import {MagicDefenseType} from "../character/magic-defense/magic-defense-type.en
 import {Field} from "../field/field";
 import {MagicDefense} from "../character/magic-defense/magic-defense";
 import {NumberBonusByLevel} from "../character/bonus-by-level";
-import {MagentSpellList, SpellWardenSpellList} from "./spells/minor-spell-constants";
 import {Spell} from "../spells/spell";
-import {AssassinSpellList, ClericSpellList, DruidSpellList, WarriorMageSpellList} from "./spells/lesser-spell-constants";
+import {getSpellList, getSpellObject} from "./spells/spell-constants";
+import {CasterType} from "../theme-points/subthemes/subtheme-types.enum";
 
 
 export const NON_HUMAN_AVAILABLE_ATTRIBUTE_POINTS = 4;
@@ -35,7 +35,7 @@ export const REQUIRES_THREE_MAGIC = [false, true, false, false, false];
 
 export const STEALTH_INIT_BONUS = [0, 2, 4, 6];
 
-
+// this needs to be moved somewhere probably
 export const ONE_MAGIC_SPELLS = {
   Magent: {
     Overview: "You are a bad ass magent",
@@ -68,7 +68,7 @@ export const ONE_MAGIC_SPELLS = {
     PowerPointAbilities: null,
     SpecialPowers: null,
     ImplementAttack: null,
-    Spells: MagentSpellList()
+    Spells: getSpellList(CasterType.Magent)
   } as SpellSphere,
   SpellWarden: {
     Overview: "Spell Wardens were an ancient sect of Warriors who long ago discovered they could enhance their martial skills with the powers now known today as the essence of magic.  Although the order has all but been forgotten there are a rare few who have learned the secrets of Spell Warden and have passed those secrets down to others through the generations.  Although their magical capabilities aren’t nearly as strong as that of spell casters their sheer physical fortitude required to master this training style makes them a deadly foe on any battlefield.",
@@ -101,7 +101,7 @@ export const ONE_MAGIC_SPELLS = {
     PowerPointAbilities: null,
     SpecialPowers: null,
     ImplementAttack: null,
-    Spells: SpellWardenSpellList()
+    Spells: getSpellList(CasterType.SpellWarden)
   } as SpellSphere
 
 
@@ -172,7 +172,7 @@ export const TWO_MAGIC_SPELLS = {
     PowerPointAbilities: [],
     SpecialPowers: null,
     ImplementAttack: new Spell(),
-    Spells: WarriorMageSpellList()
+    Spells: getSpellList(CasterType.WarriorMage)
   } as SpellSphere,
   Assassin: {
     Overview: "As a part of selecting the assassin sphere you can you choose one of the following paths.  Each path comes with passive bonuses, a unique sphere specific ability and dictates the effects of your adrenaline points.",
@@ -231,7 +231,7 @@ export const TWO_MAGIC_SPELLS = {
     PowerPointAbilities: [],
     SpecialPowers: null,
     ImplementAttack: new Spell(),
-    Spells: AssassinSpellList()
+    Spells: getSpellList(CasterType.Assassin),
   } as SpellSphere,
   Cleric: {
     Overview: "As a part of selecting the Cleric sphere you can choose one of the following ways.  Each way comes with passive bonuses, a unique sphere specific ability and dictates the effects of your adrenaline points.",
@@ -299,7 +299,7 @@ export const TWO_MAGIC_SPELLS = {
     PowerPointAbilities: [],
     SpecialPowers: null,
     ImplementAttack: new Spell(),
-    Spells: ClericSpellList()
+    Spells: getSpellList(CasterType.Cleric)
   } as SpellSphere,
   Druid: {
     Overview: "As a part of selecting the warrior mage sphere you can choose one of the following trainings.  Each training comes with passive bonuses, unique sphere specific ability and dictates the effects of your adrenaline points.",
@@ -359,7 +359,7 @@ export const TWO_MAGIC_SPELLS = {
     PowerPointAbilities: [],
     SpecialPowers: null,
     ImplementAttack: new Spell(),
-    Spells: DruidSpellList()
+    Spells: getSpellList(CasterType.Druid)
   } as SpellSphere,
 };
 

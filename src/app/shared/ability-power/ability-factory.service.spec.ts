@@ -14,7 +14,6 @@ import {AttributeStrength} from "../attribute/attribute-enums/attribute-strength
 import {ValueRange} from "../attribute/attribute-constants/attribute-constants";
 import {AttributeName} from "../attribute/attribute-enums/attribute-name.enum";
 import {PowerPointName} from "./power-point/power-point-name.enum";
-import {ShamanSpellList} from "../constants/spells/greater-spell-constants";
 import {SpellName} from "../spells/enums/spell-name.enum";
 
 
@@ -330,16 +329,29 @@ describe('AbilityFactoryService', () => {
     fail();
   });
 
+  it('should get the same result from newAbility vs SpellfromAbility', () => {
+    const newAbility: AbilityModel = service.getNewAbility(SpellName.Reawaken, AbilityType.Spell);
+    const spellAsAbility: AbilityModel = service.getSpellAsAbility(SpellName.Reawaken);
+    for (const result of Object.keys(newAbility)) {
+      const message = "The key: " + result + " did not match.  newAbility[result] = " + newAbility[result] + " and spellAsAbility[result] = " + spellAsAbility[result];
+      expect(newAbility[result]).toEqual(spellAsAbility[result], message);
+    }
+  });
+
   it('should be able to select bolster if you have a spell or knack that can generate thp', () => {
     const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
     const requiredTalent = service.getNewAbility(TalentName.ArmorUp, AbilityType.Talent);
     let currentAbilities = [requiredTalent];
-    currentAbilities = service.selectAbility(talent, currentAbilities);
+    try {
+      currentAbilities = service.selectAbility(talent, currentAbilities);
+    } catch (err) {
+      console.log("We got an error as expected");
+    }
     expect(currentAbilities.length).toEqual(1);
-    const shamanSpell = ShamanSpellList().find(spell => spell.name === SpellName.Reawaken);
-
-
+    const shamanSpell = service.getNewAbility(SpellName.Reawaken, AbilityType.Spell);
     currentAbilities = [...currentAbilities, shamanSpell];
+    currentAbilities = service.selectAbility(talent, currentAbilities);
+    expect(currentAbilities.length).toEqual(3);
   });
 
   it('should be able to select bolster when you have a talent that is associated with the ability to generate thp', () => {

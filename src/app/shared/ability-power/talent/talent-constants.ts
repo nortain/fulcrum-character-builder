@@ -607,7 +607,7 @@ export function getTalentObject(): TalentConstants {
         fullDescription:
           "You gain 3 THP. Increase the THP amount by 1 at levels 4, 6, and 8."
       },
-      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}, {abilityBonus: AbilityBonus.ToGenerateTemporaryHitPoints, abilityType: AbilityType.Feature, value: true}],
+      mechanicalBonus: [{abilityBonus: AbilityBonus.Fortify, abilityType: AbilityType.Feature, value: {minBonus: 3, maxBonus: 6}}],
     } as AbilityModel,
 
     AdvancedWeaponTrainingShieldMastery: {

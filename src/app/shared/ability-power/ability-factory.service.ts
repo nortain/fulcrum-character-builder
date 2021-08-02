@@ -107,6 +107,7 @@ export class AbilityFactoryService {
     let reasonItCannotBeSelected = "";
     let canBePicked = this.hasAbilityNotBeenSelected(abilityToBeSelected, currentAbilities);
     let hasNecessaryAttributesResult: ICanBeSelected;
+    const alternateRequirementMap = new Map<string, boolean>();
     const abilityHasACost = abilityToBeSelected.abilityCost && abilityToBeSelected.abilityCost.length > 0;
     if (!abilityHasACost) {
       reasonItCannotBeSelected = "it does not have a cost. This can only be selected as part of a larger " + abilityToBeSelected.abilityType.toLocaleLowerCase() + ".";
@@ -165,13 +166,40 @@ export class AbilityFactoryService {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
         }
+        if (requirement.requirementType === AbilityType.Spell) {
+          requirementMet = !!currentAbilities.find(ability => ability.abilityType === AbilityType.Spell &&
+            !!ability.mechanicalBonus.find(bonuses => bonuses.keywords.find(keyword => keyword === requirement.requirementAbilityName)) === requirement.requirementValue);
+          if (!requirementMet) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
+        }
+
         if (requirement.requirementType === AbilityType.Attribute) {
           hasNecessaryAttributesResult = this.hasNecessaryAttributes(abilityToBeSelected.abilityRequirement, attributes);
         }
-        canBePicked = requirementMet || !!(hasNecessaryAttributesResult && hasNecessaryAttributesResult.isSelectable);
-        if (!canBePicked) {
-          reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+
+        // check for canAlsoMeetThisRequirement
+        if (requirement.canAlsoMeetThisRequirement) {
+          const existingRequirementMet = alternateRequirementMap.get(requirement.canAlsoMeetThisRequirement);
+          alternateRequirementMap.set(requirement.canAlsoMeetThisRequirement,
+            existingRequirementMet || requirementMet);
+        } else {
+          canBePicked = requirementMet || !!(hasNecessaryAttributesResult && hasNecessaryAttributesResult.isSelectable);
+          if (!canBePicked) {
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
+          }
         }
+
+
+        let alternativeMapCanBePicked = true;
+        alternateRequirementMap.forEach((value, key) => {
+          alternativeMapCanBePicked = alternativeMapCanBePicked && value;
+          canBePicked = alternativeMapCanBePicked;
+          if (!canBePicked) {
+            const requirementReason = abilityToBeSelected.abilityRequirement.find(abilityRequirement => abilityRequirement.canAlsoMeetThisRequirement === key);
+            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirementReason);
+          }
+        });
       }
     }
     return {isSelectable: canBePicked, reasonItCannotBeSelected: reasonItCannotBeSelected};
@@ -249,20 +277,6 @@ export class AbilityFactoryService {
         if ((bonus as IAbilityBonus).abilityBonus === requirement.requirementAbilityName) {
           canBePicked = canBePicked && !!requirement.requirementValue;
           if (!requirement.requirementValue) {
-            reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
-          }
-        } else if (requirement.requirementAbilityName === AbilityBonus.ToGenerateTemporaryHitPoints && !!(bonus as IAbilityBonus).abilityBonus) {
-          bonus = (bonus as IAbilityBonus);
-          const canGenerateTHP = (
-            bonus.abilityBonus === AbilityBonus.Fortify
-            || bonus.abilityBonus === AbilityBonus.IgnorePainTHP)
-            && (bonus.abilityType === AbilityType.PowerPointFeature
-              || bonus.abilityType === AbilityType.Power
-              || bonus.abilityType === AbilityType.Ability
-              || bonus.abilityType === AbilityType.Subtheme
-              || bonus.abilityType === AbilityType.Feature);
-          requirementMet = canGenerateTHP && !!requirement.requirementValue;
-          if (!requirementMet) {
             reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(requirement);
           }
         } else if ((bonus as IAbilityRequirement).requirementAbilityName === requirement.requirementAbilityName) {

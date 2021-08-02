@@ -34,7 +34,6 @@ export enum AbilityBonus {
   MaxDefense = "MaxDefense",
   WeaponSpecialization = "WeaponSpecialization",
   Fortify = "Fortify",
-  ToGenerateTemporaryHitPoints = "ToGenerateTemporaryHitPoints",
   Healing = "Healing",
   TacticalMovement = "TacticalMovement",
   CarefulStep = "CarefulStep",

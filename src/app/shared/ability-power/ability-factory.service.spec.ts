@@ -354,12 +354,12 @@ describe('AbilityFactoryService', () => {
     expect(currentAbilities.length).toEqual(3);
   });
 
-  it('should be able to select bolster when you have a talent that is associated with the ability to generate thp', () => {
+  it('should not be able to select bolster when you do not have a knack or spell that is associated with the ability to generate thp', () => {
     const talent = service.getNewAbility(TalentName.Bolster, AbilityType.Talent);
     const requiredTalent = service.getNewAbility(TalentName.GreaterJuggernaut, AbilityType.Talent);
-    let currentAbilities = [requiredTalent];
-    currentAbilities = service.selectAbility(talent, currentAbilities);
-    expect(currentAbilities.length).toEqual(2);
+    const currentAbilities = [requiredTalent];
+    expect(() => service.selectAbility(talent, currentAbilities))
+      .toThrowError("The talent: Bolster is an invalid selection because you do not have a Spell or Knack with the Fortify keyword.");
   });
 
   it('should be able to print out greater juggernaut correctly', () => {

@@ -48,13 +48,18 @@ export class AbilityFactoryService {
           ...getPowerPointObject()[abilityName],
           innerSelectedAbilities: innerSelections
         };
+        break;
       }
       case AbilityType.Spell: {
         model = {
           ...new AbilityModel(),
           ...this.getSpellAsAbility(abilityName as SpellName)
         };
+        break;
       }
+      default:
+        throw new Error("An unknown ability type was encountered when trying to get newAbility, ability was: " + abilityType);
+        break;
     }
     return model as AbilityModel;
   }
@@ -94,7 +99,7 @@ export class AbilityFactoryService {
   }
 
   /**
-   * Give an ability to be selected, all current abilities and all attributes, determine if the ability is allowed to be selected.
+   * Given an ability to be selected, all current abilities and all attributes, determine if the ability is allowed to be selected.
    * This doesn't consider cost of the talent that a character might have, this is simply comparing data to see if the ability is eligible to be selected.
    * This also looks at level to ensure that level requirement is met if an ability requires such
    * If so, return true otherwise return false.
@@ -179,7 +184,7 @@ export class AbilityFactoryService {
         }
 
         // check for canAlsoMeetThisRequirement
-        if (requirement.canAlsoMeetThisRequirement) {
+        if (requirement.canAlsoMeetThisRequirement && requirement.requirementType !== AbilityType.Attribute) {
           const existingRequirementMet = alternateRequirementMap.get(requirement.canAlsoMeetThisRequirement);
           alternateRequirementMap.set(requirement.canAlsoMeetThisRequirement,
             existingRequirementMet || requirementMet);
@@ -233,8 +238,10 @@ export class AbilityFactoryService {
 
         if (currentRequirement.canAlsoMeetThisRequirement) {
           const existingRequirementMet = alternateRequirementMap.get(currentRequirement.canAlsoMeetThisRequirement);
-          alternateRequirementMap.set(currentRequirement.canAlsoMeetThisRequirement,
-            existingRequirementMet || requirementMet);
+
+          requirementMet = existingRequirementMet || requirementMet;
+          alternateRequirementMap.set(currentRequirement.canAlsoMeetThisRequirement, requirementMet);
+
         } else if (!requirementMet) {
           requirementMet = false;
           reasonItCannotBeSelected = this.getReasonWhyAbilityCannotBeSelected(currentRequirement);

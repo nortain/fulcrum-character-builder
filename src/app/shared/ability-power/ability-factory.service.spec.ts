@@ -326,7 +326,9 @@ describe('AbilityFactoryService', () => {
 
   it('should be able to assign a spell as an ability', function () {
     // write a test using getNewAbility with a spell name then try to fix failing tests that require fortify keyword of spell or knack.
-    fail();
+    const spell = service.getNewAbility(SpellName.Reawaken, AbilityType.Spell);
+    expect(spell).not.toBeNull();
+    expect(spell.abilityName).toBe(SpellName.Reawaken);
   });
 
   it('should get the same result from newAbility vs SpellfromAbility', () => {

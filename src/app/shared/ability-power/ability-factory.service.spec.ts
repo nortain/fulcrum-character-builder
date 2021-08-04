@@ -549,6 +549,28 @@ describe('AbilityFactoryService', () => {
     expect(canBeSelected.isSelectable).toBeTruthy();
   });
 
+  it('should be able to test against unboundReflex', () => {
+    const talent = service.getNewAbility(TalentName.UnboundReflex, AbilityType.Talent);
+    const result = service.printOutBriefDescription(talent);
+    expect(result).toEqual("Unbound Reflex: Gain 1 to Reflex defense. All attacks that primarily target your Reflex defense have a -2 DC.");
+  });
+
+  it('should be able to test FuriousStrikes and make sure it prints correctly', () => {
+    const talent = service.getNewAbility(TalentName.FuriousStrikes, AbilityType.Talent);
+    const result = service.printOutBriefDescription(talent);
+    expect(result).toEqual("Furious Strikes: Gain 2 to attack damage.");
+  });
+
+  it('should display Arcane Shield correctly', () => {
+    const talent = service.getNewAbility(TalentName.ArcaneShield, AbilityType.Talent);
+    const result = service.printOutBriefDescription(talent);
+    expect(result).toEqual("Arcane Shield: If the character has a free hand and is armed with an implement they gain the following. While this passive is active your free hand is considered occupied.\n" +
+      "Magic Shield: Gain 1 to Active Defense. This cannot increase your max permanent defense beyond 25.\n" +
+      "Danger Sense: Gain 1 to Critical Resistance.\n" +
+      "Arcane Instinct: You may use Active Defense for Missile Defense.\n" +
+      "Kinetic Barrier: (Power) Free. Once per combat reduce the damage taken from an attack by 17.");
+  });
+
 
   /**Stupid Helper functions**/
 

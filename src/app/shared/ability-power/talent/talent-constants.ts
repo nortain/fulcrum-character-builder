@@ -130,6 +130,7 @@ export function getTalentObject(): TalentConstants {
       abilityRequirement: [{requirementAbilityName: AttributeName.Agility, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic}],
       associatedAbilities: [TalentName.Deflection]
     } as AbilityModel,
+
     AdvancedWeaponTrainingRanged: {
       abilityName: TalentName.AdvancedWeaponTrainingRanged,
       abilityType: AbilityType.Talent,
@@ -327,9 +328,9 @@ export function getTalentObject(): TalentConstants {
       abilityCost: [{requirementAbilityName: TalentType.Universal, requirementValue: TalentStrength.Lesser}],
       abilityDescription: {
         briefDescription:
-          "Gain a $AttackDamage to attack damage.",
+          "Gain $AttackDamage to attack damage.",
         fullDescription:
-          "Gain a +1 to attack damage. At level 6 this bonus becomes +2."
+          "Gain 1 to attack damage. At level 6 this bonus becomes +2."
       },
       mechanicalBonus: [{abilityBonus: AbilityBonus.AttackDamage, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 2}}]
     } as AbilityModel,
@@ -2017,6 +2018,84 @@ export function getTalentObject(): TalentConstants {
         },
         {requirementAbilityName: AttributeName.SelfDiscipline, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic, canAlsoMeetThisRequirement: 'AttributeRequirement'},
         {requirementAbilityName: AttributeName.Presence, requirementType: AbilityType.Attribute, requirementValue: AttributeStrength.Heroic, canAlsoMeetThisRequirement: 'AttributeRequirement'}]
+    } as AbilityModel,
+
+    ArcaneShield: {
+      abilityName: TalentName.ArcaneShield,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityCost: [{requirementAbilityName: TalentType.Magic, requirementValue: TalentStrength.Greater}, {requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Greater}],
+      abilityDescription: {
+        briefDescription:
+          "If the character has a free hand and is armed with an implement they gain the following. While this passive is active your free hand is considered occupied.",
+        fullDescription:
+          "If the character has a free hand and is armed with an implement they gain the following. While this passive is active your free hand is considered occupied."
+      },
+      associatedAbilities: [TalentName.MagicShield, TalentName.DangerSense, TalentName.ArcaneInstinct, TalentName.KineticBarrier]
+    } as AbilityModel,
+
+    MagicShield: {
+      abilityName: TalentName.MagicShield,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Gain 1 to Active Defense. This cannot increase your max permanent defense beyond $" + AbilityBonus.MaxDefense + ".",
+        fullDescription:
+          "Gain 1 to Active Defense. This cannot increase your max permanent defense beyond 15 + level"
+      },
+      mechanicalBonus: [
+        {abilityBonus: AbilityBonus.MaxDefense, abilityType: AbilityType.Passive, value: {minBonus: 16, maxBonus: 25}},
+        {abilityBonus: AbilityBonus.ActiveDefense, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}
+      ]
+    } as AbilityModel,
+
+    DangerSense: {
+      abilityName: TalentName.DangerSense,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+          "Gain 1 to Critical Resistance.",
+        fullDescription:
+          "Gain 1 to Critical Resistance.",
+      },
+      mechanicalBonus: [
+        {abilityBonus: AbilityBonus.CriticalResist, abilityType: AbilityType.Passive, value: {minBonus: 1, maxBonus: 1}}
+      ]
+    } as AbilityModel,
+
+    KineticBarrier: {
+      abilityName: TalentName.KineticBarrier,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Free,
+      fullDescriptionAbilityType: AbilityType.Power,
+      briefDescriptionAbilityType: AbilityType.Power,
+      abilityCost: [{requirementAbilityName: TalentType.Combat, requirementValue: TalentStrength.Lesser}, {requirementAbilityName: TalentType.Magic, requirementValue: TalentStrength.Lesser}],
+      abilityDescription: {
+        briefDescription:
+          "Once per combat reduce the damage taken from an attack by $" + AbilityBonus.TemporaryDamageResist + ".",
+        fullDescription:
+          "Once per combat reduce the damage taken from an attack by 6 + level.",
+      },
+      mechanicalBonus: [
+        {abilityBonus: AbilityBonus.TemporaryDamageResist, abilityType: AbilityType.Power, value: {minBonus: 7, maxBonus: 17}}
+      ]
+    } as AbilityModel,
+
+    ArcaneInstinct: {
+      abilityName: TalentName.ArcaneInstinct,
+      abilityType: AbilityType.Talent,
+      abilityAction: ActionType.Passive,
+      abilityDescription: {
+        briefDescription:
+         "You may use Active Defense for Missile Defense.",
+        fullDescription:
+         "You may use Active Defense for Missile Defense."
+      },
+      mechanicalBonus: [
+        {abilityBonus: AbilityBonus.MissileDefense, abilityType: AbilityType.Passive, value: AbilityBonus.ActiveDefense}
+      ]
     } as AbilityModel,
   };
 }

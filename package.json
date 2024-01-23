@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "^5.1.2",
     "@angular/router": "^5.1.2",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
-    "bootstrap": "4.0.0",
+    "bootstrap": "4.3.1",
     "compodoc": "0.0.41",
     "core-js": "^2.5.3",
     "jquery": "3.5.0",
